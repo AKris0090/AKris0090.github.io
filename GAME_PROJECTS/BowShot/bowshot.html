@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+    <script type="importmap">
+        {
+              "imports": {
+                  "three": "https://unpkg.com/three/build/three.module.js"
+              }
+          }
+      </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arjun's Portfolio</title>
+    <link rel="stylesheet" href="/mainstyles.css">
+	<link href="https://fonts.googleapis.com/css2?family=Jost:wght@700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/fontawesome-free-6.4.2-web/fontawesome-free-6.4.2-web/css/all.css">
+</head>
+<body style="max-width: 100%; -webkit-text-size-adjust:100%; background-color: #111111;
+-ms-text-size-adjust:none;
+-moz-text-size-adjust:none;
+text-size-adjust:none;">
+    <nav class="navbar" style="z-index: 99;">
+        <div class="navbar__container">
+            <a href="/" id="navbar__logo" style="font-family: cfour; font-size: 50px;">AJN</a>
+            <div class="navbar__toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="navbar__menu">
+                <li class="navbar__item">
+                    <a href="/" class="navbar__links">Home</a>
+                </li>
+                <li class="navbar__item">
+                    <a href="/#GameDev" class="navbar__links">Game Dev</a>
+                </li>
+                <li class="navbar__item">
+                    <a href="/#SoftwareDev" class="navbar__links">Coding Projects</a>
+                </li>
+                <li class="navbar__item">
+                    <a href="/#Modeling" class="navbar__links">3D Modeling</a>
+                </li>
+                <li class="navbar__item">
+                    <a href="/Art Portfolio/ArtPortfolio.html" class="navbar__links">Art Portfolio</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <section id="loading-screen">
+        <div id="loader"></div>
+        <div id="progBar_container">
+            <p id="words">Downloading...</p>
+            <div id="progressbar" style="display: none"></div>
+        </div>
+    </section>
+    <h1 style="font-family: bro; font-style: bold; font-size: 175px; text-align: center; padding-top: 1.5%; margin-top: 1.65%; color: #FAF9F6">Bow SIm</h1>
+	<div class="section_header" style="background-color: #111111;">
+		<h2 style="color: #FAF9F6; font-size: x-large; margin-top: -8%">Blender // Unreal Engine 4</h2>
+    </div>
+    <div style="text-align: center; position: relative; z-index: 6; margin-top: 3%">  
+        <iframe width="942" height="552" src="https://www.youtube.com/embed/0BRGNQilR_4" title="Bow Sim Game Demo" allowfullscreen></iframe>
+    </div>
+    <div class="projects" style="background-image: none; padding-top: 3%">
+        <div class="projects_grid" style="text-align: center; max-width: 99%; margin: auto; margin-left:-1%">
+			<div class="cards_row" style="max-height: 150%; height: 75vh; vertical-align: middle;">
+                <div class="cards_column" style="max-width: 42%; position: relative; top: 0; bottom: 0; margin-top: auto; margin-bottom: auto;">	
+					<h2 style="font-family: bro; color: #FAF9F6; font-size: xx-large;">INTERAcTIVE 3D MoDEL<br><br>BEAR ARcHERY WHITETAIL LEgEND CoMPoUND BoW</h2>
+                    <p style="color: #888888;">// CREDIT:</p>
+                    <p style="color: #888888">Arms Model:– “fps arms” <a href="https://skfb.ly/6R6yX" style="color: white">https://skfb.ly/6R6yX</a> by DJMaesen is licensed under Creative Commons Attribution</p>
+                </div>
+				<div class="cards_column" style="max-width: 68%">	
+                    <div id="container" style="width: 100%; height: 100%; z-index: 4; position: relative">
+                        <canvas class="my__canvas" id="model__container" style="z-index: 999; position: relative; border: 1px solid white; border-radius: 15px; margin-left: 5%"></canvas>
+                        <img class="indicator" src="./swipe-helper.gif" style="position: absolute; bottom: 5%; right: -2.5%; width: 13%">
+                    </div>
+                </div>
+            </div>
+            <div class="cards_row" style="margin-top: 3%; margin-left: 4%;">
+                <div class="cards_column" style="max-width: 50%">
+                    <p style="color: white; margin-left: 8%; margin-right: 3%; font-size: larger;">This project was the result of a week-long summer course at Digipen Institute of Technology. The game is a bow and arrow simulation, and has a mini-game on one side and a separate target range on the opposite side. I have implemented an interact button, and it can be activated by pressing a key when close to the buttons. Interacting with the yellow floating arrows reload the total number of arrows back to 25. Arrows stick into targets, and shooting the board in the corner of the room shows how they go through the objects they hit.</p>
+                </div>
+                <div class="cards_column" style="max-width: 50%">
+                    <p style="color: white; margin-right: 8%; margin-left: 3%; font-size: larger;">I spent a long while working on a 3D model of a compound bow, which is the main weapon I included. It was very challenging to get the bowstring working as I wanted, and only found a working solution after a couple of days. I made all of the animations, including the walking, running, drawing the bowstring back, aiming down sights, and reloading clips in Blender. From there, I imported everything into Unreal Engine and coded all of the logic using Unreal Engine’s blueprint system.</p>
+                </div>
+            </div>
+        </div>
+        <div class="section_header">
+            <h2 style="color: #FAF9F6; background-color: #111111; text-align: center; margin-top: -4%; margin-bottom: 0%;">. . .</h2>
+        </div>
+        <div class="projects_grid" style="padding: 3% 0px 10px 0px; background-color: #111111; margin-top: -40px">
+            <div class="cards_row" style="background-color: #111111;">
+                <div class="cards_column" style="max-width: 60%; background-color: #111111;">	
+                    <div class="cards_row">
+                        <div class="cards_column" style="max-width: 45%;">
+                            <div style="margin-top: 25%; margin-bottom: 0">
+                                <div class="cards_row">
+                                    <div class="projects_card" style="background-color: #FAF9F6; margin-right: 20px;">
+                                        <img src="/GAME_PROJECTS/BowShot/targets.png">
+                                    </div>
+                                </div>
+                                <div class="cards_row">
+                                    <div class="projects_card" style="background-color: #FAF9F6; margin-right: 20px;">
+                                        <img src="/GAME_PROJECTS/BowShot/interactables.png">
+                                    </div>
+                                </div>
+                                <div class="cards_row">
+                                    <div class="projects_card" style="background-color: #FAF9F6; margin-right: 20px;">
+                                        <img src="/GAME_PROJECTS/BowShot/bow_in_game.png">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cards_column" style="max-width: 55%;">	
+                            <div class="projects_card" style="background-color: #FAF9F6; margin-right: 20px;">
+                                <img src="/GAME_PROJECTS/BowShot/exploded_view.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cards_column" style="max-width: 40%">	
+                    <div class="projects_card" style="background-color: #FAF9F6; margin-top: 33%; vertical-align: auto; justify-self: center; text-align: center">
+                        <h1>MoDELINg //  ANIMATIoN //  INTERAcTABLEs</h1>
+                        <li>I spent many days modeling this bow after cross section
+                            images of the Bear Archery Whitetail Legend Bow</li>
+                        <li>I animated clips of reloading, walking, and drawing the
+                            bowstring back with the arrow in Blender/Unreal</li>
+                        <li>I also implemented interactable objects that I placed 
+                            around the world</li>
+
+                        <h1>I LEARNED HoW To:</h1>
+                        
+                        <li>Use variables to control animation clips in Unreal Engine</li>
+                        <li>Change public variables through interactable objects</li>
+                        <li>Create and export animation clips in Blender</li>
+                    </div>
+                </div>
+            </div>
+            <div class="section_header">
+                <h2 style="color: #FAF9F6; background-color: #111111; text-align: center; margin-top: -4%">. . .</h2>
+            </div>
+            <div class="cards_row">
+                <div class="cards_column" style="max-width: 40%">	
+                    <div class="projects_card" style="background-color: #FAF9F6; margin-top: 45%;vertical-align: auto; justify-self: center; text-align: center">
+                        <h1>MINIgAME</h1>
+                        <li>I created a target-shooting minigame with a timer,
+                            score counter, and a game over screen</li> 
+                        <li>After interacting with the green box, a gameplay loop
+                            starts</li>
+                        <li>Targets spawn in random locations in a 3D space, 
+                            and the player shoots them to gain points
+                        </li>
+
+                        <h1>I LEARNED HoW To:</h1>
+
+                        <li>Program a gameplay loop</li>
+                        <li>Create / Apply UI elements and buttons</li>
+                    </div>
+                </div>
+                <div class="cards_column" style="max-width: 60%;">
+                    <div class="cards_row">
+                        <div class="cards_column" style="max-width: 80%;">
+                            <div class="projects_card" style="background-color: #FAF9F6; margin-left: 30px;">
+                                <img src="/GAME_PROJECTS/BowShot/end-game-screen.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cards_row">
+                        <div class="cards_column" style="max-width: 20%;"></div>
+                        <div class="cards_column" style="max-width: 80%;">
+                            <div class="projects_card" style="background-color: #FAF9F6; margin-left: 30px;">
+                                <video controls loop src="/GAME_PROJECTS/BowShot/Bow_Pullback.mp4" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="projects" style="justify-content: center; text-align: center; background-color: black; margin-top: -1.5%">
+            <div style="background-color: #111111; padding-bottom: 5%;">
+                <a href="https://violets321.itch.io/bowsim" target="_blank">
+                    <button class="BS_button" style="position: relative; z-index: 6;">ITCH.IO PAGE ➜</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module" src="./bow_model.js"></script>
+</html>
