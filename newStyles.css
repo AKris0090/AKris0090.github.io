@@ -97,9 +97,8 @@ nav a:hover{
 
 .sidebar {
     position: fixed;
-    top: -40vh;
-    left: 0;
-    height: 34vh;
+    top: -100vh;
+    height: 50vh;
     z-index: 9999;
     background-color: #4d3f91;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
@@ -107,6 +106,10 @@ nav a:hover{
     align-items: center;
     justify-content: center;
     transition: all 0.55s ease-in-out;
+}
+
+.sidebar li:first-child {
+    margin-left: 0;
 }
 
 .menuButton {
