@@ -8,28 +8,26 @@
 </head>
 
 <body>
-	<nav class="navbar">
-		<div class="navbar__container">
-			<a href="/" id="navbar__logo" style="font-family: cfour; font-size: 50px;">AJN</a>
-			<ul class="navbar__menu">
-				<li class="navbar__item">
-					<a href="/CodingProjects.html#GameDev" class="navbar__links">Game Dev</a>
-				</li>
-				<li class="navbar__item">
-					<a href="/CodingProjects.html#SoftwareDev" class="navbar__links">Coding Projects</a>
-				</li>
-				<li class="navbar__item">
-					<a href="/ArtProjects.html#3DModeling" class="navbar__links">3D Modeling</a>
-				</li>
-				<li class="navbar__item">
-					<a href="/Art Portfolio/ArtPortfolio.html" class="navbar__links">Art Portfolio</a>
-				</li>
-			</ul>
-		</div>
+	<nav>
+		<ul class="sidebar">
+			<li onclick=hideSidebar()><a><svg xmlns="http://www.w3.org/2000/svg" height="24px" fill=#FF5677 viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
+			<li><a href="/CodingProjects.html#GameDev">Game Dev</a></li>
+			<li><a href="/CodingProjects.html#SoftwareDev">Coding Projects</a></li>
+			<li><a href="/ArtProjects.html#3DModeling">3D Modeling</a></li>
+			<li><a href="/Art Portfolio/ArtPortfolio.html">Art Portfolio</a></li>
+		</ul>
+		<ul>
+			<li><a href="/" id="first-element">AJN</a></li>
+			<li class = "hideOnMobile"><a href="/CodingProjects.html#GameDev">Game Dev</a></li>
+			<li class = "hideOnMobile"><a href="/CodingProjects.html#SoftwareDev">Coding Projects</a></li>
+			<li class = "hideOnMobile"><a href="/ArtProjects.html#3DModeling">3D Modeling</a></li>
+			<li class = "hideOnMobile"><a href="/Art Portfolio/ArtPortfolio.html">Art Portfolio</a></li>
+			<li class = "menuButton" onclick=showSidebar()><a><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+		</ul>
 	</nav>
 	<div class="partial_header">
 		<a id="GameDev" class="anchor"></a>
-		<h1 style="text-decoration-color: #FF5677">GAME
+		<h1 style="text-decoration-color: #FF5677; margin-top: 6.5rem">GAME
 			DEV</h1>
 	</div>
 	<div class="projects_grid">
@@ -183,4 +181,15 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		function showSidebar() {
+			var sidebar = document.querySelector(".sidebar");
+			sidebar.style.top = "0";
+		}
+
+		function hideSidebar() {
+			var sidebar = document.querySelector(".sidebar");
+			sidebar.style.top = "-40vh"
+		}
+	</script>
 </body>
