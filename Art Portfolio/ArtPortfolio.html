@@ -5,206 +5,160 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arjun's Portfolio</title>
-    <link rel="stylesheet" href="/mainstyles.css">
+    <link rel="stylesheet" href="/newStyles.css">
 	<link href="https://fonts.googleapis.com/css2?family=Jost:wght@700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="/fontawesome-free-6.4.2-web/fontawesome-free-6.4.2-web/css/all.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navbar__container">
-            <a href="/" id="navbar__logo" style="font-family: cfour; font-size: 50px;">AJN</a>
-            <ul class="navbar__menu">
-				<li class="navbar__item">
-                    <a href="/CodingProjects.html#GameDev" class="navbar__links">Game Dev</a>
-                </li>
-				<li class="navbar__item">
-                    <a href="/CodingProjects.html#SoftwareDev" class="navbar__links">Coding Projects</a>
-                </li>
-                <li class="navbar__item">
-                    <a href="/ArtProjects.html#3DModeling" class="navbar__links">3D Modeling</a>
-                </li>
-				<li class="navbar__item">
-                    <a href="/Art Portfolio/ArtPortfolio.html" class="navbar__links">Art Portfolio</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="projects">
-        <div class="section_header" style="padding-top: 3%;">
-            <u><h1 style="font-size: 300%; font-weight: bolder;">AP ART PORTFOLIO: ENVIRONMENT</h1></u>
-        </div>
-        <div class="projects_grid" style="text-align: center; max-width: 90%; margin: auto;">
-            <p style="max-width: 70%; margin: auto; padding-bottom: 2%; font-size: larger;">The pieces below were created in my junior year of high school for my AP Studio Art class. At the beginning of the year, the first thing I did was to create a theme. The pieces below each contain the recurring motif of “the harmful effects humans have on the environment”. Keeping that theme in mind, I created each of these pieces, keeping compositional elements such as the rule of thirds, color theory, and leading lines in mind.</p>
-        </div>
+	<nav>
+		<ul class="sidebar">
+			<li onclick=hideSidebar()><a><svg xmlns="http://www.w3.org/2000/svg" height="24px" fill=#FF5677 viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
+			<li><a href="/CodingProjects.html#GameDev">Game Dev</a></li>
+			<li><a href="/CodingProjects.html#SoftwareDev">Coding Projects</a></li>
+			<li><a href="/ArtProjects.html#3DModeling">3D Modeling</a></li>
+			<li><a href="/Art Portfolio/ArtPortfolio.html">Art Portfolio</a></li>
+		</ul>
+		<ul>
+			<li><a href="/" id="first-element">AJN</a></li>
+			<li class = "hideOnMobile"><a href="/CodingProjects.html#GameDev">Game Dev</a></li>
+			<li class = "hideOnMobile"><a href="/CodingProjects.html#SoftwareDev">Coding Projects</a></li>
+			<li class = "hideOnMobile"><a href="/ArtProjects.html#3DModeling">3D Modeling</a></li>
+			<li class = "hideOnMobile"><a href="/Art Portfolio/ArtPortfolio.html">Art Portfolio</a></li>
+			<li class = "menuButton" onclick=showSidebar()><a><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+		</ul>
+	</nav>
+    <div class="art_header">
+        <u><h1>AP ART PORTFOLIO: ENVIRONMENT</h1></u>
     </div>
-    <div class="projects">
-        <div class="section_header" style="padding-top: 3%">
-            <u><h1>FOREST</h1></u>
+    <div class = "art_description">
+        <p>The pieces below were created in my junior year of high school for my AP Studio Art class, each containing the recurring motif of “the harmful effects humans have on the environment”. Keeping that theme in mind, I created each of these pieces, keeping compositional elements such as the rule of thirds, color theory, and leading lines in mind.</p>
+    </div>
+    <div class="projects" style="padding-top: 1rem">
+        <div class="section_header" style="padding-top: 3%; font-size: 0.75rem">
+            <h1>FOREST</h1>
         </div>
-    	<div class="projects_grid" style="text-align: center; max-width: 90%; margin: auto;">
-			<div class="cards_row">
-				<div class="cards_column" style="max-width: 50%">	
-					<img src="/Art Portfolio/ART_IMAGES/forest/forest sketch.jpg">
-                </div>
-                <div class="cards_column" style="max-width: 50%">	
-					<img src="/Art Portfolio/ART_IMAGES/forest/forest background.jpg">
-                </div>
+    	<div class="projects_grid" style="max-width: 90vw;">
+            <div class="thumbnail">
+                <img src="/Art Portfolio/ART_IMAGES/forest/forest sketch.jpg">
+			    <img src="/Art Portfolio/ART_IMAGES/forest/forest background.jpg">
             </div>
-            <div class="cards_column" style="max-width: 100%;">	
-                <img src="/Art Portfolio/ART_IMAGES/forest/forest final.jpg">
-            </div>
+            <img src="/Art Portfolio/ART_IMAGES/forest/forest final.jpg">
         </div>
         <div class="section_header" style="padding-top: 3%">
             <u><h1>OCEAN</h1></u>
         </div>
-    	<div class="projects_grid" style="text-align: center; max-width: 90%; margin: auto;">
-			<div class="cards_row">
-				<div class="cards_column" style="max-width: 50%">	
-					<img src="/Art Portfolio/ART_IMAGES/ocean/ocean collage.jpg">
-                </div>
-                <div class="cards_column" style="max-width: 50%">	
-					<img src="/Art Portfolio/ART_IMAGES/ocean/ocean sketch.jpg">
-                </div>
+    	<div class="projects_grid" style="max-width: 90vw;">
+            <div class="thumbnail">
+				<img src="/Art Portfolio/ART_IMAGES/ocean/ocean collage.jpg">
+				<img src="/Art Portfolio/ART_IMAGES/ocean/ocean sketch.jpg">
             </div>
-            <div class="cards_column" style="max-width: 100%;">	
                 <img src="/Art Portfolio/ART_IMAGES/ocean/ocean final.jpg">
             </div>
         </div>
         <div class="section_header" style="padding-top: 3%">
             <u><h1>DIVIDED</h1></u>
         </div>
-    	<div class="projects_grid" style="text-align: center; max-width: 90%; margin: auto;">
-            <div class="cards_column" style="max-width: 100%;">	
-                <img src="/Art Portfolio/ART_IMAGES/cryo/CRYO.png">
-            </div>
+    	<div class="projects_grid" style="max-width: 90vw;">
+            <img src="/Art Portfolio/ART_IMAGES/cryo/CRYO.png">
         </div>
         <div class="section_header" style="padding-top: 3%">
             <u><h1>IGNORANCE</h1></u>
         </div>
-    	<div class="projects_grid" style="text-align: center; max-width: 90%; margin: auto;">
-            <div class="cards_column" style="max-width: 100%;">	
-                <img src="/Art Portfolio/ART_IMAGES/smoke/smoke final.jpg">
-            </div>
+    	<div class="projects_grid" style="max-width: 90vw;">
+            <img src="/Art Portfolio/ART_IMAGES/smoke/smoke final.jpg">
         </div>
-        <div class="projects_grid" style="text-align: center; max-width: 90%; margin: auto;">
-			<div class="cards_row">
-				<div class="cards_column" style="max-width: 50%">
-                    <div class="section_header" style="padding-top: 3%; padding-bottom: 2%; height: auto">
-                        <u><h1>DECADENCE</h1></u>
-                    </div> 
-                    <img src="/Art Portfolio/ART_IMAGES/EYEcropped.jpg">
-                    <div class="section_header" style="padding-top: 3%; padding-bottom: 2%; height: auto">
-                        <u><h1>INEVITABLE</h1></u>
-                    </div> 
-                    <img src="/Art Portfolio/ART_IMAGES/BOTTLE.JPG">
-                </div>
-                <div class="cards_column" style="max-width: 50%">	
-                    <div class="section_header" style="padding-top: 3%; padding-bottom: 2%; height: auto">
-                        <u><h1>FORGOTTEN</h1></u>
-                    </div>
-                    <img src="/Art Portfolio/ART_IMAGES/Painting.JPG">
-                    <div class="section_header" style="padding-top: 3%; padding-bottom: 2%; height: auto">
-                        <u><h1>METAL MOUNTAIN</h1></u>
-                    </div>
-                    <img src="/Art Portfolio/ART_IMAGES/CANcropped.jpg">
-                </div>
-            </div>
+        <div class="projects_grid" style="max-width: 90vw; padding-top: 1.5rem">
+			<section class="art_item">
+                <u><h1>DECADENCE</h1></u>
+                <img src="/Art Portfolio/ART_IMAGES/EYEcropped.jpg">
+            </section>
+            <section class="art_item">
+                <u><h1>INEVITABLE</h1></u>
+                <img src="/Art Portfolio/ART_IMAGES/BOTTLE.JPG">
+            </section>
+            <section class="art_item">
+                <u><h1>FORGOTTEN</h1></u>
+                <img src="/Art Portfolio/ART_IMAGES/Painting.JPG">
+            </section>
+            <section class="art_item">
+                <u><h1>METAL MOUNTAIN</h1></u>
+                <img src="/Art Portfolio/ART_IMAGES/CANcropped.jpg">
+            </section>
         </div>
-        <div class="section_header" style="padding-top: 3%">
-            <u><h1 style="font-size: 300%; font-weight: bolder;">MISCELLANEOUS PIECES</h1></u>
+        <div class="section_header" style="padding-top: 3%;">
+            <u><h1 style="font-size: 1.85rem;">MISCELLANEOUS PIECES</h1></u>
         </div>
-        <div class="projects_grid" style="text-align: center; max-width: 90%; margin: auto;">
-			<div class="cards_row">
-				<div class="cards_column" style="max-width: 50%">
-                    <div class="art_item">
-                        <div class="section_header" style="padding-top: 3%; padding-bottom: 2%; height: auto">
-                            <u><h1>PLATE PAINTING</h1></u>
-                        </div>
-                        <img src="/Art Portfolio/ART_IMAGES/misc/Plate.png">
-                        <div class="overlay_text">
-                            <h2 style="margin: auto 20px;">
-                                Back in 2016, my aunt had taken me to the mall one day with my grandma to go to a shop where you would buy an unfinished ceramic plate, paint it with the glaze they provided, and they would fire it in a kiln for you. I worked on this artwork, from finding the references to sketching an outline to painting in the colors, for 5 hours straight. I had gotten so lost in my art that I had lost track of time, forgetting about food, sleep, and where I was. My eyes were bloodshot and I had a bad headache afterwards, but it continues to remind me of my passion for creation.
-                            </h2>
-                        </div>
-                    </div>
-                    <div class="art_item">
-                        <div class="section_header" style="padding-top: 3%; padding-bottom: 2%; height: auto">
-                            <u><h1>WEBSITE DESIGN</h1></u>
-                        </div>
-                        <img src="/Art Portfolio/ART_IMAGES/misc/NeuronWebsiteDesign-Copy.jpg">
-                        <div class="overlay_text" style="height: 40%; top: 30%">
-                            <h2 style="margin: auto 20px;">
-                                In my Senior year of high school, I helped to make the landing page design for a free learning website that my friends and I started. It was called Neuron Education, and I worked with another classmate to discuss, plan and design the layout of the landing page. We discussed where elements should be positioned, what color schemes work the best, and I created various iterations of the company logo at the top of the page.                            </h2>
-                        </div>
-                    </div>
+        <div class="projects_grid" style="max-width: 90vw;">
+            <section class="art_item">
+                <u><h1>PLATE PAINTING</h1></u>
+                <img src="/Art Portfolio/ART_IMAGES/misc/Plate.png">
+                <div class="overlay_text">
+                    <h2 style="margin: auto 20px;">
+                        Back in 2016, my aunt had taken me to the mall one day with my grandma to go to a shop where you would buy an unfinished ceramic plate, paint it with the glaze they provided, and they would fire it in a kiln for you. I worked on this artwork, from finding the references to sketching an outline to painting in the colors, for 5 hours straight. I had gotten so lost in my art that I had lost track of time, forgetting about food, sleep, and where I was. My eyes were bloodshot and I had a bad headache afterwards, but it continues to remind me of my passion for creation.
+                    </h2>
                 </div>
-                <div class="cards_column" style="max-width: 50%">
-                    <div class="art_item">
-                        <div class="section_header" style="padding-top: 3%; padding-bottom: 2%; height: auto">
-                            <u><h1>SUNRISE</h1></u>
-                        </div>
-                        <img src="/Art Portfolio/ART_IMAGES/misc/IMG_2058.jpg">
-                        <div class="overlay_text" style="height: 60%; top: 20%">
-                            <h2 style="margin: auto 20px;">
-                                This painting was an acrylic work done on canvas, and I was experimenting / practicing a dry brush technique. I chose not to blend colors, and instead used individual colors to show a transition, color blending, or a highlight/shadow.
-                            </h2>
-                        </div>
-                    </div>
-                    <div class="art_item">
-                        <div class="section_header" style="padding-top: 3%; padding-bottom: 2%; height: auto">
-                            <u><h1>SELF PORTRAIT</h1></u>
-                        </div>
-                        <img src="/Art Portfolio/ART_IMAGES/misc/self-portrait.jpg">
-                        <div class="overlay_text" style="height: 30%; top: 35%">
-                            <h2 style="margin: auto 20px;">
-                                This was a piece I made in the 9th grade for my Art 1 class. We were practicing a gridding technique, where we would take a portrait image of ourselves, divide it into squares, and transfer each squares on an equally gridded canvas paper.
-                            </h2>
-                        </div>
-                    </div>
-                    <div class="art_item">
-                        <div class="section_header" style="padding-top: 3%; padding-bottom: 2%; height: auto">
-                            <u><h1>INDIAN HISTORY PROJECT</h1></u>
-                        </div>
-                        <img src="/Art Portfolio/ART_IMAGES/misc/PBL Project - Final.jpg">
-                        <div class="overlay_text" style="height: 70%; top: 15%">
-                            <h2 style="margin: auto 20px;">
-                                I made this art piece in my senior year Story and Style class. Our class was asked to select a moment in history where a group of people faced trauma, and the resilience they showed against it. I chose to depict the Sepoy Mutiny of 1857, and settled on this version for its deep symbolism and vivid colors.
-                            </h2>
-                        </div>
-                    </div>
+            </section>
+            <section class="art_item">
+                <u><h1>WEBSITE DESIGN</h1></u>
+                <img src="/Art Portfolio/ART_IMAGES/misc/NeuronWebsiteDesign-Copy.jpg">
+                <div class="overlay_text" style="height: 40%; top: 30%">
+                    <h2 style="margin: auto 20px;">
+                        In my Senior year of high school, I helped to make the landing page design for a free learning website that my friends and I started. It was called Neuron Education, and I worked with another classmate to discuss, plan and design the layout of the landing page. We discussed where elements should be positioned, what color schemes work the best, and I created various iterations of the company logo at the top of the page.                            
+                    </h2>
                 </div>
-            </div>
+            </section>
+            <section class="art_item">
+                <u><h1>SUNRISE</h1></u>
+                <img src="/Art Portfolio/ART_IMAGES/misc/IMG_2058.jpg">
+                <div class="overlay_text" style="height: 60%; top: 20%">
+                    <h2 style="margin: auto 20px;">
+                        This painting was an acrylic work done on canvas, and I was experimenting / practicing a dry brush technique. I chose not to blend colors, and instead used individual colors to show a transition, color blending, or a highlight/shadow.
+                    </h2>
+                </div>
+            </section>
+            <section class="art_item">
+                <u><h1>SELF PORTRAIT</h1></u>
+                <img src="/Art Portfolio/ART_IMAGES/misc/self-portrait.jpg">
+                <div class="overlay_text" style="height: 30%; top: 35%">
+                    <h2 style="margin: auto 20px;">
+                        This was a piece I made in the 9th grade for my Art 1 class. We were practicing a gridding technique, where we would take a portrait image of ourselves, divide it into squares, and transfer each squares on an equally gridded canvas paper.
+                    </h2>
+                </div>
+            </section>
+            <section class="art_item">
+                <u><h1>INDIAN HISTORY PROJECT</h1></u>
+                <img src="/Art Portfolio/ART_IMAGES/misc/PBL Project - Final.jpg">
+                <div class="overlay_text" style="height: 70%; top: 15%">
+                    <h2 style="margin: auto 20px;">
+                        I made this art piece in my senior year Story and Style class. Our class was asked to select a moment in history where a group of people faced trauma, and the resilience they showed against it. I chose to depict the Sepoy Mutiny of 1857, and settled on this version for its deep symbolism and vivid colors.
+                    </h2>
+                </div>
+            </section>
         </div>
         <div class="section_header" style="padding-top: 3%">
             <u><h1>OFFICE ENVIRONNENT</h1></u>
         </div>
-        <div class="projects_grid" style="text-align: center; max-width: 90%; margin: auto;">
-            <p style="max-width: 70%; margin: auto; padding-bottom: 2%; font-size: larger; margin-top: -1.5%;">This piece was made for a one-week summer workshop at DigiPen Institute. I first modeled two different office settings in Blender, and took reference screenshots from different angles I found interesting. Then, after finalizing on a reference photo, I painted over it in Clip Studio Paint, adding more lighting effects and texture as I saw fit.</p>
-            <div class="cards_row">
-                <div class="cards_column" style="max-width: 25%;">
-                    <img src="/Art Portfolio/ART_IMAGES/misc/office_IP/2.jpg">
-                </div>
-                <div class="cards_column" style="max-width: 25%;">
-                    <img src="/Art Portfolio/ART_IMAGES/misc/office_IP/4.jpg">
-                </div>
-                <div class="cards_column" style="max-width: 25%;">
-                    <img src="/Art Portfolio/ART_IMAGES/misc/office_IP/6.jpg">
-                </div>
-                <div class="cards_column" style="max-width: 25%;">
-                    <img src="/Art Portfolio/ART_IMAGES/misc/office_IP/7.5.jpg">
-                </div>
+        <div class="projects_grid" style="max-width: 90vw;">
+            <p style="font-size: 0.75rem; max-width: 70%; text-align: center; margin: auto; padding-bottom: 1.5rem">This piece was made for a one-week summer workshop at DigiPen Institute. I first modeled two different office settings in Blender, and took reference screenshots from different angles I found interesting. Then, after finalizing on a reference photo, I painted over it in Clip Studio Paint, adding more lighting effects and texture as I saw fit.</p>
+            <div class="quarter_thumbnail">
+                <img src="/Art Portfolio/ART_IMAGES/misc/office_IP/2.jpg">
+                <img src="/Art Portfolio/ART_IMAGES/misc/office_IP/4.jpg">
+                <img src="/Art Portfolio/ART_IMAGES/misc/office_IP/6.jpg">
+                <img src="/Art Portfolio/ART_IMAGES/misc/office_IP/7.5.jpg">
             </div>
-        </div>
-    	<div class="projects_grid" style="text-align: center; max-width: 90%; margin: auto; padding-bottom: 1.75%;">
-            <div class="cards_row">
-                <div class="cards_column" style="max-width: 50%;">	
-                    <img src="/Art Portfolio/ART_IMAGES/misc/3DBase.png">
-                </div>
-                <div class="cards_column" style="max-width: 50%;">	
-                    <img src="/Art Portfolio/ART_IMAGES/misc/Office.png">
-                </div>
-            </div>
+            <img src="/Art Portfolio/ART_IMAGES/misc/Office.png">
         </div>
     </div>
+    <script>
+		function showSidebar() {
+			var sidebar = document.querySelector(".sidebar");
+			sidebar.style.top = "0";
+		}
+
+		function hideSidebar() {
+			var sidebar = document.querySelector(".sidebar");
+			sidebar.style.top = "-100vh"
+		}
+	</script>
 </body>
 </html>
