@@ -4,173 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arjun's Portfolio</title>
-    <link rel="stylesheet" href="/mainstyles.css">
+    <link rel="stylesheet" href="/newStyles.css">
 	<link href="https://fonts.googleapis.com/css2?family=Jost:wght@700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="/fontawesome-free-6.4.2-web/fontawesome-free-6.4.2-web/css/all.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navbar__container">
-            <a href="/" id="navbar__logo" style="font-family: cfour; font-size: 50px;">AJN</a>
-            <ul class="navbar__menu">
-				<li class="navbar__item">
-                    <a href="/CodingProjects.html#GameDev" class="navbar__links">Game Dev</a>
-                </li>
-				<li class="navbar__item">
-                    <a href="/CodingProjects.html#SoftwareDev" class="navbar__links">Coding Projects</a>
-                </li>
-                <li class="navbar__item">
-                    <a href="/ArtProjects.html#3DModeling" class="navbar__links">3D Modeling</a>
-                </li>
-				<li class="navbar__item">
-                    <a href="/Art Portfolio/ArtPortfolio.html" class="navbar__links">Art Portfolio</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+	<nav>
+		<ul class="sidebar">
+			<li onclick=hideSidebar()><a><svg xmlns="http://www.w3.org/2000/svg" height="24px" fill=#FF5677 viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
+			<li><a href="/CodingProjects.html#GameDev">Game Dev</a></li>
+			<li><a href="/CodingProjects.html#SoftwareDev">Coding Projects</a></li>
+			<li><a href="/ArtProjects.html#3DModeling">3D Modeling</a></li>
+			<li><a href="/Art Portfolio/ArtPortfolio.html">Art Portfolio</a></li>
+		</ul>
+		<ul>
+			<li><a href="/" id="first-element">AJN</a></li>
+			<li class = "hideOnMobile"><a href="/CodingProjects.html#GameDev">Game Dev</a></li>
+			<li class = "hideOnMobile"><a href="/CodingProjects.html#SoftwareDev">Coding Projects</a></li>
+			<li class = "hideOnMobile"><a href="/ArtProjects.html#3DModeling">3D Modeling</a></li>
+			<li class = "hideOnMobile"><a href="/Art Portfolio/ArtPortfolio.html">Art Portfolio</a></li>
+			<li class = "menuButton" onclick=showSidebar()><a><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+		</ul>
+	</nav>
     <div class="projects">
-        <div class="section_header" style="padding-top: 3%;">
-            <u><h1 style="font-size: 300%; font-weight: bolder;">BLENDER UDEMY PROJECTS</h1></u>
+        <div class="section_header" style="padding-top: 8rem;">
+            <u><h1 style="font-size: 2.5rem;">BLENDER UDEMY PROJECTS</h1></u>
         </div>
-        <div class="section_header" style="padding-top: 1%">
+        <div class="section_header" style="padding-top: 1.5rem; padding-bottom: 1rem;">
             <a id="helicopter" class="anchor"></a>
-            <u><h1>HELICOPTER TAKEOFF</h1></u>
+            <u><h1 style="font-size: 1.5rem;">HELICOPTER TAKEOFF</h1></u>
         </div>
-        <div class="projects_grid" style="text-align: center; max-width: 90%; margin: auto;">
-            <div class="cards_column" style="max-width: 100%;">	
-                <video controls loop src="/HOMEPAGE_RESOURCES/Helicopter Final Animation2.mp4" type="video/mp4" style="padding-bottom: 3%;"></video>
-            </div>
-            <div class="cards_row">
-				<div class="cards_column" style="max-width: 33.33%">	
-                    <div class="art_item">
-					    <img src="/blender-projects/helicopter/base.png">
-                        <div class="caption_text" style="top:85%;">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">Helicopter Base Model</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="cards_column" style="max-width: 33.33%">	
-                    <div class="art_item">
-					    <img src="/blender-projects/helicopter/smoothed base.png">
-                        <div class="caption_text" style="top:85%;">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">Smoothed Model</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="cards_column" style="max-width: 33.33%">	
-                    <div class="art_item">
-					    <img src="/blender-projects/helicopter/complete model.png">
-                        <div class="caption_text" style="top:85%;">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">Complete Model and Pad</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="cards_row">
-				<div class="cards_column" style="max-width: 33.33%">	
-                    <div class="art_item">
-					    <img src="/blender-projects/helicopter/base UV painting.png">
-                        <div class="caption_text" style="top:90%;">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">UV / Texture Paint</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="cards_column" style="max-width: 33.33%">	
-                    <div class="art_item">
-					    <img src="/blender-projects/helicopter/textured.png">
-                        <div class="caption_text" style="top:85%;">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">Textured Model</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="cards_column" style="max-width: 33.33%">	
-                    <div class="art_item">
-					    <img src="/blender-projects/helicopter/final model.png">
-                        <div class="caption_text" style="top:85%;">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">Final Render</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="projects_grid" style="max-width: 90vw;">
+            <video controls loop src="/HOMEPAGE_RESOURCES/Helicopter Final Animation2.mp4" type="video/mp4" style="padding-bottom: 3%;"></video>
+            <section class="thumbnail_item">
+			    <img src="/blender-projects/helicopter/base.png">
+                <h2>Helicopter Base Model</h2>
+            </section>
+            <section class="thumbnail_item">
+			    <img src="/blender-projects/helicopter/smoothed base.png">
+                <h2>Smoothed Model</h2>
+            </section>
+            <section class="thumbnail_item">
+			    <img src="/blender-projects/helicopter/complete model.png">
+                <h2>Complete Model and Pad</h2>
+            </section>
+            <section class="thumbnail_item">
+			    <img src="/blender-projects/helicopter/base UV painting.png">
+                <h2>UV / Texture Paint</h2>
+            </section>
+            <section class="thumbnail_item">
+			    <img src="/blender-projects/helicopter/textured.png">
+                <h2>Textured Model</h2>
+            </section>
+            <section class="thumbnail_item">
+			    <img src="/blender-projects/helicopter/final model.png">
+                <h2>Final Render</h2>
+            </section>
         </div>
         <div class="section_header" style="padding-top: 3%">
             <a id="robot" class="anchor"></a>
-            <u><h1>ROBOT WALK CYCLE</h1></u>
+            <u><h1 style="font-size: 1.5rem;">ROBOT WALK CYCLE</h1></u>
         </div>
-        <div class="projects_grid" style="text-align: center; max-width: 90%; margin: auto;">
-            <div class="cards_column" style="max-width: 100%;">	
-                <video controls loop src="/HOMEPAGE_RESOURCES/Robot Final Animation2.mp4" type="video/mp4" style="padding-bottom: 3%;"></video>
-            </div>
-            <div class="cards_row">
-				<div class="cards_column" style="max-width: 33.33%">
-                    <div class="art_item">
-					    <img src="/blender-projects/robot/base model.png">
-                        <div class="caption_text">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">Robot Base Model</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="cards_column" style="max-width: 33.33%">
-                    <div class="art_item">
-					    <img src="/blender-projects/robot/base subdivision.png">
-                        <div class="caption_text">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">Subdivided Model</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="cards_column" style="max-width: 33.33%">
-                    <div class="art_item">
-					    <img src="/blender-projects/robot/shaders.png">
-                        <div class="caption_text">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">Shaders Applied</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="cards_row">
-				<div class="cards_column" style="max-width: 33.33%">
-                    <div class="art_item">
-					    <img src="/blender-projects/robot/rigged model.png">
-                        <div class="caption_text">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">Model Rigged</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="cards_column" style="max-width: 33.33%">	
-                    <div class="art_item">
-					    <img src="/blender-projects/robot/keyframe down pose.png">
-                        <div class="caption_text">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">Down Pose</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="cards_column" style="max-width: 33.33%">
-                    <div class="art_item">
-					    <img src="/blender-projects/robot/keyframe up pose.png">
-                        <div class="caption_text">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">Up Pose</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="cards_row">
-				<div class="cards_column" style="max-width: 50%">
-                    <div class="art_item">
-					    <img src="/blender-projects/robot/keyframe contact pose.png">
-                        <div class="caption_text">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">Contact Pose</h2>
-                        </div>
-                    </div>
-                </div>
-				<div class="cards_column" style="max-width: 50%">
-                    <div class="art_item">
-					    <img src="/blender-projects/robot/final render.jpg">
-                        <div class="caption_text">
-                            <h2 style="margin: auto 20px; top: 0; margin-top: 0; padding-top: 0">Final Render</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="projects_grid" style="max-width: 90vw;">
+            <video controls loop src="/HOMEPAGE_RESOURCES/Robot Final Animation2.mp4" type="video/mp4" style="padding-bottom: 3%;"></video>
+            <section class="thumbnail_item">
+			    <img src="/blender-projects/robot/base model.png">
+                <h2>Robot Base Model</h2>
+            </section>
+            <section class="thumbnail_item">
+			    <img src="/blender-projects/robot/base subdivision.png">
+                <h2>Subdivided Model</h2>
+            </section>
+            <section class="thumbnail_item">
+			    <img src="/blender-projects/robot/shaders.png">
+                <h2>Shaders Applied</h2>
+            </section>
+            <section class="thumbnail_item">
+			    <img src="/blender-projects/robot/rigged model.png">
+                <h2>Model Rigged</h2>
+            </section>
+            <section class="thumbnail_item">
+			    <img src="/blender-projects/robot/keyframe down pose.png">
+                <h2>Down Pose</h2>
+            </section>
+            <section class="thumbnail_item">
+			    <img src="/blender-projects/robot/keyframe up pose.png">
+                <h2>Up Pose</h2>
+            </section>
+            <section class="thumbnail_item">
+				<img src="/blender-projects/robot/keyframe contact pose.png">
+                <h2>Contact Pose</h2>
+            </section>
+            <section class="thumbnail_item">
+				<img src="/blender-projects/robot/final render.jpg">
+                <h2>Final Render</h2>
+            </section>
         </div>
     </div>
 </body>
