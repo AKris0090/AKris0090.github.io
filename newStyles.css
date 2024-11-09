@@ -25,6 +25,18 @@
     src: url(/GAME_PROJECTS/HiveGrind/Capuche\ Trial.otf);
 }
 
+body {
+    margin-bottom: 1.5rem;
+}
+
+.main img {
+    width: 400px;
+    min-width: 100%;
+    max-width: 100%;
+    padding-top: 6.5rem;
+    align-self: center;
+}
+
 h1 {
     font-family: against;
     font-style: bold;
@@ -89,15 +101,9 @@ nav a {
     margin: 0 5px;
 }
 
-nav a:hover{
-    background-color: #ACFADF;
-    color: #000000;
-    transition: all 0.5s ease-in-out;
-}
-
 .sidebar {
     position: fixed;
-    top: -100dvh;
+    top: -100vh;
     min-width: 100vw;  
     min-height: 50vh;
     z-index: 9999;
@@ -105,7 +111,7 @@ nav a:hover{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: all 0.55s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
 
 .sidebar li {
@@ -146,6 +152,10 @@ nav a:hover{
     text-align: center;
 }
 
+.section_header h1 {
+    font-size: 1.5rem;
+}
+
 .partial_header {
     padding-top: 2%;
     background-color: #FAF9F6;
@@ -156,12 +166,7 @@ nav a:hover{
     font-family: bro; 
     font-size: 2rem;
     text-decoration: underline; 
-    margin: 0px;
-    padding-bottom: 2%;
-}
-
-.section_header h1{
-    margin: 0px;
+    margin: auto;
     padding-bottom: 2%;
 }
 
@@ -171,6 +176,11 @@ nav a:hover{
     padding-bottom: 0;
     margin-top: 0%;
     font-size: 6rem;
+}
+
+.section_header h1{
+    margin: 0px;
+    padding-bottom: 2%;
 }
 
 .section_header h2{
@@ -194,6 +204,50 @@ nav a:hover{
     margin: 0 auto;
 }
 
+.projects_grid img{
+    max-width: 100%;
+    min-width: 100%;
+}
+
+.projects_grid video {
+    min-width: 100%;
+    max-width: 100%;
+    align-self: center;
+    margin: 0 auto;
+}
+
+.quarter_thumbnail img {
+    min-width: 25%;
+    max-width: 50%;
+    width: 1800px;
+}
+
+.quarter_thumbnail {
+    min-width: 90vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.thumbnail {
+    z-index: 0;
+    width: 1800px;
+    max-width: 98vw;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+    margin: 0 auto;
+}
+
+.thumbnail img{
+    min-width: 50%;
+    max-width: 50%;
+}
+
 .projects_item {
     width: 275px;
     min-width: 25%;
@@ -215,9 +269,12 @@ nav a:hover{
     margin: 0 auto;
 }
 
-.projects_item:hover .overlay_text{
-    top: -65%;
-    transition: all 0.4s ease-in-out;
+.projects_item video {
+    width: 400px;
+    min-width: 100%;
+    max-width: 100%;
+    align-self: center;
+    margin: 0 auto;
 }
 
 .projects_item p{
@@ -246,3 +303,103 @@ nav a:hover{
     margin-bottom: 10px;
     color: #000000;
 }
+
+@media (hover: hover) {
+    .projects_item:hover .overlay_text{
+        top: -65%;
+        transition: all 0.4s ease-in-out;
+    }
+
+    nav a:hover{
+        background-color: #ACFADF;
+        color: #000000;
+        transition: all 0.5s ease-in-out;
+    }
+}
+
+.icon_list {
+    list-style: none;
+    margin: 10px 20px;
+    display: inline-block;
+    font-size: 75%;
+    padding: 1%;
+    color: #4C3F91;
+    border: 3px solid #4C3F91;
+    border-radius: 50%;
+    transition: .5s;
+}
+
+.icon_list:hover {
+    color: #FF5677;
+    border: 3px solid #FF5677;
+    transition: .25s;
+}
+
+.social_media_container {
+    width: 100%;
+    text-align: center;
+    padding-top: 0.75%;
+    margin: auto;
+}
+
+.siderlay_text {
+    width: 30%;
+    height: 30%;
+    top: 6%;
+    left: 4%;
+    border-radius: 15px;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(7px);
+    opacity: 0%;
+    transition: all 0.4s ease-in-out;
+}
+
+.siderlay_text p{
+    margin: 0;
+    font-size: larger;
+}
+
+.siderlay_text li{
+    color: #000000;
+}
+
+.art_header {
+    padding-top: 7.5rem;
+    text-align: center;
+    margin: auto 0;
+    font-size: 1.25rem; 
+    font-weight: bolder;
+}
+
+.art_description {
+    text-align: center;
+    width: 70rem;
+    max-width: 70%;
+    margin: auto;
+    padding-top: 1.25rem;
+}
+
+.art_item .overlay_text {
+    display: none;
+}
+
+.art_item h1 {
+    font-size: 1.5rem;
+}
+
+.art_item {
+    width: 400px;
+    min-width: 50%;
+    max-width: 100%;
+    text-align: center;
+}
+
+.thumbnail_item {
+    width: 400px;
+    min-width: 33%;
+    max-width: 50%;
+    text-align: center;
+}
+
+

@@ -2,127 +2,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arjun's Portfolio</title>
-    <link rel="stylesheet" href="mainstyles.css">
+    <link rel="stylesheet" href="newStyles.css">
 	<link href="https://fonts.googleapis.com/css2?family=Jost:wght@700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="/fontawesome-free-6.4.2-web/fontawesome-free-6.4.2-web/css/all.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navbar__container">
-            <a href="/" id="navbar__logo" style="font-family: cfour; font-size: 50px;">AJN</a>
-            <ul class="navbar__menu">
-				<li class="navbar__item">
-                    <a href="/CodingProjects.html#GameDev" class="navbar__links">Game Dev</a>
-                </li>
-				<li class="navbar__item">
-                    <a href="/CodingProjects.html#SoftwareDev" class="navbar__links">Coding Projects</a>
-                </li>
-                <li class="navbar__item">
-                    <a href="/ArtProjects.html#3DModeling" class="navbar__links">3D Modeling</a>
-                </li>
-				<li class="navbar__item">
-                    <a href="/Art Portfolio/ArtPortfolio.html" class="navbar__links">Art Portfolio</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="partial_header" style="padding-top: 2%;">
+	<nav>
+		<ul class="sidebar">
+			<li onclick=hideSidebar()><a><svg xmlns="http://www.w3.org/2000/svg" height="24px" fill=#FF5677 viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
+			<li><a href="/CodingProjects.html#GameDev">Game Dev</a></li>
+			<li><a href="/CodingProjects.html#SoftwareDev">Coding Projects</a></li>
+			<li><a href="/ArtProjects.html#3DModeling">3D Modeling</a></li>
+			<li><a href="/Art Portfolio/ArtPortfolio.html">Art Portfolio</a></li>
+		</ul>
+		<ul>
+			<li><a href="/" id="first-element">AJN</a></li>
+			<li class = "hideOnMobile"><a href="/CodingProjects.html#GameDev">Game Dev</a></li>
+			<li class = "hideOnMobile"><a href="/CodingProjects.html#SoftwareDev">Coding Projects</a></li>
+			<li class = "hideOnMobile"><a href="/ArtProjects.html#3DModeling">3D Modeling</a></li>
+			<li class = "hideOnMobile"><a href="/Art Portfolio/ArtPortfolio.html">Art Portfolio</a></li>
+			<li class = "menuButton" onclick=showSidebar()><a><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+		</ul>
+	</nav>
+    <div class="partial_header" style="padding-top: 7.5rem;">
 		<a id="Modeling" class="anchor"></a>
-		<h1 style="font-family: bro; font-size: 250%; text-decoration: underline; text-decoration-color: #7C73C0">MODELING PROJECTS</h1>
+		<h1 style="font-family: bro; text-decoration: underline; text-decoration-color: #7C73C0">MODELING PROJECTS</h1>
 	</div>
-	<div class="projects">
     	<div class="projects_grid">
-			<div class="cards_row">
-				<div class="cards_column">	
-					<div class="projects_item">
-						<a href="/DragonProject/Dragon_Project.html" target="_blank">
-							<video controls src="/HOMEPAGE_RESOURCES/Dragons_Rage_Anim.mp4" type="video/mp4" loop></video>
-							<p>Dragon’s Rage</p>
-							<div class="siderlay_text">
-								<h2>
-									<p>12/21/2022</p>
-									<li>Blender</li>
-									➜
-								</h2>
-							</div>
-						</a>
+			<div class="projects_item">
+				<a href="/DragonProject/Dragon_Project.html" target="_blank">
+					<video controls src="/HOMEPAGE_RESOURCES/Dragons_Rage_Anim.mp4" type="video/mp4" loop></video>
+					<p>Dragon’s Rage</p>
+					<div class="siderlay_text">
+						<h2>
+							<p>12/21/2022</p>
+							<li>Blender</li>
+							➜
+						</h2>
 					</div>
-				</div>
-				<div class="cards_column">
-					<div class="projects_item">
-						<a href="/BoarProject/BoarProject2.html#start_of_page" target="_blank">
-							<video controls src="/HOMEPAGE_RESOURCES/FOR_WEBSITE.mp4" type="video/mp4" loop></video>
-							<p>Varaha Avatar</p>
-							<div class="siderlay_text">
-								<h2>
-									<p>07/23/2022</p>
-									<li>Blender</li>
-									➜
-								</h2>
-							</div>
-						</a>
+				</a>
+			</div>
+			<div class="projects_item">
+				<a href="/BoarProject/BoarProject2.html#start_of_page" target="_blank">
+					<video controls src="/HOMEPAGE_RESOURCES/FOR_WEBSITE.mp4" type="video/mp4" loop></video>
+					<p>Varaha Avatar</p>
+					<div class="siderlay_text">
+						<h2>
+							<p>07/23/2022</p>
+							<li>Blender</li>
+							➜
+						</h2>
 					</div>
-				</div>
+				</a>
+			</div>
+			<div class="projects_item">
+				<a href="/blender-projects/udemy.html#robot" target="_blank">
+					<video controls src="/HOMEPAGE_RESOURCES/Robot Final Animation2.mp4" type="video/mp4" loop></video>
+					<p>Robot Walk Cycle</p>
+					<div class="siderlay_text">
+						<h2>
+							<p>07/07/2021</p>
+							<li>Blender</li>
+							➜
+						</h2>
+					</div>
+				</a>
+			</div>
+			<div class="projects_item">
+				<a href="/blender-projects/udemy.html#helicopter" target="_blank">
+					<video controls src="/HOMEPAGE_RESOURCES/Helicopter Final Animation2.mp4" type="video/mp4" loop></video>
+					<p>Helicopter Takeoff</p>
+					<div class="siderlay_text">
+						<h2>
+							<p>07/13/2021</p>
+							<li>Blender</li>
+							➜
+						</h2>
+					</div>
+				</a>
 			</div>
 		</div>
-		<div class="projects_grid">
-			<div class="cards_row">
-				<div class="cards_column">
-					<div class="projects_item">
-						<a href="/blender-projects/udemy.html#robot" target="_blank">
-							<video controls src="/HOMEPAGE_RESOURCES/Robot Final Animation2.mp4" type="video/mp4" loop></video>
-							<p>Robot Character Walk Cycle</p>
-							<div class="siderlay_text">
-								<h2>
-									<p>07/07/2021</p>
-									<li>Blender</li>
-									➜
-								</h2>
-							</div>
-						</a>
-					</div>
-				</div>
-				<div class="cards_column">
-					<div class="projects_item">
-						<a href="/blender-projects/udemy.html#helicopter" target="_blank">
-							<video controls src="/HOMEPAGE_RESOURCES/Helicopter Final Animation2.mp4" type="video/mp4" loop></video>
-							<p>Helicopter Takeoff</p>
-							<div class="siderlay_text">
-								<h2>
-									<p>07/13/2021</p>
-									<li>Blender</li>
-									➜
-								</h2>
-							</div>
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
     <div class="partial_header" style="padding-top: 2%;">
 		<a id="SoftwareDev" class="anchor"></a>
-		<h1 style="font-family: bro; font-size: 250%; text-decoration: underline; text-decoration-color: #FFC996">ART PORTFOLIO</h1>
+		<h1 style="font-family: bro; text-decoration: underline; text-decoration-color: #FFC996">ART PORTFOLIO</h1>
 	</div>
-    <div class="projects">
-        <div class="projects_grid" style="padding: 0px">
-			<div class="cards_row" style="justify-content: center;">
-				<div class="cards_column" style="max-width: 45%">	
-					<div class="projects_item" style="background-color: #FFC996; :hover .overlay_text{top: -100%;     transition: all 0.4s ease-in-out;}">
-                        <a href="/Art Portfolio/ArtPortfolio.html" target="_blank">
-						    <img src="/HOMEPAGE_RESOURCES/website_frontpage.png">
-						    <p>Art Portfolio</p>
-						    <div class="overlay_text" style="margin-top: -3%">
-							    <h2>
-								    <li>Software: Visual Studio Code</li>
-								    <li>Html, Css, JavaScript</li>
-								    <li>Three.js, Blender, GSAP</li>
-							    </h2>
-						    </div>
-					    </div>
-                    </a>
-				</div>	
-			</div>
-        </div>
+    <div class="projects_grid" style="padding: 0px">
+		<div class="projects_item" style="background-color: #FFC996; :hover .overlay_text{top: -100%;     transition: all 0.4s ease-in-out;}">
+            <a href="/Art Portfolio/ArtPortfolio.html" target="_blank">
+			    <img src="/HOMEPAGE_RESOURCES/website_frontpage.png">
+			    <p>Art Portfolio</p>
+			    <div class="overlay_text" style="margin-top: -3%">
+				    <h2>
+					    <li>Software: Visual Studio Code</li>
+					    <li>Html, Css, JavaScript</li>
+					    <li>Three.js, Blender, GSAP</li>
+				    </h2>
+			    </div>
+        	</a>
+		</div>
     </div>
+	<script>
+		function showSidebar() {
+			var sidebar = document.querySelector(".sidebar");
+			sidebar.style.top = "0";
+		}
+
+		function hideSidebar() {
+			var sidebar = document.querySelector(".sidebar");
+			sidebar.style.top = "-100vh"
+		}
+	</script>
 </body>

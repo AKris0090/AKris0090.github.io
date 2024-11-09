@@ -383,17 +383,24 @@ a.anchor {
 }
 
 
-.projects_grid{
+.projects_grid {
     max-width: 100%;
     display: flexbox;
-    padding: 50px;
-    padding-bottom: 0;
-    padding-top: 0;
     box-shadow: #000000;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
 }
 
 .projects_grid h1{
     font-family: bro;
+}
+
+.thumbnail {
+    width: 1%;
+    max-width: 1%;
 }
 
 .cards_row{
