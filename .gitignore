@@ -24,8 +24,6 @@ debug.log
 # Build artifacts
 dist/
 build/
-public/script.js
-public/script.js.map
 
 # System files
 .DS_Store
