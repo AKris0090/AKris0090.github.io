@@ -1,0 +1,18 @@
+{
+  "name": "ajnkrishnan",
+  "version": "1.0.0",
+  "description": "portfolio website",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild ./EyeBall.js --outfile=public/script.js --bundle --minify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arjun Krishnan",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  },
+  "dependencies": {
+    "gh-pages": "^6.3.0"
+  }
+}
