@@ -1,0 +1,146 @@
+*{
+    
+}
+
+body {
+    background-color: #030109;
+    margin: 0;
+    padding-bottom: 3rem;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQI12P4z8DwHwAFgwJ/lv9BCwAAAABJRU5ErkJggg==");
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+}
+
+@font-face {
+    font-family: cfour;
+    src: url(/Cfour.otf);
+}
+
+@font-face {
+    font-family: PP;
+    src: url(/PPNeueMontrealMono-Medium.otf);
+}
+
+@font-face {
+    font-family: PPThin;
+    src: url(/PPNeueMontrealMono-Book.otf);
+}
+
+.header {
+    text-align: center;
+    margin: 4rem 0;
+}
+
+.header h1 {
+    font-family: 'PP', sans-serif;
+    font-weight: 3500;
+    font-size: 5rem;
+    color: #cefe06;
+}
+
+.projects_grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.projects_card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    min-width: 32vw;
+    min-height: 33vw;
+    border: 1px solid #edf2ef;
+}
+
+.card_inset {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    background: linear-gradient(#4446b1, #b78efa);
+    z-index: 2;
+}
+
+.projects_card h2 {
+    text-align: left;
+    font-family: 'Fraktion', sans-serif;
+    margin-left: 8%;
+    margin-top: 8%;
+    font-family: 'PP', sans-serif;
+    font-size: 2rem;
+    color: #edf3ee;
+    z-index: 3;
+}
+
+.projects_card p {
+    margin-left: 15%;
+    font-family: 'PPThin', sans-serif;
+    font-size: 1.5rem;
+    color: #edf3ee;
+    z-index: 3;
+}
+
+.projects_card::before,
+.projects_card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transition: opacity 0.4s ease;
+}
+
+/* Rotating gradient border */
+.projects_card::before {
+    background: repeating-conic-gradient(
+        from 0deg,
+        transparent 0deg 10deg,
+        #cefe06 10deg 20deg
+    );
+    transform: scale(1.5);
+    opacity: 0;
+    z-index: 0;
+}
+
+.projects_card::after {
+    background: #030109;
+    inset: 10px;
+    z-index: 1;
+}
+
+.projects_card:hover::before {
+    animation: rotate 15s linear infinite;
+    opacity: 1;
+}
+
+@keyframes rotate {
+    from {
+        transform: scale(1.5) rotate(0deg);
+    }
+    to {
+        transform: scale(1.5) rotate(360deg);
+    }
+}
+
+.filter {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    filter: url(#noiseFilter2);
+    opacity: 0.3;
+    mix-blend-mode: hard-light;
+    z-index: 2;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 0%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 0%);
+}
