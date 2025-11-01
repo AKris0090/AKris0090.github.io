@@ -97,8 +97,9 @@ body::before {
 
 .card_inset.alr button{
     border: 2px solid #ffffff;
-    margin-right: 0%;
-    margin-bottom: 0%;
+    margin-left: 2%;
+    margin-right: 35%;
+    margin-bottom: 2%;
     background: none;
     color: #ffffff;
 }
