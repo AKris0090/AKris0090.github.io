@@ -42,7 +42,7 @@ body::before {
 .header h1 {
     font-family: 'PP', sans-serif;
     font-weight: 3500;
-    font-size: 5rem;
+    font-size: 3.1rem;
     color: #cefe06;
 }
 
@@ -55,41 +55,102 @@ body::before {
 }
 
 .projects_card {
-    display: flex;
-    flex-direction: column;
     overflow: hidden;
     position: relative;
-    min-width: 32vw;
-    min-height: 33vw;
+    min-width: 350px;
+    min-height: 400px;
+    width: 32vw;
+    height: 33vw;
     border: 1px solid #edf2ef;
 }
 
+.projects_card.alt {
+    background-color: #cefe06;
+}
+
 .card_inset {
+    display: flex;
+    flex-direction: column;
     position: absolute;
-    top: 5%;
-    left: 5%;
-    width: 90%;
-    height: 90%;
+    top: 0%;
+    left: 0%;
+    width: 95%;
+    height: 95%;
     background: linear-gradient(#4446b1, #b78efa);
     z-index: 2;
 }
 
-.projects_card h2 {
+.card_inset.alt {
+    top: 2%;
+    left: 2%;
+    right: -10%;
+    width: 96%;
+    height: 96%;
+    background: #cefe06;
+}
+
+.card_inset.alr {
+    width: 100%;
+    height: 100%;
+    background: none;
+}
+
+.card_inset.alr button{
+    border: 2px solid #ffffff;
+    margin-right: 0%;
+    margin-bottom: 0%;
+    background: none;
+    color: #ffffff;
+}
+
+.card_inset.alt p {
+    color: #000000;
+}
+
+.card_inset.alt h2 {
+    color: #000000;
+}
+
+.card_inset.alt button {
+    border: none;
+    background-color: #FF5677;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 4%;
+}
+
+.card_inset h2 {
     text-align: left;
     font-family: 'Fraktion', sans-serif;
     margin-left: 8%;
     margin-top: 8%;
     font-family: 'PP', sans-serif;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: #edf3ee;
     z-index: 3;
 }
 
-.projects_card p {
+.card_inset p {
     margin-left: 15%;
     font-family: 'PPThin', sans-serif;
-    font-size: 1.5rem;
+    font-size: 1rem;
     color: #edf3ee;
+    z-index: 3;
+}
+
+.card_inset button {
+    margin-left: 45%;
+    margin-right: -4%;
+    margin-top: auto;
+    margin-bottom: -3%;
+    height: 5rem;
+    padding: 0.8rem 1.5rem;
+    font-family: 'PP', sans-serif;
+    font-size: 1.25rem;
+    color: #030109;
+    background-color: #cefe06;
+    border: 5px solid #000000;
+    cursor: pointer;
     z-index: 3;
 }
 
@@ -101,7 +162,6 @@ body::before {
     transition: opacity 0.4s ease;
 }
 
-/* Rotating gradient border */
 .projects_card::before {
     background: repeating-conic-gradient(
         from 0deg,
@@ -122,6 +182,28 @@ body::before {
 .projects_card:hover::before {
     animation: rotate 15s linear infinite;
     opacity: 1;
+}
+
+.projects_card.alt::before {
+    background: repeating-conic-gradient(
+        from 0deg,
+        transparent 0deg 10deg,
+        #b78efa 10deg 20deg
+    );
+}
+
+.projects_card.alr::before {
+    background: repeating-conic-gradient(
+        from 0deg,
+        transparent 0deg 10deg,
+        #ffffff 10deg 20deg
+    );
+}
+
+.projects_card.alt::after {
+    background: #030109;
+    inset: 10px;
+    z-index: 1;
 }
 
 @keyframes rotate {
