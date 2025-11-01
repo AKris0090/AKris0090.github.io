@@ -61,7 +61,7 @@ body::before {
     min-height: 400px;
     width: 32vw;
     height: 33vw;
-    border: none;
+    border: 1px solid #cefe06;
 }
 
 .projects_card.alr {
@@ -86,11 +86,11 @@ body::before {
 }
 
 .card_inset.alt {
-    top: 2%;
-    left: 2%;
+    top: 1.5%;
+    left: 1.5%;
     right: -10%;
-    width: 96%;
-    height: 96%;
+    width: 97%;
+    height: 97%;
     background: #cefe06;
 }
 
@@ -145,10 +145,10 @@ body::before {
 }
 
 .card_inset button {
-    margin-left: 45%;
+    margin-left: 40%;
     margin-right: -4%;
     margin-top: auto;
-    margin-bottom: -3%;
+    margin-bottom: -4%;
     height: 5rem;
     padding: 0.8rem 1.5rem;
     font-family: 'PP', sans-serif;
@@ -194,7 +194,7 @@ body::before {
     background: repeating-conic-gradient(
         from 0deg,
         transparent 0deg 10deg,
-        #b78efa 10deg 20deg
+        #FF5677 10deg 20deg
     );
 }
 
