@@ -1,9 +1,5 @@
-*{
-    
-}
-
 body {
-    background-color: #030109;
+    background-color: #edf2ef;
     margin: 0;
     padding-bottom: 3rem;
 }
@@ -34,16 +30,144 @@ body::before {
     src: url(/PPNeueMontrealMono-Book.otf);
 }
 
+@font-face {
+    font-family: 'Watch';
+    src: url(/PPWatch-Black.otf);
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    box-sizing: border-box;
+    border-bottom: 1px solid #edf2ef;
+    background-color: #030109;
+}
+
+.sidebar {
+    display: none;
+    position: fixed;
+    top: -100vh;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #FAF9F6;
+    transition: top 0.3s ease;
+}
+
+.menuButton {
+    display: none;
+}
+
+nav ul{
+    height: 70px;
+    width: 100%;
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 1rem;
+    padding-inline-start: 0px;
+    margin: 0px;
+}
+
+nav li#not-button{
+    height: auto;
+    font-family: 'PPThin';
+    transition: background-color 0.2s ease;
+}
+
+nav li:hover {
+    color: #030109;
+    background-color: #cefe06;
+}
+
+nav li:first-child{
+    margin-right: auto;
+}
+
+nav #first-element {
+    margin-left: 0px;
+    font-weight: bolder;
+    color: #030109;
+    font-family: cfour; 
+    font-size: 2rem;
+    background-color: #cefe06;
+}
+
+nav a {
+    height: 100%;
+    padding: 0 1.5rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: #edf2ef;
+    transition: color 0.2s ease;
+}
+
+nav li:hover a {
+    color: #030109;
+}
+
+@media(max-width: 830px) {
+    .hideOnMobile {
+        display: none;
+    }
+    .menuButton {
+        display: block;
+    }
+    .sidebar {
+        display: block;
+    }
+    .sidebar ul {
+        flex-direction: column;
+        padding: 2rem;
+    }
+    .sidebar li {
+        margin: 1rem 0;
+    }
+    .header {
+        text-align: center;
+    }
+}
+
 .header {
-    text-align: center;
-    margin: 4rem 0;
+    margin-top: 6rem;
+    margin-left: 2%;
 }
 
 .header h1 {
-    font-family: 'PP', sans-serif;
+    font-family: 'Watch', sans-serif;
     font-weight: 3500;
     font-size: 3.1rem;
-    color: #cefe06;
+    color: #030109;
+}
+
+.header h1 span {
+    position: relative;
+    display: inline-block;
+}
+
+.header h1 span::before,
+.header h1 span::after,
+.header h1 span span::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: transparent;
+    -webkit-text-stroke: 1px #030109;
+    z-index: -1;
+}
+
+.header h1 span::before {
+    transform: translateY(10px);
+}
+
+.header h1 span::after {
+    transform: translateY(20px);
 }
 
 .projects_grid {
@@ -52,24 +176,25 @@ body::before {
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .projects_card {
+    display: flex;
+    box-sizing: border-box;
     overflow: hidden;
     position: relative;
     min-width: 350px;
     min-height: 400px;
     width: 32vw;
     height: 33vw;
-    border: 1px solid #cefe06;
-}
-
-.projects_card.alr {
-    border: 1px solid #edf2ef;
+    border: 1px solid #d3d3d3;
+    z-index: 2;
 }
 
 .projects_card.alt {
-    border: 1px solid #cefe06;
     background-color: #cefe06;
 }
 
@@ -77,36 +202,27 @@ body::before {
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 0%;
-    left: 0%;
-    width: 95%;
-    height: 95%;
+    top: 1.5%;
+    left: 1.5%;
+    width: 97%;
+    height: 97%;
     background: linear-gradient(#4446b1, #b78efa);
     z-index: 2;
 }
 
 .card_inset.alt {
-    top: 1.5%;
-    left: 1.5%;
-    right: -10%;
-    width: 97%;
-    height: 97%;
     background: #cefe06;
 }
 
 .card_inset.alr {
-    width: 100%;
-    height: 100%;
     background: none;
 }
 
-.card_inset.alr button{
-    border: 3px solid #edf2ef;
-    margin-left: 2%;
-    margin-right: 35%;
-    margin-bottom: 2%;
-    background: none;
-    color: #edf2ef;
+.projects_card.alr button{
+    box-sizing: border-box;
+    background-color: #edf2ef;
+    color: #030109;
+    border: 1px solid #d3d3d3;
 }
 
 .card_inset.alt p {
@@ -117,20 +233,15 @@ body::before {
     color: #000000;
 }
 
-.card_inset.alt button {
-    border: none;
+.projects_card.alt button {
     background-color: #FF5677;
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-bottom: 4%;
 }
 
 .card_inset h2 {
     text-align: left;
-    font-family: 'Fraktion', sans-serif;
+    font-family: 'Watch', sans-serif;
     margin-left: 8%;
     margin-top: 8%;
-    font-family: 'PP', sans-serif;
     font-size: 1.5rem;
     color: #edf3ee;
     z-index: 3;
@@ -144,20 +255,18 @@ body::before {
     z-index: 3;
 }
 
-.card_inset button {
-    margin-left: 40%;
-    margin-right: -4%;
+.projects_card button {
+    height: 4rem;
+    margin-left: auto;
     margin-top: auto;
-    margin-bottom: -4%;
-    height: 5rem;
-    padding: 0.8rem 1.5rem;
-    font-family: 'PP', sans-serif;
+    font-family: 'PPThin', sans-serif;
     font-size: 1.25rem;
     color: #030109;
     background-color: #cefe06;
-    border: 5px solid #030109;
     cursor: pointer;
-    z-index: 3;
+    border: none;
+    width: 35%;
+    z-index: 99999;
 }
 
 .projects_card::before,
@@ -202,7 +311,7 @@ body::before {
     background: repeating-conic-gradient(
         from 0deg,
         transparent 0deg 10deg,
-        #edf2ef 10deg 20deg
+        #030109 10deg 20deg
     );
 }
 

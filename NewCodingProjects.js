@@ -1,19 +1,18 @@
 const game_dev_projects = [
-  { title: "// Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr" },
-  { title: "// Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alt" },
-  { title: "// Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr" },
-  { title: "// Project Title", desc: "PROJECT DESCRIPTION GOES HERE" },
-  { title: "// Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr" },
-  { title: "// Project Title", desc: "PROJECT DESCRIPTION GOES HERE" },
+  { title: "BOW SIMULATOR", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr", link: "https://ajnkrishnan.me/GAME_PROJECTS/BowShot/bowshot.html" },
+  { title: "HIVEGRIND", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alt", link: "https://ajnkrishnan.me/GAME_PROJECTS/HiveGrind/hivegrind.html" },
+  { title: "EXTRUSION", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr", link: "https://violets321.itch.io/extrusion" },
+  { title: "DILLO'S BOUNCE", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/dillos-bounce" },
+  { title: "LINES OF SLEIGHT", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr", link: "https://violets321.itch.io/line-of-sleight" },
+  { title: "DUEL ON THE HEIGHTS", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/duel-on-the-heights" },
 ];
 
 const software_dev_projects = [
-  { title: "// Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alt" },
-  { title: "// Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr" },
-  { title: "// Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr" },
-  { title: "// Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr" },
-  { title: "// Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr" },
-  { title: "// Project Title", desc: "PROJECT DESCRIPTION GOES HERE"},
+  { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alt", link: "https://github.com/AKris0090/Orchid" },
+  { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr", link: "https://github.com/AKris0090/Stingray" },
+  { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr", link: "https://github.com/AKris0090/3D-Renderer" },
+  { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr", link: "https://github.com/AKris0090/RayTracer" },
+  { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", link: "" },
 ];
 
 const game_grid = document.getElementsByClassName("projects_grid")[0];
@@ -36,8 +35,9 @@ game_dev_projects.forEach(project => {
   inset.innerHTML += `
     <h2>${project.title}</h2>
     <p>${project.desc}</p>
-    <button>VIEW PROJECT</button>
   `;
+
+  card.innerHTML += `<button onclick="location.href='${project.link}'">VIEW PROJECT</button>`;
 
   card.appendChild(inset);
   game_grid.appendChild(card);
