@@ -281,7 +281,7 @@ nav li:hover a {
     background: repeating-conic-gradient(
         from 0deg,
         transparent 0deg 10deg,
-        #cefe06 10deg 20deg
+        #FF8B28 10deg 20deg
     );
     transform: scale(1.5);
     opacity: 0;
