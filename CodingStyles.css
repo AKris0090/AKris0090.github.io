@@ -40,7 +40,7 @@ nav {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 9999;
+    z-index: 998;
     box-sizing: border-box;
     border-bottom: 1px solid #edf2ef;
     background-color: #030109;
@@ -55,6 +55,7 @@ nav {
     height: 100vh;
     background-color: #FAF9F6;
     transition: top 0.3s ease;
+    z-index: 999;
 }
 
 .menuButton {
@@ -73,7 +74,7 @@ nav ul{
     margin: 0px;
 }
 
-nav li#not-button{
+nav li{
     height: auto;
     font-family: 'PPThin';
     transition: background-color 0.2s ease;
@@ -88,13 +89,23 @@ nav li:first-child{
     margin-right: auto;
 }
 
-nav #first-element {
+nav li.brand {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  margin-right: auto;
+}
+
+#first-element {
+    margin-right: 0;
     margin-left: 0px;
     font-weight: bolder;
     color: #030109;
     font-family: cfour; 
     font-size: 2rem;
     background-color: #cefe06;
+    padding: 0 1rem;
+    mix-blend-mode: screen;
 }
 
 nav a {
@@ -111,6 +122,23 @@ nav li:hover a {
     color: #030109;
 }
 
+nav #accent {
+    width: 350px;
+    height: 100%;
+    margin-right: auto;
+    background:  
+        url("tf2.jpg") center/cover no-repeat,
+        #cefe06;
+    mask-image: linear-gradient(
+        90deg,
+        black 0%,
+        rgba(0, 0, 0, 0.5) 25%,
+        transparent 100%
+    );
+    background-blend-mode: multiply;
+    position: relative;
+}
+
 @media(max-width: 830px) {
     .hideOnMobile {
         display: none;
@@ -125,8 +153,11 @@ nav li:hover a {
         flex-direction: column;
         padding: 2rem;
     }
-    .sidebar li {
+    .sidebar li a{
+        background-color: #cefe06;
+        height: 50px;
         margin: 1rem 0;
+        color: #030109
     }
     .header {
         text-align: center;
@@ -222,7 +253,7 @@ nav li:hover a {
     box-sizing: border-box;
     background-color: #edf2ef;
     color: #030109;
-    border: 1px solid #d3d3d3;
+    border: 1px solid #a1a1a1;
 }
 
 .card_inset.alt p {
@@ -332,12 +363,43 @@ nav li:hover a {
 
 .filter {
     position: absolute;
-    inset: 0;
+    width: 100%;
+    height: 100%;
     background: #000;
     filter: url(#noiseFilter2);
     opacity: 0.3;
     mix-blend-mode: hard-light;
     z-index: 2;
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 0%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 0%);
+    mask-image: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(255, 255, 255, 1) 30%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(255, 255, 255, 1) 30%,
+        rgba(255, 255, 255, 1) 100%
+    );
+}
+
+.blur {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,1);
+  backdrop-filter: blur(10px);
+  z-index: 3;
+  mask-image: linear-gradient(
+    90deg,
+    rgba(0,0,0,0) 0%,
+    rgba(255,255,255,1) 95%,
+    rgba(255,255,255,1) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    rgba(0,0,0,0) 0%,
+    rgba(255,255,255,1) 95%,
+    rgba(255,255,255,1) 100%
+  );
 }
