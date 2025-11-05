@@ -59,6 +59,8 @@ nav ul{
     padding-inline-start: 0px;
     margin: 0 0;
     box-sizing: border-box;
+    position: relative;
+    overflow: visible;
 }
 
 nav li{
@@ -79,8 +81,12 @@ nav li:first-child{
 nav li.brand {
   display: flex;
   height: 100%;
-  align-self: flex-start;
   margin-right: auto;
+  overflow: visible;
+  flex: 0 0 auto;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 #first-element {
@@ -110,10 +116,9 @@ nav li:hover a {
 }
 
 nav #accent {
-    width: 50vw;
+    width: 350px;
     max-width: 350px;
     height: 100%;
-    margin-right: 0;
     background:  
         url("tf2.jpg") center/cover no-repeat,
         #cefe06;
@@ -133,8 +138,21 @@ nav #accent {
     }
     .menuButton {
         display: block;
-        position: relative;
-        margin-left: auto;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        height: 100%;
+        padding-right: 1rem;
+        padding-left: 4rem;
+        background: 
+            linear-gradient(
+            -90deg,
+            black 0%,
+            rgba(0, 0, 0, 1) 45%,
+            transparent 100%
+        );
     }
     .sidebar {
         display: block;
