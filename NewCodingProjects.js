@@ -1,17 +1,17 @@
 const game_dev_projects = [
-  { title: "BOW SIMULATOR", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr", link: "https://ajnkrishnan.me/GAME_PROJECTS/BowShot/bowshot.html" },
-  { title: "HIVEGRIND", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alt", link: "https://ajnkrishnan.me/GAME_PROJECTS/HiveGrind/hivegrind.html" },
-  { title: "EXTRUSION", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr", link: "https://violets321.itch.io/extrusion" },
+  { title: "BOW SIMULATOR", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://ajnkrishnan.me/GAME_PROJECTS/BowShot/bowshot.html" },
+  { title: "HIVEGRIND", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://ajnkrishnan.me/GAME_PROJECTS/HiveGrind/hivegrind.html" },
+  { title: "EXTRUSION", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/extrusion" },
   { title: "DILLO'S BOUNCE", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/dillos-bounce" },
-  { title: "LINES OF SLEIGHT", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr", link: "https://violets321.itch.io/line-of-sleight" },
+  { title: "LINES OF SLEIGHT", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/line-of-sleight" },
   { title: "DUEL ON THE HEIGHTS", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/duel-on-the-heights" },
 ];
 
 const software_dev_projects = [
-  { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alt", link: "https://github.com/AKris0090/Orchid" },
-  { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr", link: "https://github.com/AKris0090/Stingray" },
-  { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr", link: "https://github.com/AKris0090/3D-Renderer" },
-  { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", variant: "alr", link: "https://github.com/AKris0090/RayTracer" },
+  { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://github.com/AKris0090/Orchid" },
+  { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://github.com/AKris0090/Stingray" },
+  { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://github.com/AKris0090/3D-Renderer" },
+  { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://github.com/AKris0090/RayTracer" },
   { title: "Project Title", desc: "PROJECT DESCRIPTION GOES HERE", link: "" },
 ];
 
@@ -26,11 +26,9 @@ game_dev_projects.forEach(project => {
   const inset = document.createElement("div");
   inset.className = `card_inset ${project.variant || ""}`.trim();
 
-  if (project.variant === "alt" || project.variant === null) {
-    const filter = document.createElement("div");
-    filter.className = "filter";
-    inset.appendChild(filter);
-  }
+  const filter = document.createElement("div");
+  filter.className = "filter2";
+  inset.appendChild(filter);
 
   inset.innerHTML += `
     <h2>${project.title}</h2>

@@ -1,5 +1,5 @@
 body {
-    background-color: #edf2ef;
+    background-color: #e2dbbd;
     padding-bottom: 3rem;
 }
 
@@ -30,7 +30,7 @@ nav {
     left: 0;
     z-index: 998;
     border-bottom: 1px solid #030109;
-    background-color: #030109;
+    background-color: #e2dbbd;
 }
 
 .sidebar {
@@ -70,9 +70,9 @@ nav li{
     transition: background-color 0.2s ease;
 }
 
-nav li:hover {
-    color: #030109;
-    background-color: #cefe06;
+nav li:not(.brand):hover {
+    color: #e2dbbd;
+    background-color: #d13f3d;
 }
 
 nav li:first-child{
@@ -94,12 +94,11 @@ nav li.brand {
     margin-right: 0;
     margin-left: 0px;
     font-weight: bolder;
-    color: #030109;
+    color: #2c2c2c;
     font-family: cfour; 
     font-size: 2rem;
-    background-color: #cefe06;
+    background-color: #d13f3d;
     padding: 0 1rem;
-    mix-blend-mode: screen;
 }
 
 nav a {
@@ -108,28 +107,29 @@ nav a {
     text-decoration: none;
     display: flex;
     align-items: center;
-    color: #edf2ef;
+    color: #2c2c2c;
     transition: color 0.2s ease;
 }
 
 nav li:hover a {
-    color: #030109;
+    color: #e2dbbd;
 }
 
 nav #accent {
     width: 350px;
     max-width: 350px;
     height: 100%;
-    background:  
-        url("tf2.jpg") center/cover no-repeat,
-        #cefe06;
-    mask-image: linear-gradient(
-        90deg,
-        black 0%,
-        rgba(0, 0, 0, 0.5) 75%,
-        transparent 100%
-    );
-    background-blend-mode: multiply;
+    background: #d13f3d;
+    mask: 
+        url("tf4.png") center / 100% 100% no-repeat,
+        linear-gradient(90deg, black 0%, rgba(209, 63, 61, 0.5) 65%, transparent 100%);
+    -webkit-mask-composite: destination-in;
+    mask-composite: intersect,
+        url("tf4.png") center / 100% 100% no-repeat,
+        linear-gradient(90deg, black 0%, rgba(209, 63, 61, 0.5) 65%, transparent 100%);
+    -webkit-mask-composite: destination-in;
+    mask-composite: intersect;
+    pointer-events: none;
     position: relative;
 }
 
@@ -163,7 +163,7 @@ nav #accent {
         padding: 2rem;
     }
     nav .sidebar li a{
-        background-color: #cefe06;
+        background-color: #d13f3d;
         height: 100px;
         margin: 1rem auto;
         color: #030109;
@@ -191,7 +191,7 @@ nav #accent {
     font-family: 'Watch', sans-serif;
     font-weight: 3500;
     font-size: 3.1rem;
-    color: #030109;
+    color: #403e3a;
 }
 
 .header h1 span {
@@ -207,7 +207,7 @@ nav #accent {
     left: 0;
     top: 0;
     color: transparent;
-    -webkit-text-stroke: 1px #030109;
+    -webkit-text-stroke: 1px #403e3a;
     z-index: -1;
 }
 
@@ -239,12 +239,8 @@ nav #accent {
     min-height: 400px;
     width: 32vw;
     height: 33vw;
-    border: 1px solid #d3d3d3;
+    border: 1px solid #403e3a;
     z-index: 2;
-}
-
-.projects_card.alt {
-    background-color: #cefe06;
 }
 
 .card_inset {
@@ -255,35 +251,8 @@ nav #accent {
     left: 1.5%;
     width: 97%;
     height: 97%;
-    background: linear-gradient(#4446b1, #b78efa);
+    background: linear-gradient(#403e3a, #403e3a);
     z-index: 2;
-}
-
-.card_inset.alt {
-    background: #cefe06;
-}
-
-.card_inset.alr {
-    background: none;
-}
-
-.projects_card.alr button{
-    box-sizing: border-box;
-    background-color: #edf2ef;
-    color: #030109;
-    border: 1px solid #a1a1a1;
-}
-
-.card_inset.alt p {
-    color: #000000;
-}
-
-.card_inset.alt h2 {
-    color: #000000;
-}
-
-.projects_card.alt button {
-    background-color: #FF5677;
 }
 
 .card_inset h2 {
@@ -292,7 +261,7 @@ nav #accent {
     margin-left: 8%;
     margin-top: 8%;
     font-size: 1.5rem;
-    color: #edf3ee;
+    color: #e2dbbd;
     z-index: 3;
 }
 
@@ -300,7 +269,7 @@ nav #accent {
     margin-left: 15%;
     font-family: 'PPThin', sans-serif;
     font-size: 1rem;
-    color: #edf3ee;
+    color: #e2dbbd;
     z-index: 3;
 }
 
@@ -311,11 +280,18 @@ nav #accent {
     font-family: 'PPThin', sans-serif;
     font-size: 1.25rem;
     color: #030109;
-    background-color: #cefe06;
+    background-color: #d13f3d;
     cursor: pointer;
     border: none;
     min-width: 35%;
     z-index: 99999;
+    transition: background-color 0.2s ease,
+                color 0.2s ease;
+}
+
+.projects_card button:hover {
+    color: #d13f3d;
+    background-color: #e2dbbd;
 }
 
 .projects_card::before,
@@ -330,7 +306,7 @@ nav #accent {
     background: repeating-conic-gradient(
         from 0deg,
         transparent 0deg 10deg,
-        #FF8B28 10deg 20deg
+        #d13f3d 10deg 20deg
     );
     transform: scale(1.5);
     opacity: 0;
@@ -346,28 +322,6 @@ nav #accent {
 .projects_card:hover::before {
     animation: rotate 15s linear infinite;
     opacity: 1;
-}
-
-.projects_card.alt::before {
-    background: repeating-conic-gradient(
-        from 0deg,
-        transparent 0deg 10deg,
-        #FF5677 10deg 20deg
-    );
-}
-
-.projects_card.alr::before {
-    background: repeating-conic-gradient(
-        from 0deg,
-        transparent 0deg 10deg,
-        #030109 10deg 20deg
-    );
-}
-
-.projects_card.alt::after {
-    background: #030109;
-    inset: 10px;
-    z-index: 1;
 }
 
 @keyframes rotate {
@@ -400,6 +354,17 @@ nav #accent {
         rgba(255, 255, 255, 1) 30%,
         rgba(255, 255, 255, 1) 100%
     );
+}
+
+.filter2 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    filter: url(#noiseFilter2);
+    opacity: 0.15;
+    mix-blend-mode: hard-light;
+    z-index: 2;
 }
 
 .blur {
