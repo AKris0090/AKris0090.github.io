@@ -1,10 +1,10 @@
 const game_dev_projects = [
-  { title: "BOW SIMULATOR", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://ajnkrishnan.me/GAME_PROJECTS/BowShot/bowshot.html" },
-  { title: "HIVEGRIND", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://ajnkrishnan.me/GAME_PROJECTS/HiveGrind/hivegrind.html" },
-  { title: "EXTRUSION", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/extrusion" },
-  { title: "DILLO'S BOUNCE", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/dillos-bounce" },
-  { title: "LINES OF SLEIGHT", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/line-of-sleight" },
-  { title: "DUEL ON THE HEIGHTS", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/duel-on-the-heights" },
+  { title: "BOW SIMULATOR", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://ajnkrishnan.me/GAME_PROJECTS/BowShot/bowshot.html", image: "/HOMEPAGE_RESOURCES/BS_Banner.png" },
+  { title: "HIVEGRIND", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://ajnkrishnan.me/GAME_PROJECTS/HiveGrind/hivegrind.html", image: "/HOMEPAGE_RESOURCES/HG_Banner.png" },
+  { title: "EXTRUSION", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/extrusion", image: "/HOMEPAGE_RESOURCES/UhrCTb.png" },
+  { title: "DILLO'S BOUNCE", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/dillos-bounce", image: "/HOMEPAGE_RESOURCES/DB_banner.png" },
+  { title: "LINES OF SLEIGHT", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/line-of-sleight", image: "/HOMEPAGE_RESOURCES/gameplay_still_3.png" },
+  { title: "DUEL ON THE HEIGHTS", desc: "PROJECT DESCRIPTION GOES HERE", link: "https://violets321.itch.io/duel-on-the-heights", image: "/HOMEPAGE_RESOURCES/faceaway.png" },
 ];
 
 const software_dev_projects = [
@@ -33,6 +33,7 @@ game_dev_projects.forEach(project => {
   inset.innerHTML += `
     <h2>${project.title}</h2>
     <p>${project.desc}</p>
+    <img src="${project.image}" alt="${project.title} Banner Image"/>
   `;
 
   card.innerHTML += `<button onclick="location.href='${project.link}'">VIEW PROJECT</button>`;

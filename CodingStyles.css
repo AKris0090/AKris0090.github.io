@@ -1,7 +1,9 @@
 body {
-    background-color: #e2dbbd;
+    background: #e2dbbd;
+    height: 100%;
     padding-bottom: 3rem;
 }
+
 
 @font-face {
     font-family: cfour;
@@ -32,6 +34,18 @@ nav {
     border-bottom: 1px solid #030109;
     background-color: #e2dbbd;
 }
+
+nav::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url(/grunge.png);
+    background-size: 1250px 1250px;
+    background-repeat: repeat;
+    opacity: 0.2;
+    pointer-events: none;
+}
+
 
 .sidebar {
     display: none;
@@ -64,8 +78,10 @@ nav ul{
     padding-right: 2rem;
 }
 
-nav li{
-    height: auto;
+nav li:not(.brand){
+    display: flex;
+    align-items: center;
+    height: 100%;
     font-family: 'PPThin';
     transition: background-color 0.2s ease;
 }
@@ -103,7 +119,7 @@ nav li.brand {
 
 nav a {
     height: 100%;
-    padding: 0 1.5rem;
+    padding-right: 1.5rem;
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -113,6 +129,20 @@ nav a {
 
 nav li:hover a {
     color: #e2dbbd;
+}
+
+nav li:hover .cross {
+    background-color: #e2dbbd;
+}
+
+.cross {
+    height: 24px;
+    width: 24px;
+    padding-right: 0.5rem;
+    padding-left: 2rem;
+    background-color: #d13f3d;
+    mask: url("cross.png") center / contain no-repeat;
+    -webkit-mask: url("cross.png") center / contain no-repeat;
 }
 
 nav #accent {
@@ -145,32 +175,38 @@ nav #accent {
         transform: translateY(-50%);
         cursor: pointer;
         height: 100%;
-        padding-right: 1rem;
+        padding-right: 0.5rem;
         padding-left: 4rem;
         background: 
             linear-gradient(
             -90deg,
-            black 0%,
-            rgba(0, 0, 0, 1) 45%,
+            #e2dbbd 0%,
+            #e2dbbd 45%,
             transparent 100%
         );
     }
     .sidebar {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        width: 100%;
+        padding: 0;
     }
     .sidebar ul {
         flex-direction: column;
-        padding: 2rem;
+        padding: 0;
+        margin: 0;
+        gap: 1rem;
+        align-items: center;
     }
     nav .sidebar li a{
         background-color: #d13f3d;
         height: 100px;
-        margin: 1rem auto;
         color: #030109;
         align-self: center;
         width: 100%;
         justify-content: center;
-        padding: 0;
     }
     .header{
         margin-left: auto;
@@ -273,13 +309,19 @@ nav #accent {
     z-index: 3;
 }
 
+.card_inset img {
+    height: 20rem;
+    width: 90%;
+    align-self: center;
+}
+
 .projects_card button {
     height: 4rem;
     margin-left: auto;
     margin-top: auto;
     font-family: 'PPThin', sans-serif;
     font-size: 1.25rem;
-    color: #030109;
+    color: #403e3a;
     background-color: #d13f3d;
     cursor: pointer;
     border: none;
