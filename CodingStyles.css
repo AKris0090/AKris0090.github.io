@@ -16,13 +16,20 @@ body {
 }
 
 @font-face {
-    font-family: PPThin;
-    src: url(/PPNeueMontrealMono-Book.otf);
+    font-family: MTYPE;
+    src: url(/moderntype.ttf) format("truetype");
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
-    font-family: 'Watch';
+    font-family: Watch;
     src: url(/PPWatch-Black.otf);
+}
+
+@font-face {
+    font-family: Tele;
+    src: url(/PPTelegraf-Ultrabold.otf);
 }
 
 nav {
@@ -75,7 +82,7 @@ nav ul{
     box-sizing: border-box;
     position: relative;
     overflow: visible;
-    padding-right: 2rem;
+    padding-right: 0rem;
 }
 
 nav li:not(.brand){
@@ -118,6 +125,9 @@ nav li.brand {
 }
 
 nav a {
+    font-family: 'MTYPE';
+    font-weight: bolder;
+    font-size: large;
     height: 100%;
     padding-right: 1.5rem;
     text-decoration: none;
@@ -165,7 +175,14 @@ nav #accent {
 
 @media(max-width: 1100px) {
     .hideOnMobile {
-        display: none;
+        display: none !important;
+    }
+    .sidebar li:first-child a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        width: 100%;
     }
     .menuButton {
         display: block;
@@ -221,12 +238,12 @@ nav #accent {
 .header {
     margin-top: 6rem;
     margin-left: 2%;
+    margin-bottom: -2%;
 }
 
 .header h1 {
-    font-family: 'Watch', sans-serif;
-    font-weight: 3500;
-    font-size: 3.1rem;
+    font-family: 'Tele', sans-serif;
+    font-size: 5rem;
     color: #403e3a;
 }
 
@@ -293,7 +310,7 @@ nav #accent {
 
 .card_inset h2 {
     text-align: left;
-    font-family: 'Watch', sans-serif;
+    font-family: 'Tele', sans-serif;
     margin-left: 8%;
     margin-top: 8%;
     font-size: 1.5rem;
@@ -303,14 +320,15 @@ nav #accent {
 
 .card_inset p {
     margin-left: 15%;
-    font-family: 'PPThin', sans-serif;
-    font-size: 1rem;
+    font-family: 'MTYPE', sans-serif;
+    font-weight: bolder;
+    font-size: 1.25rem;
     color: #e2dbbd;
     z-index: 3;
 }
 
 .card_inset img {
-    height: 20rem;
+    height: 50%;
     width: 90%;
     align-self: center;
 }
@@ -319,7 +337,7 @@ nav #accent {
     height: 4rem;
     margin-left: auto;
     margin-top: auto;
-    font-family: 'PPThin', sans-serif;
+    font-family: 'MTYPE';
     font-size: 1.25rem;
     color: #403e3a;
     background-color: #d13f3d;

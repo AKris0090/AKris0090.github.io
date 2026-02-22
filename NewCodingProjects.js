@@ -36,7 +36,7 @@ game_dev_projects.forEach(project => {
     <img src="${project.image}" alt="${project.title} Banner Image"/>
   `;
 
-  card.innerHTML += `<button onclick="location.href='${project.link}'">VIEW PROJECT</button>`;
+  card.innerHTML += `<button onclick="window.open('${project.link}', '_blank')">VIEW PROJECT</button>`;
 
   card.appendChild(inset);
   game_grid.appendChild(card);
@@ -58,7 +58,7 @@ software_dev_projects.forEach(project => {
   inset.innerHTML += `
     <h2>${project.title}</h2>
     <p>${project.desc}</p>
-    <button>VIEW PROJECT</button>
+    <button onclick="window.open('${project.link}', '_blank')">VIEW PROJECT</button>
   `;
 
   card.appendChild(inset);
