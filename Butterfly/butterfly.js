@@ -2,12 +2,16 @@ import * as THREE from 'three';
 import { WebGPURenderer } from 'three/webgpu';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import { Inspector } from 'three/addons/inspector/Inspector.js';
+import { Inspector } from 'three/addons/inspector/Inspector.js'
+
+import { RenderPipeline } from 'three/webgpu'
+import { pass } from 'three/tsl'
+import {bloom} from 'three/addons/tsl/display/BloomNode.js'
 
 let camera, scene, renderer;
 let loader;
 let sideCount = 100;
-
+let renderPipeline;
 let controls;
 
 init();
@@ -57,10 +61,9 @@ async function init() {
     document.body.appendChild( renderer.domElement );
 
 	renderer.inspector = new Inspector();
+    await renderer.init();
 
     window.addEventListener( 'resize', onWindowResize );
-
-    await renderer.init();
 
     controls = new OrbitControls( camera, renderer.domElement );
     controls.update();
@@ -87,7 +90,17 @@ async function init() {
     dirLight.position.set(5, 10, 5);
     scene.add(dirLight);
 
-    renderer.setAnimationLoop(animate);
+    renderPipeline = new RenderPipeline( renderer );
+    const scenePass = pass(scene, camera);
+    const scenePassColor = scenePass.getTextureNode( 'output' );
+
+    const bloomPass = bloom( scenePassColor );
+    bloomPass.strength = 0.25;
+    bloomPass.radius = 0.4;
+
+    renderPipeline.outputNode = scenePassColor.add( bloomPass );
+    
+    requestAnimationFrame(animate);
 }
 
 function onWindowResize() {
@@ -98,5 +111,6 @@ function onWindowResize() {
 
 function animate() {
     controls.update();
-    renderer.render(scene, camera);
+    renderPipeline.render();
+    requestAnimationFrame(animate);
 }
