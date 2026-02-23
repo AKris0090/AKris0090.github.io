@@ -1,9 +1,8 @@
 body {
-    background: #e2dbbd;
+    background: lightgray;
     height: 100%;
     padding-bottom: 3rem;
 }
-
 
 @font-face {
     font-family: cfour;
@@ -39,16 +38,13 @@ nav {
     left: 0;
     z-index: 998;
     border-bottom: 1px solid #030109;
-    background-color: #e2dbbd;
+    background-color: lightgray;
 }
 
 nav::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: url(/grunge.png);
-    background-size: 1250px 1250px;
-    background-repeat: repeat;
     opacity: 0.2;
     pointer-events: none;
 }
@@ -120,7 +116,7 @@ nav li.brand {
     color: #2c2c2c;
     font-family: cfour; 
     font-size: 2rem;
-    background-color: #d13f3d;
+    background-color: lightgray;
     padding: 0 1rem;
 }
 
@@ -151,21 +147,21 @@ nav li:hover .cross {
     padding-right: 0.5rem;
     padding-left: 2rem;
     background-color: #d13f3d;
-    mask: url("cross1.png") center / contain no-repeat;
-    -webkit-mask: url("cross1.png") center / contain no-repeat;
+    mask: url("./assets/cross.png") center / contain no-repeat;
+    -webkit-mask: url("./assets/cross.png") center / contain no-repeat;
 }
 
 nav #accent {
     width: 350px;
     max-width: 350px;
     height: 100%;
-    background: #d13f3d;
+    background: #7eff00;
     mask: 
-        url("tf4.png") center / 100% 100% no-repeat,
+        url("./assets/swirl.png") center / 100% 100% no-repeat,
         linear-gradient(90deg, black 0%, rgba(209, 63, 61, 0.5) 65%, transparent 100%);
     -webkit-mask-composite: destination-in;
     mask-composite: intersect,
-        url("tf4.png") center / 100% 100% no-repeat,
+        url("./assets/swirl.png") center / 100% 100% no-repeat,
         linear-gradient(90deg, black 0%, rgba(209, 63, 61, 0.5) 65%, transparent 100%);
     -webkit-mask-composite: destination-in;
     mask-composite: intersect;
@@ -281,6 +277,7 @@ nav #accent {
     align-self: center;
     margin-left: auto;
     margin-right: auto;
+    padding-bottom: 2rem;
 }
 
 .projects_card {
