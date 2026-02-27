@@ -3,6 +3,7 @@ import { WebGPURenderer } from 'three/webgpu';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { Inspector } from 'three/addons/inspector/Inspector.js'
+import { DecalGeometry } from 'three/addons/geometries/DecalGeometry.js';
 
 import { RenderPipeline } from 'three/webgpu'
 import { pass } from 'three/tsl'
@@ -14,8 +15,21 @@ let sideCount = 50;
 let renderPipeline;
 
 let model, mixer, timer, handBone;
-let drawAnim, gun;
+let drawAnim, lowerAnim, gun;
 let controls;
+
+let monitorMesh;
+
+const GUNSTATES = {
+    DRAWING: "drawing",
+    AIMING: "aiming",
+    LOWERING: "lowering",
+    LOWERED: "lowered"
+};
+let gunState = GUNSTATES.LOWERED;
+
+let decals = [];
+let decalDiffuse, decalMaterial, decalMaterialB;
 
 let matrices = [];
 let dummyObjs = [];
@@ -24,21 +38,66 @@ let instances = [];
 let raycaster;
 let arrowHelper;
 let intersects = new Array();
+let shatter;
 
 const sceneMeshes = new Array();
 
 init();
 
+function lowerGun() {
+    if (gunState === GUNSTATES.AIMING) {
+        drawAnim.stop();
+        lowerAnim.reset();
+        lowerAnim.play();
+        gunState = GUNSTATES.LOWERING;
+    }
+}
+
 function drawGun() {
-    drawAnim.reset();
-    drawAnim.play();
+    if (gunState === GUNSTATES.LOWERED) {
+        lowerAnim.stop();
+        drawAnim.reset();
+        drawAnim.play();
+        gunState = GUNSTATES.DRAWING;
+    }
+}
+
+function shoot(event) {
+    if (raycastTarget(event)) {
+        const normal = intersects[0].face.normal.clone();
+        normal.transformDirection(intersects[0].object.matrixWorld);
+        const orientation = new THREE.Euler();
+        const quat       = new THREE.Quaternion();
+        const roll = new THREE.Quaternion();
+        roll.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.random() * 2 * Math.PI);
+        quat.setFromUnitVectors(
+            new THREE.Vector3(0, 0, 1),
+            normal                             
+        );
+        quat.multiply(roll);
+        orientation.setFromQuaternion(quat);
+        let randomScale = (Math.random() * 0.75) + 0.75;
+        let materialChoice = Math.random() < 0.5 ? decalMaterial : decalMaterialB;
+        if (materialChoice === decalMaterialB) {
+            randomScale *= 0.25;
+        }
+        const size = new THREE.Vector3(randomScale, randomScale, randomScale);
+        const decalGeom = new DecalGeometry( monitorMesh, intersects[0].point, orientation, size);
+        const mesh = new THREE.Mesh( decalGeom, materialChoice);
+        decals.push(mesh);
+        monitorMesh.attach(mesh);
+    }
 }
 
 function onMouseDown(event) {
     if (event.button === 0) {
-        if (!model || !gun || !mixer || !handBone) return;
+        if (!decalDiffuse || !decalMaterial) return;
 
-        drawGun();
+        if (gunState != GUNSTATES.AIMING) {
+            return;
+        }
+
+        shoot(event);
     }
 }
 
@@ -83,6 +142,9 @@ function loadGLTF(url) {
 }
 
 function raycastTarget(event) {
+    if (!monitorMesh) {
+        return;
+    }
     raycaster.setFromCamera(
         {
             x: (event.clientX / renderer.domElement.clientWidth) * 2 - 1,
@@ -90,14 +152,21 @@ function raycastTarget(event) {
         },
         camera
     );
-    intersects = raycaster.intersectObjects(sceneMeshes, false);
+    intersects = raycaster.intersectObject(monitorMesh, false);
     if (intersects.length > 0) {
         let n = new THREE.Vector3();
         n.copy(intersects[0].face.normal);
         n.transformDirection(intersects[0].object.matrixWorld);
-        arrowHelper.setDirection(n);
-        arrowHelper.position.copy(intersects[0].point);
+        if (shatter) {
+            arrowHelper.setDirection(n);
+            arrowHelper.position.copy(intersects[0].point);
+        }
+        drawGun();
+        return true;
+    } else {
+        lowerGun();
     }
+    return false;
 }
 
 function onMouseMove(event) {
@@ -105,10 +174,11 @@ function onMouseMove(event) {
 }
 
 async function initModels() {
-    const [characterGLTF, monitorGLTF, gunGLTF] = await Promise.all([
+    const [characterGLTF, monitorGLTF, gunGLTF, shatterGLTF] = await Promise.all([
         loadGLTF('./models/character_animated.glb'),
         loadGLTF('./models/monitor.glb'),
-        loadGLTF('./models/gun.glb')
+        loadGLTF('./models/gun.glb'),
+        loadGLTF('./models/shatter.glb')
     ]);
 
     model = characterGLTF.scene;
@@ -116,29 +186,37 @@ async function initModels() {
 
     const animations = characterGLTF.animations;
     mixer = new THREE.AnimationMixer(model);
+    mixer.addEventListener('finished', (e) => {
+        if (e.action === drawAnim) {
+            gunState = GUNSTATES.AIMING;
+        } else if (e.action === lowerAnim) {
+            gunState = GUNSTATES.LOWERED;
+        }
+    });
 
     drawAnim = mixer.clipAction(animations[0]);
-    drawAnim.enabled = true;
-    drawAnim.setEffectiveTimeScale(0.6);
+    drawAnim.setEffectiveTimeScale(0.75);
     drawAnim.setLoop(THREE.LoopOnce, 1);
     drawAnim.clampWhenFinished = true;
+
+    lowerAnim = mixer.clipAction(animations[1]);
+    lowerAnim.setEffectiveTimeScale(0.75);
+    lowerAnim.setLoop(THREE.LoopOnce, 1);
+    lowerAnim.clampWhenFinished = true;
 
     handBone = model.getObjectByName("handR");
 
     const monitor = monitorGLTF.scene;
     monitor.position.set(0, 0, -3.4);
-    monitorGLTF.scene.traverse(function (child) {
-        if (child.isMesh) {
-            let m = child;
-            sceneMeshes.push(m);
-        }
-    });
+    monitorMesh = monitor.getObjectByName("screen");
     scene.add(monitor);
 
     gun = gunGLTF.scene;
     if (handBone) {
         handBone.attach(gun);
     }
+
+    shatter = shatterGLTF.scene;
 }
 
 async function init() {
@@ -163,15 +241,44 @@ async function init() {
 	renderer.inspector = new Inspector();
     await renderer.init();
 
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls.update();
+    // controls = new OrbitControls(camera, renderer.domElement);
+    // controls.update();
+
+    const textureLoader = new THREE.TextureLoader();
+    decalDiffuse = textureLoader.load( './textures/shatter3.png');
+    decalDiffuse.colorSpace = THREE.SRGBColorSpace;
+    decalMaterial = new THREE.MeshLambertMaterial( {
+        map: decalDiffuse,
+        transparent: true,
+        depthTest: true,
+        depthWrite: false,
+        polygonOffset: true,
+        polygonOffsetFactor: -4,
+        emissive: new THREE.Color(0xffffff),
+        emissiveMap: decalDiffuse,
+        emissiveIntensity: 1
+    });
+    let decalDiffuseB = textureLoader.load( './textures/shatter2.png');
+    decalDiffuseB.colorSpace = THREE.SRGBColorSpace;
+    decalMaterialB = new THREE.MeshLambertMaterial( {
+        map: decalDiffuseB,
+        transparent: true,
+        depthTest: true,
+        depthWrite: false,
+        polygonOffset: true,
+        polygonOffsetFactor: -4,
+        emissive: new THREE.Color(0xffffff),
+        emissiveMap: decalDiffuseB,
+        emissiveIntensity: 1
+    });
 
     window.addEventListener( 'resize', onWindowResize );
     window.addEventListener('mousedown', onMouseDown);
     window.addEventListener('mousemove', onMouseMove);
 
     raycaster = new THREE.Raycaster();
-    arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), 15.0, 0xffff00);
+    arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), 1, 0xffffff);
+    scene.add(arrowHelper);
 
     const meshes = [];
 
@@ -298,7 +405,7 @@ function updateWorld() {
 }
 
 function animate() {
-    controls.update();
+    // controls.update();
     if ((timer != null) && (mixer != null)) {
         timer.update();
         let mixerUpdateDelta = timer.getDelta();
