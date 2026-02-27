@@ -67,7 +67,7 @@ function shoot(event) {
         const normal = intersects[0].face.normal.clone();
         normal.transformDirection(intersects[0].object.matrixWorld);
         const orientation = new THREE.Euler();
-        const quat       = new THREE.Quaternion();
+        const quat = new THREE.Quaternion();
         const roll = new THREE.Quaternion();
         roll.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.random() * 2 * Math.PI);
         quat.setFromUnitVectors(
