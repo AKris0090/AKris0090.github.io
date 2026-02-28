@@ -14,9 +14,14 @@ let loader;
 let sideCount = 50;
 let renderPipeline;
 
-let model, mixer, timer, handBone;
-let drawAnim, lowerAnim, gun;
+let model, chracterMixer, gunMixer, timer, handBone, shoulderBone;
+let drawAnim, lowerAnim, shootAnim; 
+let gun;
 let controls;
+let arrowHelper;
+
+let muzzleFlash;
+let muzzleFlashTimeout;
 
 let monitorMesh;
 
@@ -36,7 +41,6 @@ let dummyObjs = [];
 let instances = [];
 
 let raycaster;
-let arrowHelper;
 let intersects = new Array();
 let shatter;
 
@@ -60,6 +64,32 @@ function drawGun() {
         drawAnim.play();
         gunState = GUNSTATES.DRAWING;
     }
+}
+
+function turnOffMuzzleFlash() {
+    muzzleFlash.intensity = 0;
+}
+
+function adjustArm(targetPosition) {
+    if (arrowHelper == null || shoulderBone == null) return;
+    const shoulderWorldPos = shoulderBone.getWorldPosition(new THREE.Vector3());
+
+    const targetDir = targetPosition.clone().sub(shoulderWorldPos).normalize();
+
+    const shoulderQuat = new THREE.Quaternion();
+    shoulderBone.getWorldQuaternion(shoulderQuat);
+    const currentArmDir = new THREE.Vector3(0, 1, 0).applyQuaternion(shoulderQuat);
+
+    const correctionQuat = new THREE.Quaternion();
+    correctionQuat.setFromUnitVectors(currentArmDir, targetDir);
+
+    const newWorldQuat = correctionQuat.multiply(shoulderQuat);
+
+    const parentWorldQuat = new THREE.Quaternion();
+    shoulderBone.parent.getWorldQuaternion(parentWorldQuat);
+    const localQuat = parentWorldQuat.invert().multiply(newWorldQuat);
+
+    shoulderBone.quaternion.copy(localQuat);
 }
 
 function shoot(event) {
@@ -86,6 +116,14 @@ function shoot(event) {
         const mesh = new THREE.Mesh( decalGeom, materialChoice);
         decals.push(mesh);
         monitorMesh.attach(mesh);
+
+        muzzleFlash.intensity = 50;
+        window.setTimeout(turnOffMuzzleFlash, 50);
+
+        if (shootAnim) {
+            shootAnim.reset();
+            shootAnim.play();
+        }
     }
 }
 
@@ -157,11 +195,8 @@ function raycastTarget(event) {
         let n = new THREE.Vector3();
         n.copy(intersects[0].face.normal);
         n.transformDirection(intersects[0].object.matrixWorld);
-        if (shatter) {
-            arrowHelper.setDirection(n);
-            arrowHelper.position.copy(intersects[0].point);
-        }
         drawGun();
+        adjustArm(intersects[0].point);
         return true;
     } else {
         lowerGun();
@@ -185,8 +220,8 @@ async function initModels() {
     scene.add(model);
 
     const animations = characterGLTF.animations;
-    mixer = new THREE.AnimationMixer(model);
-    mixer.addEventListener('finished', (e) => {
+    chracterMixer = new THREE.AnimationMixer(model);
+    chracterMixer.addEventListener('finished', (e) => {
         if (e.action === drawAnim) {
             gunState = GUNSTATES.AIMING;
         } else if (e.action === lowerAnim) {
@@ -194,27 +229,40 @@ async function initModels() {
         }
     });
 
-    drawAnim = mixer.clipAction(animations[0]);
+    drawAnim = chracterMixer.clipAction(animations[0]);
     drawAnim.setEffectiveTimeScale(0.75);
     drawAnim.setLoop(THREE.LoopOnce, 1);
     drawAnim.clampWhenFinished = true;
 
-    lowerAnim = mixer.clipAction(animations[1]);
+    lowerAnim = chracterMixer.clipAction(animations[1]);
     lowerAnim.setEffectiveTimeScale(0.75);
     lowerAnim.setLoop(THREE.LoopOnce, 1);
     lowerAnim.clampWhenFinished = true;
 
     handBone = model.getObjectByName("handR");
+    shoulderBone = model.getObjectByName("upper_armR");
 
     const monitor = monitorGLTF.scene;
     monitor.position.set(0, 0, -3.4);
     monitorMesh = monitor.getObjectByName("screen");
     scene.add(monitor);
 
+
     gun = gunGLTF.scene;
+    muzzleFlash = new THREE.PointLight(0xffaa33, 50, 15);
+    muzzleFlash.intensity = 0;
+    const gunAnims = gunGLTF.animations;
+    gunMixer = new THREE.AnimationMixer(gun);
     if (handBone) {
         handBone.attach(gun);
+        handBone.attach(muzzleFlash);
+        muzzleFlash.position.set(0.3, 0.55, 0);
     }
+
+    shootAnim = gunMixer.clipAction(gunAnims[2]);
+    shootAnim.setEffectiveTimeScale(3.5);
+    shootAnim.setLoop(THREE.LoopOnce, 1);
+    shootAnim.clampWhenFinished = true;
 
     shatter = shatterGLTF.scene;
 }
@@ -277,7 +325,9 @@ async function init() {
     window.addEventListener('mousemove', onMouseMove);
 
     raycaster = new THREE.Raycaster();
-    arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), 1, 0xffffff);
+    arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), 1.0, 0xff0000);
+    arrowHelper.position.copy(new THREE.Vector3(0, 0, 0));
+    arrowHelper.setDirection(new THREE.Vector3(0, 1, 0));
     scene.add(arrowHelper);
 
     const meshes = [];
@@ -406,11 +456,15 @@ function updateWorld() {
 
 function animate() {
     // controls.update();
-    if ((timer != null) && (mixer != null)) {
+    // if (arrowHelper) {
+    //     arrowHelper.position.copy(muzzleFlash.getWorldPosition(new THREE.Vector3()));
+    // }
+    if ((timer != null) && (chracterMixer != null) && (gunMixer != null)) {
         timer.update();
         let mixerUpdateDelta = timer.getDelta();
             
-        mixer.update( mixerUpdateDelta );
+        chracterMixer.update( mixerUpdateDelta );
+        gunMixer.update( mixerUpdateDelta );
     }
     renderPipeline.render();
     requestAnimationFrame(animate);
