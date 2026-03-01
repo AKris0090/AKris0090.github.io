@@ -1,4 +1,8 @@
-body {
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
     background: #000000;
     overflow: hidden;
 }
@@ -9,8 +13,6 @@ nav {
     top: 0;
     left: 0;
     z-index: 998;
-    border-bottom: 1px solid #030109;
-    background-color: #000000;
 }
 
 nav::before {
@@ -29,7 +31,7 @@ nav::before {
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: #030109;
+    background-color: #ffffff;
     transition: top 0.3s ease;
     z-index: 999;
 }
@@ -61,11 +63,6 @@ nav li:not(.brand){
     transition: background-color 0.2s ease;
 }
 
-nav li:not(.brand):hover {
-    color: #e2dbbd;
-    background-color: #e2dbbd;
-}
-
 nav li:first-child{
     margin-right: auto;
 }
@@ -88,7 +85,6 @@ nav li.brand {
     color: #2c2c2c;
     font-family: cfour; 
     font-size: 2rem;
-    background-color: #0c0114;
     padding: 0 1rem;
 }
 
@@ -106,7 +102,7 @@ nav a {
 }
 
 nav li:hover a {
-    color: #e2dbbd;
+    color: #ffffff;
 }
 
 nav #accent {

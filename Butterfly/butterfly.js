@@ -2,12 +2,13 @@ import * as THREE from 'three';
 import { WebGPURenderer } from 'three/webgpu';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import { Inspector } from 'three/addons/inspector/Inspector.js'
 import { DecalGeometry } from 'three/addons/geometries/DecalGeometry.js';
 
 import { RenderPipeline } from 'three/webgpu'
 import { pass } from 'three/tsl'
 import {bloom} from 'three/addons/tsl/display/BloomNode.js'
+
+import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
 
 let camera, scene, renderer;
 let loader;
@@ -15,7 +16,7 @@ let sideCount = 50;
 let renderPipeline;
 
 let model, chracterMixer, gunMixer, timer, handBone, shoulderBone;
-let drawAnim, lowerAnim, shootAnim; 
+let drawAnim, lowerAnim, shootAnim, liedownAnim; 
 let gun;
 let controls;
 let arrowHelper;
@@ -106,7 +107,7 @@ function shoot(event) {
         );
         quat.multiply(roll);
         orientation.setFromQuaternion(quat);
-        let randomScale = (Math.random() * 0.75) + 0.75;
+        let randomScale = (Math.random() * 0.5) + 0.35;
         let materialChoice = Math.random() < 0.5 ? decalMaterial : decalMaterialB;
         if (materialChoice === decalMaterialB) {
             randomScale *= 0.25;
@@ -209,11 +210,11 @@ function onMouseMove(event) {
 }
 
 async function initModels() {
-    const [characterGLTF, monitorGLTF, gunGLTF, shatterGLTF] = await Promise.all([
+    const [characterGLTF, monitorGLTF, gunGLTF, groundGLTF] = await Promise.all([
         loadGLTF('./models/character_animated.glb'),
         loadGLTF('./models/monitor.glb'),
         loadGLTF('./models/gun.glb'),
-        loadGLTF('./models/shatter.glb')
+        loadGLTF('./models/ground.glb')
     ]);
 
     model = characterGLTF.scene;
@@ -234,10 +235,15 @@ async function initModels() {
     drawAnim.setLoop(THREE.LoopOnce, 1);
     drawAnim.clampWhenFinished = true;
 
-    lowerAnim = chracterMixer.clipAction(animations[1]);
+    lowerAnim = chracterMixer.clipAction(animations[2]);
     lowerAnim.setEffectiveTimeScale(0.75);
     lowerAnim.setLoop(THREE.LoopOnce, 1);
     lowerAnim.clampWhenFinished = true;
+
+    liedownAnim = chracterMixer.clipAction(animations[1]);
+    liedownAnim.setEffectiveTimeScale(0.75);
+    liedownAnim.setLoop(THREE.LoopOnce, 1);
+    liedownAnim.clampWhenFinished = true;
 
     handBone = model.getObjectByName("handR");
     shoulderBone = model.getObjectByName("upper_armR");
@@ -246,7 +252,6 @@ async function initModels() {
     monitor.position.set(0, 0, -3.4);
     monitorMesh = monitor.getObjectByName("screen");
     scene.add(monitor);
-
 
     gun = gunGLTF.scene;
     muzzleFlash = new THREE.PointLight(0xffaa33, 50, 15);
@@ -264,7 +269,12 @@ async function initModels() {
     shootAnim.setLoop(THREE.LoopOnce, 1);
     shootAnim.clampWhenFinished = true;
 
-    shatter = shatterGLTF.scene;
+    groundGLTF.scene.traverse((child) => {
+        if (child.isMesh && child.material) {
+            child.material.color.multiplyScalar(0.35);
+        }
+    });
+    scene.add(groundGLTF.scene);
 }
 
 async function init() {
@@ -286,8 +296,13 @@ async function init() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
 
-	renderer.inspector = new Inspector();
     await renderer.init();
+
+    const hdrloader = new HDRLoader();
+    const envMap = await hdrloader.loadAsync( './textures/kloppenheim_06_puresky_4k.hdr' );
+    envMap.mapping = THREE.EquirectangularReflectionMapping;
+    scene.background = envMap;
+    scene.backgroundIntensity = 0.4;
 
     // controls = new OrbitControls(camera, renderer.domElement);
     // controls.update();
@@ -328,7 +343,7 @@ async function init() {
     arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), 1.0, 0xff0000);
     arrowHelper.position.copy(new THREE.Vector3(0, 0, 0));
     arrowHelper.setDirection(new THREE.Vector3(0, 1, 0));
-    scene.add(arrowHelper);
+    // scene.add(arrowHelper);
 
     const meshes = [];
 
@@ -466,6 +481,7 @@ function animate() {
         chracterMixer.update( mixerUpdateDelta );
         gunMixer.update( mixerUpdateDelta );
     }
+    scene.backgroundRotation.set(0, scene.backgroundRotation.y + 0.00005, 0);
     renderPipeline.render();
     requestAnimationFrame(animate);
     if (dummyObjs.length != 0) {
