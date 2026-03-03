@@ -12,7 +12,6 @@ import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
 
 let camera, scene, renderer;
 let loader;
-let sideCount = 50;
 let renderPipeline;
 
 let model, chracterMixer, gunMixer, timer, handBone, shoulderBone;
@@ -22,7 +21,6 @@ let controls;
 let arrowHelper;
 
 let muzzleFlash;
-let muzzleFlashTimeout;
 
 let monitorMesh;
 
@@ -37,15 +35,11 @@ let gunState = GUNSTATES.LOWERED;
 let decals = [];
 let decalDiffuse, decalMaterial, decalMaterialB;
 
-let matrices = [];
 let dummyObjs = [];
 let instances = [];
 
 let raycaster;
 let intersects = new Array();
-let shatter;
-
-const sceneMeshes = new Array();
 
 init();
 
@@ -60,6 +54,7 @@ function lowerGun() {
 
 function drawGun() {
     if (gunState === GUNSTATES.LOWERED) {
+        gun.visible = true;
         lowerAnim.stop();
         drawAnim.reset();
         drawAnim.play();
@@ -93,6 +88,24 @@ function adjustArm(targetPosition) {
     shoulderBone.quaternion.copy(localQuat);
 }
 
+let originKickBackLocalRotation;
+let targetKickBackLocalRotation;
+let needsKickBackReset = false;
+let kickbackAnimUpdate = 0;
+
+function initiateKickBack() {
+    if (!originKickBackLocalRotation) {
+        const handBoneRotation = new THREE.Euler().setFromQuaternion(handBone.quaternion);
+        originKickBackLocalRotation = new THREE.Euler();
+        originKickBackLocalRotation.copy(handBoneRotation);
+        targetKickBackLocalRotation = new THREE.Euler();
+        targetKickBackLocalRotation.copy(handBoneRotation);
+        targetKickBackLocalRotation.x += THREE.MathUtils.degToRad(45);
+    }
+    kickbackAnimUpdate = 0;
+    needsKickBackReset = true;
+}
+
 function shoot(event) {
     if (raycastTarget(event)) {
         const normal = intersects[0].face.normal.clone();
@@ -118,10 +131,17 @@ function shoot(event) {
         decals.push(mesh);
         monitorMesh.attach(mesh);
 
+        arrowHelper.position.copy(handBone.getWorldPosition(new THREE.Vector3()));
+        const forward = new THREE.Vector3(0, 1, 0);
+        forward.applyQuaternion(handBone.getWorldQuaternion(new THREE.Quaternion()));
+        console.log(handBone);
+        arrowHelper.setDirection(forward);
+
         muzzleFlash.intensity = 50;
         window.setTimeout(turnOffMuzzleFlash, 50);
 
         if (shootAnim) {
+            initiateKickBack();
             shootAnim.reset();
             shootAnim.play();
         }
@@ -140,38 +160,33 @@ function onMouseDown(event) {
     }
 }
 
-function addInstancedMeshes(meshes) {
+function addInstancedMeshes(mesh, sideCount, spacing, offsetX, offsetY) {
+    let matrices = [];
     for(let i = -sideCount / 2; i < sideCount / 2; i++) {
         for(let j = -sideCount / 2; j < sideCount / 2; j++) {
             const dummy = new THREE.Object3D();
-            dummy.position.set(i * .15, 0, j * .15);
+            dummy.position.set(i * spacing + (Math.random() * 0.25) + offsetX, 0.005, j * spacing + (Math.random() * 0.25) + offsetY);
             dummy.rotation.y = Math.random() * Math.PI * 2;
-            dummy.scale.setScalar((Math.random() * 0.3) + 0.7);
+            dummy.scale.setScalar((Math.random() * 0.5) + 0.4);
             dummy.updateMatrix();
             dummyObjs.push(dummy);
-
             matrices.push(dummy.matrix.clone());
         }
     }
-
-    for(const { geometry, material } of meshes) {
-        const instancedMesh = new THREE.InstancedMesh(
-            geometry,
-            material,
-            sideCount * sideCount
-        );
-        instances.push(instancedMesh);
-
-        let index = 0;
-        for(let i = -sideCount / 2; i < sideCount / 2; i++) {
-            for(let j = -sideCount / 2; j < sideCount / 2; j++) {
-                instancedMesh.setMatrixAt(index, matrices[index]);
-                index++;
-            }
+    const instancedMesh = new THREE.InstancedMesh(
+        mesh.geometry,
+        mesh.material,
+        sideCount * sideCount
+    );
+    let index = 0;
+    for(let i = -sideCount / 2; i < sideCount / 2; i++) {
+        for(let j = -sideCount / 2; j < sideCount / 2; j++) {
+            instancedMesh.setMatrixAt(index, matrices[index]);
+            index++;
         }
-        instancedMesh.instanceMatrix.needsUpdate = true;
-        scene.add(instancedMesh);
     }
+    instancedMesh.instanceMatrix.needsUpdate = true;
+    scene.add(instancedMesh);
 }
 
 function loadGLTF(url) {
@@ -227,6 +242,7 @@ async function initModels() {
             gunState = GUNSTATES.AIMING;
         } else if (e.action === lowerAnim) {
             gunState = GUNSTATES.LOWERED;
+            gun.visible = false;
         }
     });
 
@@ -249,7 +265,7 @@ async function initModels() {
     shoulderBone = model.getObjectByName("upper_armR");
 
     const monitor = monitorGLTF.scene;
-    monitor.position.set(0, 0, -3.4);
+    monitor.position.set(0.54, 0, -4);
     monitorMesh = monitor.getObjectByName("screen");
     scene.add(monitor);
 
@@ -271,7 +287,7 @@ async function initModels() {
 
     groundGLTF.scene.traverse((child) => {
         if (child.isMesh && child.material) {
-            child.material.color.multiplyScalar(0.35);
+            child.material.color.multiplyScalar(1);
         }
     });
     scene.add(groundGLTF.scene);
@@ -279,7 +295,7 @@ async function initModels() {
 
 async function init() {
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 200);
-    camera.position.set(1.77, 0.49, -1.83);
+    camera.position.set(1.97, 0.59, -1.73);
     camera.rotation.set(
         THREE.MathUtils.degToRad(174.7),
         THREE.MathUtils.degToRad(28.35),
@@ -298,11 +314,12 @@ async function init() {
 
     await renderer.init();
 
-    const hdrloader = new HDRLoader();
-    const envMap = await hdrloader.loadAsync( './textures/kloppenheim_06_puresky_4k.hdr' );
+    const hdrloader = new THREE.TextureLoader();
+    const envMap = await hdrloader.loadAsync( './textures/render.png' );
     envMap.mapping = THREE.EquirectangularReflectionMapping;
-    scene.background = envMap;
-    scene.backgroundIntensity = 0.4;
+    envMap.colorSpace = THREE.SRGBColorSpace;
+    // scene.background = envMap;
+    scene.backgroundIntensity = 0.6;
 
     // controls = new OrbitControls(camera, renderer.domElement);
     // controls.update();
@@ -345,20 +362,33 @@ async function init() {
     arrowHelper.setDirection(new THREE.Vector3(0, 1, 0));
     // scene.add(arrowHelper);
 
-    const meshes = [];
-
+    let mesh;
     loader = new GLTFLoader();
-    loader.load('./models/purple.glb', (gltf) => {
+    loader.load('./models/grass.glb', (gltf) => {
         gltf.scene.traverse((child) => {
             if (!child.isMesh) return;
 
-            meshes.push({
+            mesh = {
                 geometry: child.geometry,
                 material: child.material
-            });
+            };
         });
 
-        addInstancedMeshes(meshes);
+        addInstancedMeshes(mesh, 25, 0.45, -1.25, 1.25);
+    });
+
+    mesh = [];
+    loader.load('./models/flower.glb', (gltf) => {
+        gltf.scene.traverse((child) => {
+            if (!child.isMesh) return;
+
+            mesh = {
+                geometry: child.geometry,
+                material: child.material
+            };
+        });
+
+        addInstancedMeshes(mesh, 100, 0.25, -7.5, 8.5);
     });
 
     await initModels();
@@ -388,84 +418,18 @@ function onWindowResize() {
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-function hash2(x, y) {
-    return [
-        fract(Math.sin(x * 127.1 + y * 311.7) * 43758.5453),
-        fract(Math.sin(x * 269.5 + y * 183.3) * 43758.5453)
-    ];
-}
-
-function fract(x) {
-    return x - Math.floor(x);
-}
-
-function voronoi2D(x, y) {
-    const gx = Math.floor(x);
-    const gy = Math.floor(y);
-    const fx = x - gx;
-    const fy = y - gy;
-
-    let minDist = 1e9;
-
-    for (let j = -1; j <= 1; j++) {
-        for (let i = -1; i <= 1; i++) {
-            const h = hash2(gx + i, gy + j);
-            const dx = i + h[0] - fx;
-            const dy = j + h[1] - fy;
-            minDist = Math.min(minDist, dx * dx + dy * dy);
-        }
-    }
-
-    return Math.sqrt(minDist);
-}
-
-function foliageWind(x, z, time) {
-    const scale = 0.25;
-    const speedX = 0.08;
-    const speedZ = 0.05;
-
-    return voronoi2D(
-        x * scale + time * speedX,
-        z * scale + time * speedZ
+function updateKickBackAnim(timeDelta) {
+    if (!needsKickBackReset) return;
+    kickbackAnimUpdate += timeDelta * 5;
+    const newRotation = new THREE.Euler().set(
+        THREE.MathUtils.lerp(targetKickBackLocalRotation.x, originKickBackLocalRotation.x, kickbackAnimUpdate),
+        THREE.MathUtils.lerp(targetKickBackLocalRotation.y, originKickBackLocalRotation.y, kickbackAnimUpdate),
+        THREE.MathUtils.lerp(targetKickBackLocalRotation.z, originKickBackLocalRotation.z, kickbackAnimUpdate)
     );
-}
-
-function updateWorld() {
-    let time = performance.now() * 0.001;
-
-    let matrices = [];
-    let index = 0;
-
-    for(let i = -sideCount / 2; i < sideCount / 2; i++) {
-        for(let j = -sideCount / 2; j < sideCount / 2; j++) {
-            const phase = index * 0.37;
-            const swayAmount = 0.15;
-            const swaySpeed = 1.2;
-
-            const pos = dummyObjs[index].position;
-            const v = foliageWind(pos.x, pos.z, time);
-            const wind = 1.0 - Math.min(v * 1.8, 1.0);
-
-            dummyObjs[index].rotation.x = Math.sin(time * swaySpeed + phase) * swayAmount * wind;
-            dummyObjs[index].rotation.z = Math.cos(time * swaySpeed * 0.8 + phase) * swayAmount * 0.6 * wind;
-
-            dummyObjs[index].updateMatrix();
-            
-            matrices.push(dummyObjs[index].matrix.clone());
-
-            index++;
-        }
-    }
-
-    for(let instance of instances) {
-        index = 0;
-        for(let i = -sideCount / 2; i < sideCount / 2; i++) {
-            for(let j = -sideCount / 2; j < sideCount / 2; j++) {
-                instance.setMatrixAt(index, matrices[index]);
-                index++;
-            }
-        }
-        instance.instanceMatrix.needsUpdate = true;
+    handBone.rotation.set(newRotation.x, newRotation.y, newRotation.z);
+    if (kickbackAnimUpdate >= 1.0) {
+        handBone.rotation.set(originKickBackLocalRotation.x, originKickBackLocalRotation.y, originKickBackLocalRotation.z);
+        needsKickBackReset = false;
     }
 }
 
@@ -481,10 +445,11 @@ function animate() {
         chracterMixer.update( mixerUpdateDelta );
         gunMixer.update( mixerUpdateDelta );
     }
+    updateKickBackAnim(timer.getDelta());
     scene.backgroundRotation.set(0, scene.backgroundRotation.y + 0.00005, 0);
     renderPipeline.render();
     requestAnimationFrame(animate);
-    if (dummyObjs.length != 0) {
-        updateWorld();
-    }
+    // if (dummyObjs.length != 0) {
+    //     updateWorld();
+    // }
 }
