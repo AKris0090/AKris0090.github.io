@@ -10,6 +10,8 @@ import {bloom} from 'three/addons/tsl/display/BloomNode.js'
 
 import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
 
+import { addCasing, updateCasings, initCasings } from './shellCasing.js';
+
 let camera, scene, renderer;
 let loader;
 let renderPipeline;
@@ -68,8 +70,8 @@ function turnOffMuzzleFlash() {
 
 function adjustArm(targetPosition) {
     if (arrowHelper == null || shoulderBone == null) return;
-    const shoulderWorldPos = shoulderBone.getWorldPosition(new THREE.Vector3());
 
+    const shoulderWorldPos = shoulderBone.getWorldPosition(new THREE.Vector3());
     const targetDir = targetPosition.clone().sub(shoulderWorldPos).normalize();
 
     const shoulderQuat = new THREE.Quaternion();
@@ -83,9 +85,12 @@ function adjustArm(targetPosition) {
 
     const parentWorldQuat = new THREE.Quaternion();
     shoulderBone.parent.getWorldQuaternion(parentWorldQuat);
-    const localQuat = parentWorldQuat.invert().multiply(newWorldQuat);
+    const parentWorldQuatInv = parentWorldQuat.clone().invert().multiply(newWorldQuat);
 
-    shoulderBone.quaternion.copy(localQuat);
+    const euler = new THREE.Euler().setFromQuaternion(parentWorldQuatInv, 'YXZ'); // isolate Y axis rotation by applying it first
+    euler.y = shoulderBone.rotation.y; // preserve original Y rotation so that small twist doesnt apply
+
+    shoulderBone.rotation.copy(euler);
 }
 
 let originKickBackLocalRotation;
@@ -134,13 +139,13 @@ function shoot(event) {
         arrowHelper.position.copy(handBone.getWorldPosition(new THREE.Vector3()));
         const forward = new THREE.Vector3(0, 1, 0);
         forward.applyQuaternion(handBone.getWorldQuaternion(new THREE.Quaternion()));
-        console.log(handBone);
         arrowHelper.setDirection(forward);
 
         muzzleFlash.intensity = 50;
         window.setTimeout(turnOffMuzzleFlash, 50);
 
         if (shootAnim) {
+            addCasing(handBone.getWorldPosition(new THREE.Vector3()));
             initiateKickBack();
             shootAnim.reset();
             shootAnim.play();
@@ -291,6 +296,8 @@ async function initModels() {
         }
     });
     scene.add(groundGLTF.scene);
+
+    initCasings(loader, scene);
 }
 
 async function init() {
@@ -374,7 +381,7 @@ async function init() {
             };
         });
 
-        addInstancedMeshes(mesh, 25, 0.45, -1.25, 1.25);
+        // addInstancedMeshes(mesh, 25, 0.45, -1.25, 1.25);
     });
 
     mesh = [];
@@ -445,6 +452,7 @@ function animate() {
         chracterMixer.update( mixerUpdateDelta );
         gunMixer.update( mixerUpdateDelta );
     }
+    updateCasings(timer.getDelta());
     updateKickBackAnim(timer.getDelta());
     scene.backgroundRotation.set(0, scene.backgroundRotation.y + 0.00005, 0);
     renderPipeline.render();

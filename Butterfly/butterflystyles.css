@@ -82,7 +82,7 @@ nav li.brand {
     margin-right: 0;
     margin-left: 0px;
     font-weight: bolder;
-    color: #2c2c2c;
+    color: #AFAFAF;
     font-family: cfour; 
     font-size: 2rem;
     padding: 0 1rem;
@@ -97,7 +97,7 @@ nav a {
     text-decoration: none;
     display: flex;
     align-items: center;
-    color: #2c2c2c;
+    color: #AFAFAF;
     transition: color 0.2s ease;
 }
 
