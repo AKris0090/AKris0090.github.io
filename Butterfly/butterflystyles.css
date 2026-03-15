@@ -82,10 +82,14 @@ nav li.brand {
     margin-right: 0;
     margin-left: 0px;
     font-weight: bolder;
-    color: #AFAFAF;
+    color: #000000;
     font-family: cfour; 
     font-size: 2rem;
     padding: 0 1rem;
+}
+
+#first-element:hover {
+    color: #ff0000;
 }
 
 nav a {
@@ -97,12 +101,30 @@ nav a {
     text-decoration: none;
     display: flex;
     align-items: center;
-    color: #AFAFAF;
+    color: #111111;
     transition: color 0.2s ease;
 }
 
 nav li:hover a {
-    color: #ffffff;
+    color: #ff0000;
+}
+
+nav li:hover .cross {
+    background-color: #000000;
+    transform: rotate(90deg);
+}
+
+.cross {
+    display: inline-block;
+    height: 18px;
+    width: 18px;
+    padding-right: 0.5rem;
+    padding-left: 2rem;
+    background-color: #ff0000;
+    mask: url("./textures/cross.png") center / contain no-repeat;
+    -webkit-mask: url("./textures/cross.png") center / contain no-repeat;
+
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 nav #accent {

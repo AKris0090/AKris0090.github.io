@@ -42,7 +42,7 @@ export function updateCasings(timeDelta) {
     if (casingArr.length === 0) return;
     if (!casingMesh) return;
     for (let i = casingArr.length - 1; i >= 0; i--) {
-        if (casingArr[i].pos.y < 0) {
+        if (casingArr[i].pos.y <= 0) {
             casingArr.splice(i, 1);
             continue;
         }

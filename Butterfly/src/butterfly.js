@@ -3,6 +3,7 @@ import { WebGPURenderer } from 'three/webgpu';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { DecalGeometry } from 'three/addons/geometries/DecalGeometry.js';
+import { Bullet } from './bullet.js';
 
 import { RenderPipeline } from 'three/webgpu'
 import { pass } from 'three/tsl'
@@ -15,6 +16,11 @@ import { addCasing, updateCasings, initCasings } from './shellCasing.js';
 let camera, scene, renderer;
 let loader;
 let renderPipeline;
+
+const flowerSideNum = 75;
+const flowerSpacing = 0.25;
+const flowerOffsetX = -4.5;
+const flowerOffsetY = 7;
 
 let model, chracterMixer, gunMixer, timer, handBone, shoulderBone;
 let drawAnim, lowerAnim, shootAnim, liedownAnim; 
@@ -45,12 +51,22 @@ let intersects = new Array();
 
 init();
 
+function setCursorToImage(url, size = 32) {
+    const half = size / 2;
+    document.body.style.cursor = `url('${url}') ${half} ${half}, auto`;
+}
+
+function resetCursor() {
+    document.body.style.cursor = '';
+}
+
 function lowerGun() {
     if (gunState === GUNSTATES.AIMING) {
         drawAnim.stop();
         lowerAnim.reset();
         lowerAnim.play();
         gunState = GUNSTATES.LOWERING;
+        resetCursor();
     }
 }
 
@@ -61,6 +77,7 @@ function drawGun() {
         drawAnim.reset();
         drawAnim.play();
         gunState = GUNSTATES.DRAWING;
+        setCursorToImage('./textures/crosshair5.png', 64);
     }
 }
 
@@ -111,6 +128,8 @@ function initiateKickBack() {
     needsKickBackReset = true;
 }
 
+let bullets = [];
+
 function shoot(event) {
     if (raycastTarget(event)) {
         const normal = intersects[0].face.normal.clone();
@@ -139,13 +158,18 @@ function shoot(event) {
         arrowHelper.position.copy(handBone.getWorldPosition(new THREE.Vector3()));
         const forward = new THREE.Vector3(0, 1, 0);
         forward.applyQuaternion(handBone.getWorldQuaternion(new THREE.Quaternion()));
-        arrowHelper.setDirection(forward);
 
         muzzleFlash.intensity = 50;
         window.setTimeout(turnOffMuzzleFlash, 50);
 
         if (shootAnim) {
             addCasing(handBone.getWorldPosition(new THREE.Vector3()));
+
+            const muzzlePos = muzzleFlash.getWorldPosition(new THREE.Vector3());
+            const bulletDir = intersects[0].point.clone().sub(muzzlePos).normalize();
+            const b = new Bullet(muzzlePos.sub(bulletDir.clone().multiplyScalar(0.5)), bulletDir, scene);
+            bullets.push(b);
+
             initiateKickBack();
             shootAnim.reset();
             shootAnim.play();
@@ -165,12 +189,13 @@ function onMouseDown(event) {
     }
 }
 
-function addInstancedMeshes(mesh, sideCount, spacing, offsetX, offsetY) {
-    let matrices = [];
+let matrices = [];
+
+function loadMatrices(sideCount, spacing, offsetX, offsetY) {
     for(let i = -sideCount / 2; i < sideCount / 2; i++) {
         for(let j = -sideCount / 2; j < sideCount / 2; j++) {
             const dummy = new THREE.Object3D();
-            dummy.position.set(i * spacing + (Math.random() * 0.25) + offsetX, 0.005, j * spacing + (Math.random() * 0.25) + offsetY);
+            dummy.position.set(i * spacing + (Math.random() * 0.25) + offsetX, 0.05, j * spacing + (Math.random() * 0.25) + offsetY);
             dummy.rotation.y = Math.random() * Math.PI * 2;
             dummy.scale.setScalar((Math.random() * 0.5) + 0.4);
             dummy.updateMatrix();
@@ -178,6 +203,9 @@ function addInstancedMeshes(mesh, sideCount, spacing, offsetX, offsetY) {
             matrices.push(dummy.matrix.clone());
         }
     }
+}
+
+function addInstancedMeshes(mesh, sideCount) {
     const instancedMesh = new THREE.InstancedMesh(
         mesh.geometry,
         mesh.material,
@@ -217,7 +245,9 @@ function raycastTarget(event) {
         n.copy(intersects[0].face.normal);
         n.transformDirection(intersects[0].object.matrixWorld);
         drawGun();
-        adjustArm(intersects[0].point);
+        if (gunState === GUNSTATES.AIMING) {
+            adjustArm(intersects[0].point);
+        }
         return true;
     } else {
         lowerGun();
@@ -229,10 +259,12 @@ function onMouseMove(event) {
     raycastTarget(event);
 }
 
+let ground;
+
 async function initModels() {
     const [characterGLTF, monitorGLTF, gunGLTF, groundGLTF] = await Promise.all([
         loadGLTF('./models/character_animated.glb'),
-        loadGLTF('./models/monitor.glb'),
+        loadGLTF('./models/monitorbetter.glb'),
         loadGLTF('./models/gun.glb'),
         loadGLTF('./models/ground.glb')
     ]);
@@ -275,7 +307,7 @@ async function initModels() {
     scene.add(monitor);
 
     gun = gunGLTF.scene;
-    muzzleFlash = new THREE.PointLight(0xffaa33, 50, 15);
+    muzzleFlash = new THREE.PointLight(0x0096FF, 50, 15);
     muzzleFlash.intensity = 0;
     const gunAnims = gunGLTF.animations;
     gunMixer = new THREE.AnimationMixer(gun);
@@ -295,12 +327,15 @@ async function initModels() {
             child.material.color.multiplyScalar(1);
         }
     });
+    ground = groundGLTF.scene;
     scene.add(groundGLTF.scene);
 
     initCasings(loader, scene);
 }
 
 async function init() {
+    loader = new GLTFLoader();
+
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 200);
     camera.position.set(1.97, 0.59, -1.73);
     camera.rotation.set(
@@ -325,14 +360,14 @@ async function init() {
     const envMap = await hdrloader.loadAsync( './textures/render.png' );
     envMap.mapping = THREE.EquirectangularReflectionMapping;
     envMap.colorSpace = THREE.SRGBColorSpace;
+    scene.background = new THREE.Color(0xF6F4D1);
     // scene.background = envMap;
-    scene.backgroundIntensity = 0.6;
 
     // controls = new OrbitControls(camera, renderer.domElement);
     // controls.update();
 
     const textureLoader = new THREE.TextureLoader();
-    decalDiffuse = textureLoader.load( './textures/shatter3.png');
+    decalDiffuse = textureLoader.load( './textures/shatter2.png');
     decalDiffuse.colorSpace = THREE.SRGBColorSpace;
     decalMaterial = new THREE.MeshLambertMaterial( {
         map: decalDiffuse,
@@ -345,7 +380,7 @@ async function init() {
         emissiveMap: decalDiffuse,
         emissiveIntensity: 1
     });
-    let decalDiffuseB = textureLoader.load( './textures/shatter2.png');
+    let decalDiffuseB = textureLoader.load( './textures/shatter.png');
     decalDiffuseB.colorSpace = THREE.SRGBColorSpace;
     decalMaterialB = new THREE.MeshLambertMaterial( {
         map: decalDiffuseB,
@@ -367,11 +402,13 @@ async function init() {
     arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), 1.0, 0xff0000);
     arrowHelper.position.copy(new THREE.Vector3(0, 0, 0));
     arrowHelper.setDirection(new THREE.Vector3(0, 1, 0));
-    // scene.add(arrowHelper);
+    scene.add(arrowHelper);
+
+    loadMatrices(flowerSideNum, flowerSpacing, flowerOffsetX, flowerOffsetY);
+    console.log(matrices);
 
     let mesh;
-    loader = new GLTFLoader();
-    loader.load('./models/grass.glb', (gltf) => {
+    loader.load('./models/purple.glb', (gltf) => {
         gltf.scene.traverse((child) => {
             if (!child.isMesh) return;
 
@@ -379,23 +416,9 @@ async function init() {
                 geometry: child.geometry,
                 material: child.material
             };
+
+            addInstancedMeshes(mesh, flowerSideNum);
         });
-
-        // addInstancedMeshes(mesh, 25, 0.45, -1.25, 1.25);
-    });
-
-    mesh = [];
-    loader.load('./models/flower.glb', (gltf) => {
-        gltf.scene.traverse((child) => {
-            if (!child.isMesh) return;
-
-            mesh = {
-                geometry: child.geometry,
-                material: child.material
-            };
-        });
-
-        addInstancedMeshes(mesh, 100, 0.25, -7.5, 8.5);
     });
 
     await initModels();
@@ -411,8 +434,8 @@ async function init() {
     const scenePassColor = scenePass.getTextureNode( 'output' );
 
     const bloomPass = bloom( scenePassColor );
-    bloomPass.strength = 0.2;
-    bloomPass.radius = 0.4;
+    bloomPass.strength = 0.1;
+    bloomPass.radius = 0.1;
 
     renderPipeline.outputNode = scenePassColor.add( bloomPass );
 
@@ -445,17 +468,20 @@ function animate() {
     // if (arrowHelper) {
     //     arrowHelper.position.copy(muzzleFlash.getWorldPosition(new THREE.Vector3()));
     // }
-    if ((timer != null) && (chracterMixer != null) && (gunMixer != null)) {
-        timer.update();
-        let mixerUpdateDelta = timer.getDelta();
-            
-        chracterMixer.update( mixerUpdateDelta );
-        gunMixer.update( mixerUpdateDelta );
+    timer.update();
+    let timerDelta = timer.getDelta();
+    if ((chracterMixer != null) && (gunMixer != null)) {
+        chracterMixer.update( timerDelta );
+        gunMixer.update( timerDelta );
+        updateCasings(timerDelta);
+        updateKickBackAnim(timerDelta);
     }
-    updateCasings(timer.getDelta());
-    updateKickBackAnim(timer.getDelta());
+    if (bullets.length > 0) {
+        bullets.forEach(b => b.update(timerDelta));
+    }
     scene.backgroundRotation.set(0, scene.backgroundRotation.y + 0.00005, 0);
     renderPipeline.render();
+    arrowHelper.position.copy(muzzleFlash.getWorldPosition(new THREE.Vector3()));
     requestAnimationFrame(animate);
     // if (dummyObjs.length != 0) {
     //     updateWorld();
