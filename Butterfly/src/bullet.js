@@ -1,27 +1,28 @@
 import * as THREE from 'three';
 
-class BulletTrail {
+export class BulletTrail {
     constructor(scene) {
         this.scene = scene;
         this.rings = [];
+
+        this.mat = new THREE.MeshStandardMaterial({
+            color: 0x0096FF,
+            side: THREE.DoubleSide,
+            emissive: 0x0096FF,
+            emissiveIntensity: 3
+        });
     }
 
-    spawnRing(position, bulletDirection) {
-        const geometry = new THREE.TorusGeometry(0.03, 0.005, 8, 32);
-        const material = new THREE.MeshBasicMaterial({
-            color: 0x0096FF,
-            transparent: true,
-            opacity: 1,
-            side: THREE.DoubleSide
-        });
+    spawnRing(position, bulletDirection, ringNum) {
+        const geometry = new THREE.TorusGeometry(0.015, 0.001, 8, 32);
 
-        const ring = new THREE.Mesh(geometry, material);
-        ring.position.copy(position);
+        const ring = new THREE.Mesh(geometry, this.mat);
+        ring.position.copy(position.clone().add(bulletDirection.clone().multiplyScalar(0.75 + (0.1 * ringNum))));
 
-        ring.lookAt(position.clone().add(bulletDirection));
+        ring.lookAt(ring.position.clone().add(bulletDirection));
 
         this.scene.add(ring);
-        this.rings.push({ mesh: ring, age: 0, maxAge: 0.3 });
+        this.rings.push({ mesh: ring, age: 0, maxAge: 0.4, maxScale: ((2 - ringNum) * 3) + 2 });
     }
 
     update(delta) {
@@ -29,8 +30,7 @@ class BulletTrail {
             r.age += delta;
             const t = r.age / r.maxAge;
 
-            r.mesh.scale.setScalar(1 + t * 5);
-            r.mesh.material.opacity = 1 - t;
+            r.mesh.scale.setScalar(1 + t * r.maxScale);
 
             if (r.age >= r.maxAge) {
                 this.scene.remove(r.mesh);
@@ -44,19 +44,17 @@ class BulletTrail {
 }
 
 export class Bullet {
-    constructor(origin, direction, scene) {
+    constructor(origin, direction, scene, trailColor) {
         this.position = origin.clone();
         this.direction = direction.clone().normalize();
-        this.speed = 25;
+        this.speed = 50;
         this.trail = new BulletTrail(scene);
-        this.spawnTimer = 0;
-        this.spawnInterval = 0.005;
-        this.numRings = 5;
-
+        this.numRings = 3;
+        this.lifeTime = 0.5;
         this.maxTrailLength = 20;
 
         const bGeo = new THREE.CylinderGeometry(0.03, 0.04, 0.3, 8);
-        const bMat = new THREE.MeshBasicMaterial({ color: 0xffdd44 });
+        const bMat = new THREE.MeshStandardMaterial({ color: 0x000000, emissive: trailColor, emissiveIntensity: 3.5 });
         this.mesh = new THREE.Mesh(bGeo, bMat);
 
         this.trailPositions = new Float32Array(this.maxTrailLength * 3);
@@ -65,7 +63,7 @@ export class Bullet {
         lineGeo.setDrawRange(0, 0);
 
         const lineMat = new THREE.LineBasicMaterial({
-            color: 0xffaa00,
+            color: trailColor,
             transparent: true,
             opacity: 0.6,
             blending: THREE.AdditiveBlending,
@@ -77,9 +75,15 @@ export class Bullet {
 
         scene.add(this.mesh);
         scene.add(this.lineTrail);
+
+        this.trail.spawnRing(this.position, this.direction, 0);
+        this.trail.spawnRing(this.position, this.direction, 1);
+        this.trail.spawnRing(this.position, this.direction, 2);
     }
 
     update(delta) {
+        this.lifeTime -= delta;
+
         this.position.addScaledVector(this.direction, this.speed * delta);
         this.trailPositions.copyWithin(3, 0, (this.maxTrailLength - 1) * 3);
 
@@ -95,13 +99,6 @@ export class Bullet {
         q.setFromUnitVectors(new THREE.Vector3(0, 1, 0), this.direction);
         this.mesh.quaternion.copy(q);
         this.mesh.position.copy(this.position);
-        
-        this.spawnTimer += delta;
-        if (this.spawnTimer >= this.spawnInterval && this.trail.rings.length < this.numRings) {
-            this.trail.spawnRing(this.position, this.direction);
-            this.spawnTimer = 0;
-            this.numRings--;
-        }
 
         this.trail.update(delta);
     }

@@ -49,7 +49,42 @@ let instances = [];
 let raycaster;
 let intersects = new Array();
 
+let originCamRot;
+let targetCamRot;
+let camAnimUpdate = 0;
+let needsCamReset = false;
+
 init();
+
+
+
+function initiateCamShake() {
+    if (!originCamRot) {
+        const camRotation = new THREE.Euler().setFromQuaternion(camera.quaternion);
+        originCamRot = new THREE.Euler();
+        originCamRot.copy(camRotation);
+        targetCamRot = new THREE.Euler();
+        targetCamRot.copy(camRotation);
+        targetCamRot.x += THREE.MathUtils.degToRad(-0.15);
+    }
+    camAnimUpdate = 0;
+    needsCamReset = true;
+}
+
+function updateCameraAnim(timeDelta) {
+    if (!needsCamReset) return;
+    camAnimUpdate += timeDelta * 5;
+    const newRotation = new THREE.Euler().set(
+        THREE.MathUtils.lerp(targetCamRot.x, originCamRot.x, camAnimUpdate),
+        THREE.MathUtils.lerp(targetCamRot.y, originCamRot.y, camAnimUpdate),
+        THREE.MathUtils.lerp(targetCamRot.z, originCamRot.z, camAnimUpdate)
+    );
+    camera.rotation.set(newRotation.x, newRotation.y, newRotation.z);
+    if (camAnimUpdate >= 1.0) {
+        camera.rotation.set(originCamRot.x, originCamRot.y, originCamRot.z);
+        needsCamReset = false;
+    }
+}
 
 function setCursorToImage(url, size = 32) {
     const half = size / 2;
@@ -77,7 +112,7 @@ function drawGun() {
         drawAnim.reset();
         drawAnim.play();
         gunState = GUNSTATES.DRAWING;
-        setCursorToImage('./textures/crosshair5.png', 64);
+        setCursorToImage('./textures/crosshair6.png', 64);
     }
 }
 
@@ -162,12 +197,14 @@ function shoot(event) {
         muzzleFlash.intensity = 50;
         window.setTimeout(turnOffMuzzleFlash, 50);
 
+        initiateCamShake();
+
         if (shootAnim) {
-            addCasing(handBone.getWorldPosition(new THREE.Vector3()));
+            addCasing(handBone.getWorldPosition(new THREE.Vector3()), scene);
 
             const muzzlePos = muzzleFlash.getWorldPosition(new THREE.Vector3());
             const bulletDir = intersects[0].point.clone().sub(muzzlePos).normalize();
-            const b = new Bullet(muzzlePos.sub(bulletDir.clone().multiplyScalar(0.5)), bulletDir, scene);
+            const b = new Bullet(muzzlePos.sub(bulletDir.clone().multiplyScalar(0.8)), bulletDir, scene, 0xffdd44);
             bullets.push(b);
 
             initiateKickBack();
@@ -330,7 +367,7 @@ async function initModels() {
     ground = groundGLTF.scene;
     scene.add(groundGLTF.scene);
 
-    initCasings(loader, scene);
+    await Promise.all([initCasings(loader, scene)]);
 }
 
 async function init() {
@@ -360,7 +397,7 @@ async function init() {
     const envMap = await hdrloader.loadAsync( './textures/render.png' );
     envMap.mapping = THREE.EquirectangularReflectionMapping;
     envMap.colorSpace = THREE.SRGBColorSpace;
-    scene.background = new THREE.Color(0xF6F4D1);
+    // scene.background = new THREE.Color(0xF6F4D1);
     // scene.background = envMap;
 
     // controls = new OrbitControls(camera, renderer.domElement);
@@ -402,10 +439,9 @@ async function init() {
     arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), 1.0, 0xff0000);
     arrowHelper.position.copy(new THREE.Vector3(0, 0, 0));
     arrowHelper.setDirection(new THREE.Vector3(0, 1, 0));
-    scene.add(arrowHelper);
+    // scene.add(arrowHelper);
 
     loadMatrices(flowerSideNum, flowerSpacing, flowerOffsetX, flowerOffsetY);
-    console.log(matrices);
 
     let mesh;
     loader.load('./models/purple.glb', (gltf) => {
@@ -437,7 +473,7 @@ async function init() {
     bloomPass.strength = 0.1;
     bloomPass.radius = 0.1;
 
-    renderPipeline.outputNode = scenePassColor.add( bloomPass );
+    renderPipeline.outputNode = scenePassColor;// .add( bloomPass );
 
     requestAnimationFrame(animate);
 }
@@ -473,11 +509,18 @@ function animate() {
     if ((chracterMixer != null) && (gunMixer != null)) {
         chracterMixer.update( timerDelta );
         gunMixer.update( timerDelta );
-        updateCasings(timerDelta);
+        updateCasings(timerDelta, scene);
         updateKickBackAnim(timerDelta);
+        updateCameraAnim(timerDelta);
     }
     if (bullets.length > 0) {
         bullets.forEach(b => b.update(timerDelta));
+        bullets.forEach((b, index) => {
+            if (b.lifeTime <= 0) {
+                b.destroy(scene);
+                bullets.splice(index, 1);
+            }
+        });
     }
     scene.backgroundRotation.set(0, scene.backgroundRotation.y + 0.00005, 0);
     renderPipeline.render();
