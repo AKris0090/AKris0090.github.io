@@ -82,10 +82,14 @@ nav li.brand {
     margin-right: 0;
     margin-left: 0px;
     font-weight: bolder;
-    color: #AFAFAF;
+    color: #F6F4D1;
     font-family: cfour; 
     font-size: 2rem;
     padding: 0 1rem;
+}
+
+#first-element:hover {
+    color: #ff0000;
 }
 
 nav a {
@@ -97,12 +101,30 @@ nav a {
     text-decoration: none;
     display: flex;
     align-items: center;
-    color: #AFAFAF;
+    color: #F6F4D1;
     transition: color 0.2s ease;
 }
 
 nav li:hover a {
-    color: #ffffff;
+    color: #ff0000;
+}
+
+nav li:hover .cross {
+    background-color: #F6F4D1;
+    transform: rotate(90deg);
+}
+
+.cross {
+    display: inline-block;
+    height: 18px;
+    width: 18px;
+    padding-right: 0.5rem;
+    padding-left: 2rem;
+    background-color: #ff0000;
+    mask: url("./textures/cross.png") center / contain no-repeat;
+    -webkit-mask: url("./textures/cross.png") center / contain no-repeat;
+
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 nav #accent {
@@ -115,7 +137,7 @@ nav #accent {
         linear-gradient(90deg, black 0%, rgba(209, 63, 61, 0.5) 65%, transparent 100%);
     -webkit-mask-composite: destination-in;
     mask-composite: intersect,
-        url("./assets/swirl.png") center / 100% 100% no-repeat,
+        url("./assets/swirl.png") center / 100% 100% no-repeat,f
         linear-gradient(90deg, black 0%, rgba(209, 63, 61, 0.5) 65%, transparent 100%);
     -webkit-mask-composite: destination-in;
     mask-composite: intersect;
