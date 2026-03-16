@@ -56,8 +56,6 @@ let needsCamReset = false;
 
 init();
 
-
-
 function initiateCamShake() {
     if (!originCamRot) {
         const camRotation = new THREE.Euler().setFromQuaternion(camera.quaternion);

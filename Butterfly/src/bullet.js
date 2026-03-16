@@ -22,7 +22,7 @@ export class BulletTrail {
         ring.lookAt(ring.position.clone().add(bulletDirection));
 
         this.scene.add(ring);
-        this.rings.push({ mesh: ring, age: 0, maxAge: 0.4, maxScale: ((2 - ringNum) * 3) + 2 });
+        this.rings.push({ mesh: ring, age: 0, maxAge: 0.4, maxScale: ((2 - ringNum) * 2) });
     }
 
     update(delta) {
