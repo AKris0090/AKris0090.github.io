@@ -285,8 +285,8 @@ async function initModels() {
         muzzleFlash.position.set(0.3, 0.55, 0);
     }
 
-    shootAnim = gunMixer.clipAction(gunAnims[2]);
-    shootAnim.setEffectiveTimeScale(3.5);
+    shootAnim = gunMixer.clipAction(gunAnims[3]);
+    shootAnim.setEffectiveTimeScale(3);
     shootAnim.setLoop(THREE.LoopOnce, 1);
     shootAnim.clampWhenFinished = true;
 
