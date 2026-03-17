@@ -299,7 +299,7 @@ let ground;
 async function initModels() {
     const [characterGLTF, monitorGLTF, gunGLTF, groundGLTF] = await Promise.all([
         loadGLTF('./models/character_animated.glb'),
-        loadGLTF('./models/monitorbetter.glb'),
+        loadGLTF('./models/monitorbetter2.glb'),
         loadGLTF('./models/gun.glb'),
         loadGLTF('./models/ground.glb')
     ]);
@@ -391,13 +391,6 @@ async function init() {
 
     await renderer.init();
 
-    const hdrloader = new THREE.TextureLoader();
-    const envMap = await hdrloader.loadAsync( './textures/render.png' );
-    envMap.mapping = THREE.EquirectangularReflectionMapping;
-    envMap.colorSpace = THREE.SRGBColorSpace;
-    // scene.background = new THREE.Color(0xF6F4D1);
-    // scene.background = envMap;
-
     // controls = new OrbitControls(camera, renderer.domElement);
     // controls.update();
 
@@ -413,7 +406,7 @@ async function init() {
         polygonOffsetFactor: -4,
         emissive: new THREE.Color(0xffffff),
         emissiveMap: decalDiffuse,
-        emissiveIntensity: 1
+        emissiveIntensity: 4
     });
     let decalDiffuseB = textureLoader.load( './textures/shatter.png');
     decalDiffuseB.colorSpace = THREE.SRGBColorSpace;
@@ -471,7 +464,7 @@ async function init() {
     bloomPass.strength = 0.1;
     bloomPass.radius = 0.1;
 
-    renderPipeline.outputNode = scenePassColor;// .add( bloomPass );
+    renderPipeline.outputNode = scenePassColor.add( bloomPass );
 
     requestAnimationFrame(animate);
 }
@@ -520,7 +513,7 @@ function animate() {
             }
         });
     }
-    scene.backgroundRotation.set(0, scene.backgroundRotation.y + 0.00005, 0);
+    scene.backgroundRotation.set(-0.1, -0.3, 0);
     renderPipeline.render();
     arrowHelper.position.copy(muzzleFlash.getWorldPosition(new THREE.Vector3()));
     requestAnimationFrame(animate);
