@@ -1,15 +1,12 @@
 import * as THREE from 'three';
 import { WebGPURenderer } from 'three/webgpu';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { DecalGeometry } from 'three/addons/geometries/DecalGeometry.js';
 import { Bullet } from './bullet.js';
 
 import { RenderPipeline } from 'three/webgpu'
 import { pass } from 'three/tsl'
 import {bloom} from 'three/addons/tsl/display/BloomNode.js'
-
-import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
 
 import { addCasing, updateCasings, initCasings } from './shellCasing.js';
 
@@ -21,12 +18,11 @@ const flowerSideNum = 75;
 const flowerSpacing = 0.25;
 const flowerOffsetX = -4.5;
 const flowerOffsetY = 7;
+const DECAL_LIFETIME = 5;
 
 let model, chracterMixer, gunMixer, timer, handBone, shoulderBone;
 let drawAnim, lowerAnim, shootAnim, liedownAnim; 
 let gun;
-let controls;
-let arrowHelper;
 
 let muzzleFlash;
 
@@ -44,7 +40,6 @@ let decals = [];
 let decalDiffuse, decalMaterial, decalMaterialB;
 
 let dummyObjs = [];
-let instances = [];
 
 let raycaster;
 let intersects = new Array();
@@ -56,13 +51,25 @@ let needsCamReset = false;
 
 init();
 
+function updateDecals(timerDelta) {
+    for (let i = decals.length - 1; i >= 0; i--) {
+        const entry = decals[i];
+        entry.decalLife -= timerDelta;
+
+        if (entry.decalLife <= 0) {
+            monitorMesh.remove(entry.decal);
+            entry.decal.geometry.dispose();
+            entry.decal.material.dispose();
+            decals.splice(i, 1);
+        }
+    }
+}
+
 function initiateCamShake() {
     if (!originCamRot) {
         const camRotation = new THREE.Euler().setFromQuaternion(camera.quaternion);
-        originCamRot = new THREE.Euler();
-        originCamRot.copy(camRotation);
-        targetCamRot = new THREE.Euler();
-        targetCamRot.copy(camRotation);
+        originCamRot = new THREE.Euler().copy(camRotation);
+        targetCamRot = new THREE.Euler().copy(camRotation);
         targetCamRot.x += THREE.MathUtils.degToRad(-0.15);
     }
     camAnimUpdate = 0;
@@ -119,7 +126,7 @@ function turnOffMuzzleFlash() {
 }
 
 function adjustArm(targetPosition) {
-    if (arrowHelper == null || shoulderBone == null) return;
+    if (shoulderBone == null) return;
 
     const shoulderWorldPos = shoulderBone.getWorldPosition(new THREE.Vector3());
     const targetDir = targetPosition.clone().sub(shoulderWorldPos).normalize();
@@ -185,10 +192,9 @@ function shoot(event) {
         const size = new THREE.Vector3(randomScale, randomScale, randomScale);
         const decalGeom = new DecalGeometry( monitorMesh, intersects[0].point, orientation, size);
         const mesh = new THREE.Mesh( decalGeom, materialChoice);
-        decals.push(mesh);
+        decals.push({decal: mesh, decalLife: DECAL_LIFETIME});
         monitorMesh.attach(mesh);
 
-        arrowHelper.position.copy(handBone.getWorldPosition(new THREE.Vector3()));
         const forward = new THREE.Vector3(0, 1, 0);
         forward.applyQuaternion(handBone.getWorldQuaternion(new THREE.Quaternion()));
 
@@ -294,8 +300,6 @@ function onMouseMove(event) {
     raycastTarget(event);
 }
 
-let ground;
-
 async function initModels() {
     const [characterGLTF, monitorGLTF, gunGLTF, groundGLTF] = await Promise.all([
         loadGLTF('./models/character_animated.glb'),
@@ -362,7 +366,6 @@ async function initModels() {
             child.material.color.multiplyScalar(1);
         }
     });
-    ground = groundGLTF.scene;
     scene.add(groundGLTF.scene);
 
     await Promise.all([initCasings(loader, scene)]);
@@ -390,9 +393,6 @@ async function init() {
     document.body.appendChild( renderer.domElement );
 
     await renderer.init();
-
-    // controls = new OrbitControls(camera, renderer.domElement);
-    // controls.update();
 
     const textureLoader = new THREE.TextureLoader();
     decalDiffuse = textureLoader.load( './textures/shatter2.png');
@@ -427,10 +427,6 @@ async function init() {
     window.addEventListener('mousemove', onMouseMove);
 
     raycaster = new THREE.Raycaster();
-    arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), 1.0, 0xff0000);
-    arrowHelper.position.copy(new THREE.Vector3(0, 0, 0));
-    arrowHelper.setDirection(new THREE.Vector3(0, 1, 0));
-    // scene.add(arrowHelper);
 
     loadMatrices(flowerSideNum, flowerSpacing, flowerOffsetX, flowerOffsetY);
 
@@ -491,10 +487,6 @@ function updateKickBackAnim(timeDelta) {
 }
 
 function animate() {
-    // controls.update();
-    // if (arrowHelper) {
-    //     arrowHelper.position.copy(muzzleFlash.getWorldPosition(new THREE.Vector3()));
-    // }
     timer.update();
     let timerDelta = timer.getDelta();
     if ((chracterMixer != null) && (gunMixer != null)) {
@@ -504,20 +496,15 @@ function animate() {
         updateKickBackAnim(timerDelta);
         updateCameraAnim(timerDelta);
     }
-    if (bullets.length > 0) {
-        bullets.forEach(b => b.update(timerDelta));
-        bullets.forEach((b, index) => {
-            if (b.lifeTime <= 0) {
-                b.destroy(scene);
-                bullets.splice(index, 1);
-            }
-        });
-    }
+    bullets.forEach(b => b.update(timerDelta));
+    bullets.forEach((b, index) => {
+        if (b.lifeTime <= 0) {
+            b.destroy(scene);
+            bullets.splice(index, 1);
+        }
+    });
+    updateDecals(timerDelta);
     scene.backgroundRotation.set(-0.1, -0.3, 0);
     renderPipeline.render();
-    arrowHelper.position.copy(muzzleFlash.getWorldPosition(new THREE.Vector3()));
     requestAnimationFrame(animate);
-    // if (dummyObjs.length != 0) {
-    //     updateWorld();
-    // }
 }
