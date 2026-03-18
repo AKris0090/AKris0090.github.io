@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 import { LinearToneMapping } from 'three';
-import { GLTFLoader } from '../three/GLTFLoader.js';
-import { DRACOLoader } from '../three/DRACOLoader.js';
-
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
 const loadingManager = new THREE.LoadingManager( () => {
 	

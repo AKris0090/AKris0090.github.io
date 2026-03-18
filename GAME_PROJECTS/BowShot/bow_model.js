@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { LinearToneMapping } from 'three';
-import { GLTFLoader } from '/three/GLTFLoader.js';
-import { OrbitControls } from '/three/OrbitControls.js'
-import { DRACOLoader } from '/three/DRACOLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
 const loadingManager = new THREE.LoadingManager( () => {
 	
@@ -119,7 +119,6 @@ var mesh;
 let scrollPercent = 0;
 
 await loader.loadAsync("./Character Model & Bow - Copy.glb").then(function(value) {
-    console.log(value);
     mesh = value;
     mesh.scenes[0].position.x = 2.75;
     mesh.scenes[0].position.y = 8.5;
@@ -136,7 +135,6 @@ function animate() {
     requestAnimationFrame( animate );
 
     renderer.render( scene, camera );
-    console.log(scrollPercent);
 };
 
 animate();
