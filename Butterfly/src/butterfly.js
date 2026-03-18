@@ -58,12 +58,7 @@ let targetKickBackLocalRotation;
 let needsKickBackReset = false;
 let kickbackAnimUpdate = 0;
 
-await init();
-if (loadingComplete) {
-    requestAnimationFrame(animate);
-} else {
-    mobileVersion();
-}
+init();
 
 function updateDecals(timerDelta) {
     for (let i = decals.length - 1; i >= 0; i--) {
@@ -506,6 +501,8 @@ async function init() {
 
     loadingComplete = true;
     clearTimeout(loadingTimeoutId);
+
+    requestAnimationFrame(animate);
 }
 
 function onWindowResize() {
