@@ -126,7 +126,7 @@ function drawGun() {
         drawAnim.reset();
         drawAnim.play();
         gunState = GUNSTATES.DRAWING;
-        setCursorToImage('./textures/crosshair6.png', 64);
+        setCursorToImage('Butterfly/textures/crosshair6.png', 64);
     }
 }
 
@@ -309,10 +309,10 @@ function onMouseMove(event) {
 
 async function initModels() {
     const [characterGLTF, monitorGLTF, gunGLTF, groundGLTF] = await Promise.all([
-        loadGLTF('./models/character_animated.glb'),
-        loadGLTF('./models/monitorbetter2.glb'),
-        loadGLTF('./models/gun.glb'),
-        loadGLTF('./models/ground.glb')
+        loadGLTF('Butterfly/models/character_animated.glb'),
+        loadGLTF('Butterfly/models/monitorbetter2.glb'),
+        loadGLTF('Butterfly/models/gun.glb'),
+        loadGLTF('Butterfly/models/ground.glb')
     ]);
 
     model = characterGLTF.scene;
@@ -444,7 +444,7 @@ async function init() {
     await renderer.init();
 
     const textureLoader = new THREE.TextureLoader();
-    decalDiffuse = textureLoader.load( './textures/shatter2.png');
+    decalDiffuse = textureLoader.load( 'Butterfly/textures/shatter2.png');
     decalDiffuse.colorSpace = THREE.SRGBColorSpace;
     decalMaterial = new THREE.MeshLambertMaterial( {
         map: decalDiffuse,
@@ -457,7 +457,7 @@ async function init() {
         emissiveMap: decalDiffuse,
         emissiveIntensity: 4
     });
-    let decalDiffuseB = textureLoader.load( './textures/shatter.png');
+    let decalDiffuseB = textureLoader.load( 'Butterfly/textures/shatter.png');
     decalDiffuseB.colorSpace = THREE.SRGBColorSpace;
     decalMaterialB = new THREE.MeshLambertMaterial( {
         map: decalDiffuseB,
@@ -480,7 +480,7 @@ async function init() {
     loadMatrices(flowerSideNum, flowerSpacing, flowerOffsetX, flowerOffsetY);
 
     let mesh;
-    loader.load('./models/purple.glb', (gltf) => {
+    loader.load('Butterfly/models/purple.glb', (gltf) => {
         gltf.scene.traverse((child) => {
             if (!child.isMesh) return;
 

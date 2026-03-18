@@ -1,3 +1,9 @@
+body {
+    background: #F6F4D1;
+    height: 100%;
+    padding-bottom: 3rem;
+}
+
 @font-face {
     font-family: cfour;
     src: url(/shared-resources/fonts/Cfour.otf);
@@ -8,14 +14,6 @@
     src: url(/shared-resources/fonts/moderntype.ttf) format("truetype");
     font-weight: normal;
     font-style: normal;
-}
-
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: #000000;
-    overflow-x: hidden;
 }
 
 nav {
@@ -116,28 +114,10 @@ nav li:hover .cross {
     padding-right: 0.5rem;
     padding-left: 2rem;
     background-color: #ff0000;
-    mask: url("./textures/cross.png") center / contain no-repeat;
-    -webkit-mask: url("./textures/cross.png") center / contain no-repeat;
+    mask: url("./assets/cross.png") center / contain no-repeat;
+    -webkit-mask: url("./assets/cross.png") center / contain no-repeat;
 
     transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-nav #accent {
-    width: 350px;
-    max-width: 350px;
-    height: 100%;
-    background: #7eff00;
-    mask: 
-        url("./assets/swirl.png") center / 100% 100% no-repeat,
-        linear-gradient(90deg, black 0%, rgba(209, 63, 61, 0.5) 65%, transparent 100%);
-    -webkit-mask-composite: destination-in;
-    mask-composite: intersect,
-        url("./assets/swirl.png") center / 100% 100% no-repeat,f
-        linear-gradient(90deg, black 0%, rgba(209, 63, 61, 0.5) 65%, transparent 100%);
-    -webkit-mask-composite: destination-in;
-    mask-composite: intersect;
-    pointer-events: none;
-    position: relative;
 }
 
 @media(max-width: 1100px) {
@@ -164,8 +144,8 @@ nav #accent {
         background: 
             linear-gradient(
             -90deg,
-            #ff0000 0%,
-            #ff0000 75%,
+            #e2dbbd 0%,
+            #e2dbbd 45%,
             transparent 100%
         );
     }
@@ -202,12 +182,19 @@ nav #accent {
     }
 }
 
-h2 {
-    color: #F6F4D1;
-    font-family: 'MTYPE';
+.header {
+    margin-top: 6rem;
+    margin-left: 2%;
+    margin-bottom: -2%;
 }
 
-.grid {
+.header h1 {
+    font-family: 'MTYPE', sans-serif;
+    font-size: 5rem;
+    color: #000000;
+}
+
+.projects_grid {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -216,88 +203,65 @@ h2 {
     align-self: center;
     margin-left: auto;
     margin-right: auto;
-    margin-top: -3rem;
     padding-bottom: 2rem;
     column-gap: 1rem;
     row-gap: 1rem;
 }
 
-.card {
+.projects_card {
     display: flex;
-    flex-direction: column;
-    min-width: 250px;
-    min-height: 200px;
-    width: 27vw;
-    height: fit-content;
-    border: 1px solid #403e3a;
-    background: #000000;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    min-width: 350px;
+    min-height: 400px;
+    width: 32vw;
+    height: 33vw;
     z-index: 2;
-    text-align: center;
-    align-items: center;
-    justify-items: center;
-    border-color: #ff0000;
-    border-width: 5px;
-    border-radius: 8px;;
-    row-gap: 1rem;
+    background-color: #000000;
 }
 
-.card h2 {
-    margin: 2.5vw auto 0 auto;
-    color: #F6F4D1;
+.projects_card h2 {
+    text-align: left;
     font-family: 'MTYPE';
-    font-size: 2.5rem;
-}
-
-.card button {
-    margin: 0 auto 3vw auto;
-    width: 10rem;
-    min-height: 4rem;
-    height: 4rem;
-    background-color: #F6F4D1;
-    border: none;
-    cursor: pointer;
-    border-radius: 15px;
-    font-family: "MTYPE";
+    margin-left: 8%;
+    margin-top: 8%;
     font-size: 1.5rem;
-    transition: color 0.2s ease, background-color 0.2s ease;
+    color: #e2dbbd;
+    z-index: 3;
 }
 
-.text {
-    display: flex;
-    flex-direction: column;
-    row-gap: 1.5rem;
+.projects_card p {
+    margin-left: 15%;
+    font-family: 'MTYPE', sans-serif;
+    font-weight: bolder;
+    font-size: 1.25rem;
+    color: #e2dbbd;
+    z-index: 3;
 }
 
-.card button:hover {
-    background-color: #ff0000;
-    color: #F6F4D1;
-}
-
-.card p {
-    margin: auto auto;
-    font-family: "MTYPE";
-    color: #F6F4D1;
-}
-
-.mobile {
-    display: none;
-    margin-top: 6rem;
-    margin-bottom: 4rem;
-    text-align: center;
+.projects_card img {
+    height: 50%;
     width: 90%;
+    align-self: center;
+}
+
+.projects_card button {
+    height: 4rem;
     margin-left: auto;
-    margin-right: auto;
+    margin-top: auto;
+    font-family: 'MTYPE';
+    font-size: 1.25rem;
+    color: #000000;
+    background-color: #ff0000;
+    cursor: pointer;
+    border: none;
+    min-width: 35%;
+    z-index: 99999;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.mobile h1 {
-    margin-top: rem;
-    font-family: 'MTYPE';
-    color: #F6F4D1;
-    font-size: 3.5rem;
-}
-
-.mobile p {
-    font-family: 'MTYPE';
-    color: #F6F4D1;
-    font-size: 1rem;
+.projects_card button:hover {
+    color: #ff0000;
+    background-color: #e2dbbd;
 }

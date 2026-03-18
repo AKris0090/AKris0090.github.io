@@ -53,7 +53,7 @@ export class Casing {
 export function initCasings(gltfLoader, scene) {
     return new Promise((resolve, reject) => {
         gltfLoader.load(
-            './models/shellCasing.glb',
+            'Butterfly/models/shellCasing.glb',
             (gltf) => {
                 const model = gltf.scene.children[0];
                 casingMesh = new THREE.InstancedMesh(
