@@ -4,25 +4,10 @@
 }
 
 @font-face {
-    font-family: PP;
-    src: url(/PPNeueMontrealMono-Medium.otf);
-}
-
-@font-face {
     font-family: MTYPE;
     src: url(/moderntype.ttf) format("truetype");
     font-weight: normal;
     font-style: normal;
-}
-
-@font-face {
-    font-family: Watch;
-    src: url(/PPWatch-Black.otf);
-}
-
-@font-face {
-    font-family: Tele;
-    src: url(/PPTelegraf-Ultrabold.otf);
 }
 
 html, body {
@@ -41,15 +26,6 @@ nav {
     z-index: 998;
     background-color: #000000;
 }
-
-nav::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    opacity: 0.2;
-    pointer-events: none;
-}
-
 
 .sidebar {
     display: none;
