@@ -424,11 +424,22 @@ async function init() {
     scene = new THREE.Scene();
 
     const canvas = document.getElementById('viewport');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    renderer = new WebGPURenderer( { antialias: true, canvas: canvas } );
-	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( Math.min(canvas.width, 1920), Math.min(canvas.height, 1080) );
+
+    const displayWidth = window.innerWidth;
+    const displayHeight = window.innerHeight;
+
+    const renderWidth = Math.min(displayWidth, 1920);
+    const renderHeight = Math.min(displayHeight, 1080);
+
+    canvas.width = renderWidth;
+    canvas.height = renderHeight;
+    
+    canvas.style.width = `${displayWidth}px`;
+    canvas.style.height = `${displayHeight}px`;
+
+    renderer = new WebGPURenderer({ antialias: true, canvas: canvas });
+    renderer.setPixelRatio(1);
+    renderer.setSize(renderWidth, renderHeight);
 
     await renderer.init();
 
