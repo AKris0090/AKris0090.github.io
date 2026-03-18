@@ -1,10 +1,9 @@
 import * as THREE from 'three';
 import { LinearToneMapping } from 'three';
-import { GLTFLoader } from '../three/GLTFLoader.js';
-import { DRACOLoader } from '../three/DRACOLoader.js';
-
-import {gsap} from "./gsap-public/src/index.js"
-import {ScrollTrigger} from "./gsap-public/src/ScrollTrigger.js"
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import {gsap} from 'gsap';
+import {ScrollTrigger} from 'gsap/ScrollTrigger';
 
 class EnvironmentScene extends THREE.Scene {
 
@@ -136,7 +135,6 @@ loadingManager.onStart = function ( url, itemsLoaded, itemsTotal ) {
 const canvas = document.getElementById('model__container')
 
 canvas.style.width = window.innerWidth;
-console.log(window.innerWidth);
 canvas.style.height = window.innerHeight;
 
 const scene = new THREE.Scene();
@@ -218,7 +216,6 @@ function onTransitionEnd( event ) {
 let scrollPercent = 0;
 
 await loader.loadAsync("./Example2.glb").then(function(value) {
-    console.log(value);
     mesh = value;
     scene.add(mesh.scenes[0]);
 });
@@ -352,7 +349,6 @@ const texture = tex_loader.load(
   });
 
 function animate() {
-    console.log(scrollPercent);
     requestAnimationFrame( animate );
 
     playScrollAnimations()
