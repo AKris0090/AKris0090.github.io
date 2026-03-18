@@ -21,6 +21,9 @@ const flowerOffsetX = -4.5;
 const flowerOffsetY = 7;
 const DECAL_LIFETIME = 5;
 
+let loadingComplete = false;
+let loadingTimeoutId;
+
 let model, chracterMixer, gunMixer, timer, handBone, shoulderBone;
 let drawAnim, lowerAnim, shootAnim, liedownAnim; 
 let gun;
@@ -48,7 +51,19 @@ let targetCamRot;
 let camAnimUpdate = 0;
 let needsCamReset = false;
 
-init();
+let matrices = [];
+let bullets = [];
+let originKickBackLocalRotation;
+let targetKickBackLocalRotation;
+let needsKickBackReset = false;
+let kickbackAnimUpdate = 0;
+
+await init();
+if (loadingComplete) {
+    requestAnimationFrame(animate);
+} else {
+    mobileVersion();
+}
 
 function updateDecals(timerDelta) {
     for (let i = decals.length - 1; i >= 0; i--) {
@@ -149,11 +164,6 @@ function adjustArm(targetPosition) {
     shoulderBone.rotation.copy(euler);
 }
 
-let originKickBackLocalRotation;
-let targetKickBackLocalRotation;
-let needsKickBackReset = false;
-let kickbackAnimUpdate = 0;
-
 function initiateKickBack() {
     if (!originKickBackLocalRotation) {
         const handBoneRotation = new THREE.Euler().setFromQuaternion(handBone.quaternion);
@@ -166,8 +176,6 @@ function initiateKickBack() {
     kickbackAnimUpdate = 0;
     needsKickBackReset = true;
 }
-
-let bullets = [];
 
 function shoot(event) {
     if (raycastTarget(event)) {
@@ -228,8 +236,6 @@ function onMouseDown(event) {
         shoot(event);
     }
 }
-
-let matrices = [];
 
 function loadMatrices(sideCount, spacing, offsetX, offsetY) {
     for(let i = -sideCount / 2; i < sideCount / 2; i++) {
@@ -387,14 +393,24 @@ function isMobile() {
     return (hasTouch && smallScreen) || uaMobile;
 }
 
+function mobileVersion() {
+    const canvas = document.getElementById('viewport');
+    canvas.style.display = 'none';
+    const header = document.getElementById('mobile_header');
+    header.style.display = 'block';
+}
+
 async function init() {
     if (isMobile()) {
-        const canvas = document.getElementById('viewport');
-        canvas.style.display = 'none';
-        const header = document.getElementById('mobile_header');
-        header.style.display = 'block';
+        mobileVersion();
         return;
     }
+
+    loadingTimeoutId = setTimeout(() => {
+        if (!loadingComplete) {
+            mobileVersion();
+        }
+    }, 6000);
 
     loader = new GLTFLoader();
 
@@ -488,7 +504,8 @@ async function init() {
 
     renderPipeline.outputNode = scenePassColor.add( bloomPass );
 
-    requestAnimationFrame(animate);
+    loadingComplete = true;
+    clearTimeout(loadingTimeoutId);
 }
 
 function onWindowResize() {
