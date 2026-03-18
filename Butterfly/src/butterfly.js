@@ -303,6 +303,7 @@ function raycastTarget(event) {
 }
 
 function onMouseMove(event) {
+    if (!loadingComplete) return;
     raycastTarget(event);
 }
 
