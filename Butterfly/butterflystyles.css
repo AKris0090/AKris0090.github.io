@@ -250,10 +250,9 @@ h2 {
     display: flex;
     flex-direction: column;
     min-width: 250px;
-    min-height: 320px;
+    min-height: 200px;
     width: 27vw;
-    height: 45vh;
-    max-height: 300px;
+    height: fit-content;
     border: 1px solid #403e3a;
     background: #000000;
     z-index: 2;
@@ -274,8 +273,9 @@ h2 {
 }
 
 .card button {
-    margin: 0 auto auto auto;
+    margin: 0 auto 3vw auto;
     width: 10rem;
+    min-height: 4rem;
     height: 4rem;
     background-color: #F6F4D1;
     border: none;
