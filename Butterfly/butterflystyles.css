@@ -1,10 +1,36 @@
+@font-face {
+    font-family: cfour;
+    src: url(/Cfour.otf);
+}
+
+@font-face {
+    font-family: PP;
+    src: url(/PPNeueMontrealMono-Medium.otf);
+}
+
+@font-face {
+    font-family: MTYPE;
+    src: url(/moderntype.ttf) format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Watch;
+    src: url(/PPWatch-Black.otf);
+}
+
+@font-face {
+    font-family: Tele;
+    src: url(/PPTelegraf-Ultrabold.otf);
+}
+
 html, body {
     margin: 0;
     padding: 0;
-    width: 100%;
     height: 100%;
     background: #000000;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 nav {
@@ -13,6 +39,7 @@ nav {
     top: 0;
     left: 0;
     z-index: 998;
+    background-color: #000000;
 }
 
 nav::before {
@@ -53,14 +80,6 @@ nav ul{
     position: relative;
     overflow: visible;
     padding-right: 0rem;
-}
-
-nav li:not(.brand){
-    display: flex;
-    align-items: center;
-    height: 100%;
-    font-family: 'PPThin';
-    transition: background-color 0.2s ease;
 }
 
 nav li:first-child{
@@ -169,8 +188,8 @@ nav #accent {
         background: 
             linear-gradient(
             -90deg,
-            #e2dbbd 0%,
-            #e2dbbd 45%,
+            #ff0000 0%,
+            #ff0000 75%,
             transparent 100%
         );
     }
@@ -207,29 +226,102 @@ nav #accent {
     }
 }
 
-@font-face {
-    font-family: cfour;
-    src: url(/Cfour.otf);
+h2 {
+    color: #F6F4D1;
+    font-family: 'MTYPE';
 }
 
-@font-face {
-    font-family: PP;
-    src: url(/PPNeueMontrealMono-Medium.otf);
+.grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -3rem;
+    padding-bottom: 2rem;
+    column-gap: 1rem;
+    row-gap: 1rem;
 }
 
-@font-face {
-    font-family: MTYPE;
-    src: url(/moderntype.ttf) format("truetype");
-    font-weight: normal;
-    font-style: normal;
+.card {
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+    min-height: 320px;
+    width: 27vw;
+    height: 45vh;
+    max-height: 300px;
+    border: 1px solid #403e3a;
+    background: #000000;
+    z-index: 2;
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+    border-color: #ff0000;
+    border-width: 5px;
+    border-radius: 8px;;
+    row-gap: 1rem;
 }
 
-@font-face {
-    font-family: Watch;
-    src: url(/PPWatch-Black.otf);
+.card h2 {
+    margin: 2.5vw auto 0 auto;
+    color: #F6F4D1;
+    font-family: 'MTYPE';
+    font-size: 2.5rem;
 }
 
-@font-face {
-    font-family: Tele;
-    src: url(/PPTelegraf-Ultrabold.otf);
+.card button {
+    margin: 0 auto auto auto;
+    width: 10rem;
+    height: 4rem;
+    background-color: #F6F4D1;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+    font-family: "MTYPE";
+    font-size: 1.5rem;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+}
+
+.card button:hover {
+    background-color: #ff0000;
+    color: #F6F4D1;
+}
+
+.card p {
+    margin: auto auto;
+    font-family: "MTYPE";
+    color: #F6F4D1;
+}
+
+.mobile {
+    display: none;
+    margin-top: 6rem;
+    margin-bottom: 4rem;
+    text-align: center;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mobile h1 {
+    margin-top: rem;
+    font-family: 'MTYPE';
+    color: #F6F4D1;
+    font-size: 3.5rem;
+}
+
+.mobile p {
+    font-family: 'MTYPE';
+    color: #F6F4D1;
+    font-size: 1rem;
 }

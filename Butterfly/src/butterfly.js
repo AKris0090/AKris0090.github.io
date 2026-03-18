@@ -13,6 +13,7 @@ import { addCasing, updateCasings, initCasings } from './shellCasing.js';
 let camera, scene, renderer;
 let loader;
 let renderPipeline;
+let rect;
 
 const flowerSideNum = 75;
 const flowerSpacing = 0.25;
@@ -38,8 +39,6 @@ let gunState = GUNSTATES.LOWERED;
 
 let decals = [];
 let decalDiffuse, decalMaterial, decalMaterialB;
-
-let dummyObjs = [];
 
 let raycaster;
 let intersects = new Array();
@@ -240,7 +239,6 @@ function loadMatrices(sideCount, spacing, offsetX, offsetY) {
             dummy.rotation.y = Math.random() * Math.PI * 2;
             dummy.scale.setScalar((Math.random() * 0.5) + 0.4);
             dummy.updateMatrix();
-            dummyObjs.push(dummy);
             matrices.push(dummy.matrix.clone());
         }
     }
@@ -273,10 +271,17 @@ function raycastTarget(event) {
     if (!monitorMesh) {
         return;
     }
+
+    rect = renderer.domElement.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    if (x < 0 || x > rect.width || y < 0 || y > rect.height) return;
+
     raycaster.setFromCamera(
         {
-            x: (event.clientX / renderer.domElement.clientWidth) * 2 - 1,
-            y: -(event.clientY / renderer.domElement.clientHeight) * 2 + 1,
+            x: (x / rect.width) * 2 - 1,
+            y: -(y / rect.height) * 2 + 1,
         },
         camera
     );
@@ -371,7 +376,26 @@ async function initModels() {
     await Promise.all([initCasings(loader, scene)]);
 }
 
+function isMobile() {
+    const hasTouch = window.matchMedia("(pointer: coarse)").matches;
+    const smallScreen = window.innerWidth <= 768;
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+
+    const uaMobile =
+        /android|iphone|ipad|ipod|mobile/i.test(ua);
+
+    return (hasTouch && smallScreen) || uaMobile;
+}
+
 async function init() {
+    if (isMobile()) {
+        const canvas = document.getElementById('viewport');
+        canvas.style.display = 'none';
+        const header = document.getElementById('mobile_header');
+        header.style.display = 'block';
+        return;
+    }
+
     loader = new GLTFLoader();
 
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 200);
@@ -387,10 +411,12 @@ async function init() {
 
     scene = new THREE.Scene();
 
-    renderer = new WebGPURenderer( { antialias: true } );
+    const canvas = document.getElementById('viewport');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    renderer = new WebGPURenderer( { antialias: true, canvas: canvas } );
 	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( renderer.domElement );
+	renderer.setSize( canvas.width, canvas.height );
 
     await renderer.init();
 
