@@ -428,7 +428,7 @@ async function init() {
     canvas.height = window.innerHeight;
     renderer = new WebGPURenderer( { antialias: true, canvas: canvas } );
 	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( canvas.width, canvas.height );
+	renderer.setSize( Math.min(canvas.width, 1920), Math.min(canvas.height, 1080) );
 
     await renderer.init();
 
