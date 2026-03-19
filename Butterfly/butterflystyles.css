@@ -301,3 +301,18 @@ h2 {
     color: #F6F4D1;
     font-size: 1rem;
 }
+
+canvas {
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,1) 80%,
+        rgba(0,0,0,0) 100%
+    );
+    mask-image: linear-gradient(
+        to bottom,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,1) 80%,
+        rgba(0,0,0,0) 100%
+    );
+}

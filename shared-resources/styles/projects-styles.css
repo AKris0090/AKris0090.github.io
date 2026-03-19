@@ -114,8 +114,8 @@ nav li:hover .cross {
     padding-right: 0.5rem;
     padding-left: 2rem;
     background-color: #ff0000;
-    mask: url("./assets/cross.png") center / contain no-repeat;
-    -webkit-mask: url("./assets/cross.png") center / contain no-repeat;
+    mask: url("/shared-resources/icons/cross.png") center / contain no-repeat;
+    -webkit-mask: url("/shared-resources/icons/cross.png") center / contain no-repeat;
 
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
@@ -144,8 +144,8 @@ nav li:hover .cross {
         background: 
             linear-gradient(
             -90deg,
-            #e2dbbd 0%,
-            #e2dbbd 45%,
+            #ff0000 0%,
+            #ff0000 75%,
             transparent 100%
         );
     }
@@ -176,9 +176,25 @@ nav li:hover .cross {
         margin-left: auto;
         margin-right: auto;
         text-align: center;
+        margin-bottom: -8% !important;
     }
     .header h1 span {
         font-size: 2.5rem;
+    }
+    .projects_card h2 {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .projects_card p {
+        text-align: center;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .info_button {
+        font-size: 1rem !important;
+    }
+    .view_button {
+        font-size: 1rem !important;
     }
 }
 
@@ -208,15 +224,23 @@ nav li:hover .cross {
     row-gap: 1rem;
 }
 
+.card_container {
+    position: relative;
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: column;
+    width: 32vw;
+    min-width: 350px;
+    min-height: 400px;
+}
+
 .projects_card {
     display: flex;
     box-sizing: border-box;
-    overflow: hidden;
-    position: relative;
+    flex-direction: column;
     min-width: 350px;
     min-height: 400px;
-    width: 32vw;
-    height: 33vw;
+    height: 54vh;
     z-index: 2;
     background-color: #000000;
 }
@@ -224,18 +248,17 @@ nav li:hover .cross {
 .projects_card h2 {
     text-align: left;
     font-family: 'MTYPE';
-    margin-left: 8%;
-    margin-top: 8%;
+    margin: 8% auto 4% 5%;
     font-size: 1.5rem;
     color: #e2dbbd;
     z-index: 3;
 }
 
 .projects_card p {
-    margin-left: 15%;
+    margin: 0 auto auto 5%;
     font-family: 'MTYPE', sans-serif;
     font-weight: bolder;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     color: #e2dbbd;
     z-index: 3;
 }
@@ -244,12 +267,22 @@ nav li:hover .cross {
     height: 50%;
     width: 90%;
     align-self: center;
+    object-fit: cover;
+    object-position: center;
 }
 
-.projects_card button {
+.button_container {
+    display: flex;
+    margin-top: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-self: center;
+}
+
+.view_button {
     height: 4rem;
     margin-left: auto;
-    margin-top: auto;
     font-family: 'MTYPE';
     font-size: 1.25rem;
     color: #000000;
@@ -261,7 +294,57 @@ nav li:hover .cross {
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+.info_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 4rem;
+    margin-right: auto;
+    font-family: 'MTYPE';
+    font-size: 1.25rem;
+    color: #000000;
+    background-color: #ff0000;
+    cursor: pointer;
+    border: none;
+    min-width: 10%;
+    z-index: 99999;
+    text-align: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
 .projects_card button:hover {
     color: #ff0000;
     background-color: #e2dbbd;
+}
+
+.card_info {
+    display: none;
+    padding: 0;
+    margin-top: 0;
+    background-color: #ff0000;
+    border: 3px black;
+    border-style: solid none none none;
+    text-align: center;
+}
+
+.card_info ul {
+    padding: 0.75rem 0;
+    align-items: center;
+}
+
+.card_info li {
+    color: #000000;
+    font-family: 'MTYPE';
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.card_info a{
+    color: #000000;
+}
+
+.card_info li:not(:last-child) {
+    margin-bottom: 0.5rem;
 }

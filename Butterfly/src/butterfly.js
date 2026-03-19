@@ -422,6 +422,7 @@ async function init() {
     timer.connect( document );
 
     scene = new THREE.Scene();
+    scene.background = new THREE.Color('#000000');
 
     const canvas = document.getElementById('viewport');
 
