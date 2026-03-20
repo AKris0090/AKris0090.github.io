@@ -37,7 +37,7 @@ const software_dev_projects = [
   { 
     title: "Extrusion", 
     desc: "Escape from the laboratory",
-    image: "UhrCtb.png",
+    image: "UhrCTb.png",
     link: "https://violets321.itch.io/extrusion",
     notes: [
       "Made in Unreal Engine 5, for GMTK Game Jam 2024",
@@ -49,7 +49,7 @@ const software_dev_projects = [
   { 
     title: "Dillo's Bounce", 
     desc: "Survive as an armadillo in the desert",
-    image: "DB_Banner.png",
+    image: "DB_banner.png",
     link: "https://violets321.itch.io/dillos-bounce",
     notes: [
       "Made in Unreal Engine 5, for Major Jam 6",
@@ -134,7 +134,7 @@ software_dev_projects.forEach(project => {
   cardContainer.appendChild(card);
 
   const cardInfo = document.createElement("div");
-  cardInfo.className = "card_info";
+  cardInfo.className = "card_info"; 
   cardInfo.id = `${escapedTitle}`;
   
   const ul = document.createElement("ul");
