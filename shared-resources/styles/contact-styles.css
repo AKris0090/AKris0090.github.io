@@ -1,6 +1,5 @@
 body {
-    background: #F6F4D1;
-    height: 100%;
+    background: #000000;
     padding-bottom: 3rem;
 }
 
@@ -207,6 +206,18 @@ nav li:hover .cross {
         width: 38px !important;
         height: 38px !important;
     }
+    .split_container {
+        margin-top: 3rem !important;
+        flex-direction: column;
+        column-gap: 2rem;
+        justify-content: center;
+    }
+    .social_media_links {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
 }
 
 .header {
@@ -219,163 +230,47 @@ nav li:hover .cross {
 }
 
 .header h1 {
+    display: flex;
+    flex-direction: row;
     font-family: 'MTYPE', sans-serif;
     font-size: 5rem;
-    color: #000000;
+    color: #F6F4D1;
+    align-items: center;
 }
 
-.projects_grid {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    align-self: center;
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 2rem;
-    column-gap: 1rem;
-    row-gap: 1rem;
-}
-
-.card_container {
-    position: relative;
-    display: flex;
-    box-sizing: border-box;
-    flex-direction: column;
-    width: 32vw;
-    min-width: 350px;
-    min-height: 400px;
-}
-
-.projects_card {
-    display: flex;
-    box-sizing: border-box;
-    flex-direction: column;
-    min-width: 350px;
-    min-height: 400px;
-    height: 54vh;
-    z-index: 2;
-    background-color: #000000;
-}
-
-.projects_card h2 {
-    text-align: left;
-    font-family: 'MTYPE';
-    margin: 8% auto 4% 5%;
-    font-size: 1.75rem;
-    color: #e2dbbd;
-    z-index: 3;
-}
-
-.projects_card p {
-    margin: 0 auto 5% 5%;
-    font-family: 'MTYPE', sans-serif;
-    font-weight: bolder;
-    font-size: 1.1rem;
-    color: #e2dbbd;
-    z-index: 3;
-}
-
-.projects_card img {
-    height: 50%;
+.split_container {
     width: 90%;
-    align-self: center;
-    object-fit: cover;
-    object-position: center;
+    max-width: 90%;
+    display: flex;
+    margin: 0 auto;
+    margin-left: 2.5%;
 }
 
-.button_container {
+.social_media_links {
+    width: 50%;
     display: flex;
-    margin-top: auto;
+    flex-direction: column;
+    align-items: self-start;
+    justify-content: start;
+    padding: 0;
+    list-style: none;
+}
+
+.social_media_links a {
+    font-family: 'MTYPE';
+    color: #F6F4D1;
+    margin-left: 0;
+}
+
+.social_media_links li {
+    display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    align-self: center;
-}
-
-.project_video {
-    display: flex;
-    position: absolute;
-    background-color: #ff0000;
-    height: 3vw;
-    width: 3vw;
-    border: none;
-    right: 0;
-    top: 0;
-    padding: 0;
-    justify-content: center;
     align-items: center;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem; 
 }
 
-.project_video svg {
-    margin: auto;
-}
-
-.view_button {
-    height: 4rem;
-    font-family: 'MTYPE';
-    font-size: 1.25rem;
-    color: #000000;
-    background-color: #ff0000;
-    cursor: pointer;
-    border: none;
-    min-width: 35%;
-    z-index: 99999;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.info_button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 4rem;
-    font-family: 'MTYPE';
-    font-size: 1.25rem;
-    color: #000000;
-    background-color: #ff0000;
-    cursor: pointer;
-    border: none;
-    min-width: 10%;
-    z-index: 99999;
-    text-align: center;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.projects_card button:hover {
-    color: #ff0000;
-    background-color: #e2dbbd;
-}
-
-.card_info {
-    display: none;
-    padding: 0;
-    margin-top: 0;
-    background-color: #ff0000;
-    border: 3px black;
-    border-style: solid none none none;
-    text-align: center;
-}
-
-.card_info ul {
-    padding: 0.75rem 0;
-    align-items: center;
-}
-
-.card_info li {
-    color: #000000;
-    font-family: 'MTYPE';
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-}
-
-.card_info a{
-    color: #000000;
-}
-
-.card_info li:not(:last-child) {
-    margin-bottom: 0.5rem;
+.social_media_links svg {
+    width: 2.5rem;
+    flex-shrink: 0;
 }
