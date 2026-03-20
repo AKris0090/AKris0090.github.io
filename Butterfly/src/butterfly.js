@@ -58,6 +58,8 @@ let targetKickBackLocalRotation;
 let needsKickBackReset = false;
 let kickbackAnimUpdate = 0;
 
+let cursorSet = false;
+
 init();
 
 function updateDecals(timerDelta) {
@@ -103,10 +105,12 @@ function updateCameraAnim(timeDelta) {
 function setCursorToImage(url, size = 32) {
     const half = size / 2;
     document.body.style.cursor = `url('${url}') ${half} ${half}, auto`;
+    cursorSet = true;
 }
 
 function resetCursor() {
     document.body.style.cursor = '';
+    cursorSet = false;
 }
 
 function lowerGun() {
@@ -291,12 +295,14 @@ function raycastTarget(event) {
         let n = new THREE.Vector3();
         n.copy(intersects[0].face.normal);
         n.transformDirection(intersects[0].object.matrixWorld);
+        if (!cursorSet) setCursorToImage('Butterfly/textures/crosshair6.png', 64);
         drawGun();
         if (gunState === GUNSTATES.AIMING) {
             adjustArm(intersects[0].point);
         }
         return true;
     } else {
+        if (cursorSet) resetCursor();
         lowerGun();
     }
     return false;
