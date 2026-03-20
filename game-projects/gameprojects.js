@@ -85,7 +85,8 @@ const software_dev_projects = [
 const software_grid = document.getElementsByClassName("projects_grid")[0];
 
 function openInfo(buttonId) {
-  const infoDiv = document.getElementById(buttonId);
+  const escapedTitle = buttonId.replace(/'/g, "\\'");
+  const infoDiv = document.getElementById(escapedTitle);
   infoDiv.style.display = infoDiv.style.display === "block" ? "none" : "block";
 }
 
@@ -112,12 +113,14 @@ software_dev_projects.forEach(project => {
     card.appendChild(videoLink);
   }
 
+  const escapedTitle = project.title.replace(/'/g, "\\'");
+
   card.innerHTML += `
     <h2>${project.title}</h2>
     <p>${project.desc}</p>
     <img src="/shared-resources/${project.image}" alt="${project.title} image">
     <div class="button_container">
-      <button class="info_button" onclick="openInfo('${project.title}')">
+      <button class="info_button" onclick="openInfo('${escapedTitle}')">
         MORE INFO
         <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="none">
           <circle cx="12" cy="12" r="10" stroke="#F6F4D1" stroke-width="1.5"/>
@@ -132,7 +135,7 @@ software_dev_projects.forEach(project => {
 
   const cardInfo = document.createElement("div");
   cardInfo.className = "card_info";
-  cardInfo.id = `${project.title}`;
+  cardInfo.id = `${escapedTitle}`;
   
   const ul = document.createElement("ul");
 
