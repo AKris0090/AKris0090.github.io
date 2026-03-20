@@ -34,7 +34,6 @@ function onTransitionEnd( event ) {
 const canvas = document.getElementById('model__container')
 
 canvas.style.width = window.innerWidth;
-console.log(window.innerWidth);
 canvas.style.height = window.innerHeight;
 
 const scene = new THREE.Scene();
@@ -123,13 +122,11 @@ var mesh2;
 let scrollPercent = 0;
 
 await loader.loadAsync("./boar5.glb").then(function(value) {
-    console.log(value);
     mesh = value;
     scene.add(mesh.scenes[0]);
 });
 
 await loader.loadAsync("./earth.glb").then(function(value) {
-    console.log(value);
     mesh2 = value;
     mesh2.scenes[0].position.x = -0.5;
     mesh2.scenes[0].position.y = 10.15;
@@ -246,7 +243,6 @@ document.body.onscroll = () => {
 scene.background = null;
 
 function animate() {
-    console.log(scrollPercent);
     requestAnimationFrame( animate );
 
     var scaleper = 50;

@@ -6,12 +6,12 @@
 
 @font-face {
     font-family: against;
-    src: url(/DragonProject/againstregular.ttf);
+    src: url(/shared-resources/old/fonts/againstregular.ttf);
 }
 
 @font-face {
     font-family: cfour;
-    src: url(/Cfour.otf);
+    src: url(/shared-resources/fonts/Cfour.otf);
 }
 
 .ball {

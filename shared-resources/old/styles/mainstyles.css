@@ -21,23 +21,23 @@
 
 @font-face {
     font-family: bro;
-    src: url(/HOMEPAGE_RESOURCES/BrolinkDemo-VGyMZ.otf);
+    src: url(/shared-resources/old/fonts/BrolinkDemo-VGyMZ.otf);
 }
 
 
 @font-face {
     font-family: against;
-    src: url(/DragonProject/againstregular.ttf);
+    src: url(/shared-resources/old/fonts/againstregular.ttf);
 }
 
 @font-face {
     font-family: cfour;
-    src: url(/Cfour.otf);
+    src: url(/shared-resources/fonts/Cfour.otf);
 }
 
 @font-face {
     font-family: cap;
-    src: url(/GAME_PROJECTS/HiveGrind/Capuche\ Trial.otf);
+    src: url(/shared-resources/old/fonts/Capuche\ Trial.otf);
 }
 
 h1 {
