@@ -2,6 +2,7 @@ body {
     background: #F6F4D1;
     height: 100%;
     padding-bottom: 3rem;
+    overflow-x: hidden;
 }
 
 @font-face {
@@ -32,7 +33,7 @@ nav {
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: #ffffff;
+    background-color: #000000;
     transition: top 0.3s ease;
     z-index: 999;
 }
@@ -124,13 +125,6 @@ nav li:hover .cross {
     .hideOnMobile {
         display: none !important;
     }
-    .sidebar li:first-child a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0;
-        width: 100%;
-    }
     .menuButton {
         display: block;
         position: absolute;
@@ -154,7 +148,7 @@ nav li:hover .cross {
         flex-direction: column;
         align-items: stretch;
         justify-content: center;
-        width: 100%;
+        gap: 1rem;
         padding: 0;
     }
     .sidebar ul {
@@ -162,15 +156,35 @@ nav li:hover .cross {
         padding: 0;
         margin: 0;
         gap: 1rem;
-        align-items: center;
     }
-    nav .sidebar li a{
+    nav a {
+        font-size: 1.5rem;
+    }
+    .sidebar li {
         background-color: #d13f3d;
         height: 100px;
         color: #030109;
         align-self: center;
+        width: 80%;
+        justify-content: center;
+        border-radius: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0;
+    }
+    .sidebar li a {
+        align-items: center;
+        padding: 0;
+        border-radius: 50%;
+        height: 100%;   
         width: 100%;
         justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .sidebar li:first-child{
+        width: 15%;
+        height: 9%;
     }
     .header{
         margin-left: auto;
