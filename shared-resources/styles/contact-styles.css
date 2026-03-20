@@ -274,3 +274,8 @@ nav li:hover .cross {
     width: 2.5rem;
     flex-shrink: 0;
 }
+
+p {
+    color: #F6F4D1;
+    font-family: 'MTYPE';
+}
