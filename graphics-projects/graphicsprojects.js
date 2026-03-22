@@ -62,8 +62,9 @@ const software_dev_projects = [
 const software_grid = document.getElementsByClassName("projects_grid")[0];
 
 function openInfo(buttonId) {
-  const infoDiv = document.getElementById(buttonId);
-  infoDiv.style.display = infoDiv.style.display === "block" ? "none" : "block";
+  const escapedTitle = buttonId.replace(/'/g, "\\'");
+  const infoDiv = document.getElementById(escapedTitle);
+  infoDiv.classList.toggle("open");
 }
 
 software_dev_projects.forEach(project => {

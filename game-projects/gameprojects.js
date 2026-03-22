@@ -87,7 +87,7 @@ const software_grid = document.getElementsByClassName("projects_grid")[0];
 function openInfo(buttonId) {
   const escapedTitle = buttonId.replace(/'/g, "\\'");
   const infoDiv = document.getElementById(escapedTitle);
-  infoDiv.style.display = infoDiv.style.display === "block" ? "none" : "block";
+  infoDiv.classList.toggle("open");
 }
 
 software_dev_projects.forEach(project => {

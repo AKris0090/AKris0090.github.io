@@ -363,13 +363,19 @@ nav li:hover .cross {
 }
 
 .card_info {
-    display: none;
+    max-height: 0;
+    overflow: hidden;
     padding: 0;
     margin-top: 0;
-    background-color: #ff0000;
-    border: 3px black;
+    background-color: #000000;
     border-style: solid none none none;
+    border-color: #ff0000;
     text-align: center;
+    transition: max-height 0.4s ease;
+}
+
+.card_info.open {
+    max-height: 250px;
 }
 
 .card_info ul {
@@ -378,7 +384,7 @@ nav li:hover .cross {
 }
 
 .card_info li {
-    color: #000000;
+    color: #F6F4D1;
     font-family: 'MTYPE';
     width: 80%;
     margin-left: auto;
@@ -387,7 +393,7 @@ nav li:hover .cross {
 }
 
 .card_info a{
-    color: #000000;
+    color: #F6F4D1;
 }
 
 .card_info li:not(:last-child) {
