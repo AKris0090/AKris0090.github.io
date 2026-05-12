@@ -45,11 +45,18 @@
     <div class ="blog-post-content">
         <h3>Overview</h3>
         <P>
+			During my final year at university, I decided to take a computer networking course as a part of my minor in CS. While the course taught me the fundamentals behind
+			networked systems, I was still curious as to how they applied to multiplayer online games. This project was the result of diving headfirst into this rabbit hole
+			and immersing myself in creating a netcode system, from scratch, that is capable of supporting a first person shooter game. <br><br>
+			One of my all-time favorite game generes are first-person shooters. Their highly skillful and competitive nature is what initially drew me in, and this project 
+			helped me learn about the different ways that online games support this. A majority of the network architecture decisions I made were based on resources from existing
+			multiplayer games such as Valve's CS2, Riot's Valorant, and Blizzard's Overwatch.<br><br>
             This article assumes a basic understanding of networking principles in C/C++, including creating/binding sockets and sending/receiving packets.<br><br>
 			You can view the source code for both client and server at: <a href="https://github.com/AKris0090/Hyacinth">https://github.com/AKris0090/Hyacinth</a>
         </P>
         <h3>Contents</h3>
         <P>
+			Hyacinth is a multiplayer first person shooter engine written in C++ using Vulkan for graphics and Nvidia PhysX for physics.<br><br>
             This article will go over the architecture and features I implemented in Hyacinth's client & server model, including:
             <ul>
 				<li><a href="#breakdown">Architecture Breakdown</a></li>
@@ -183,7 +190,8 @@
 		<p>
 			Under an authoritative game server, each client sends its inputs to the server, and the server responds with each clients' final state. If you factor in packet latency
 			into this scenario, it might be tens or even hundreds of milliseconds of delay between when you press an input and see a result on the screen. For this reason, we run
-			a local physics simulation on the client ahead of the server. This makes it so that user inputs have an immediate visual result. This concept is known as client prediction. <br><br>
+			a local physics simulation on the client ahead of the server. The client runs ahead of the server by half of the packet round trip time. This concept is known as client 
+			prediction, and makes it so that user inputs have an immediate visual result. <br><br>
 			However, the server is the authority in this situation. When the server simulates the same inputs as the client, there is a chance that they dont match, and the client must 
 			correct itself. This can happen for a variety of reasons, such as a status affect applied or when the client takes fatal damage. 
 			This is known as "server reconcilliation". <br><br>
@@ -285,7 +293,7 @@ private:
 			there are an X amount of input packets "in flight", where they have been sent by the client, but not yet received by the server. When the client receives a 
 			correction from the server and sets the reported transform, it is now in the past. Those "in-flight" inputs were effectively discarded by the client's local simulation, 
 			and as they arrive at the server to get simulated, it forms a cascade of continuous rewinds, keeping the client in the past. In order to mitigate this effect, the 
-			client sets the reported transform and re-simulates all sequential inputs to restore its position in the future.
+			client must re-simulate all inputs to restore its position in the future.
 		</p>
 
 		<h3 id="lagcomp">Lag Compensation</h3>
@@ -296,7 +304,7 @@ private:
 			<a href="https://playvalorant.com/en-us/news/game-updates/valorant-patch-notes-6-02/">Valorant has it set at</a>. Then, to calculate the tick that the client saw when it
 			fired a shot, we use this formula, modified from <a href="https://developer.valvesoftware.com/wiki/Source_Multiplayer_Networking#Lag_compensation">Valve's networking article</a>:
 		</p>
-		<h4 style="text-decoration: none; padding-left: 3rem;">Rewind Tick = Current Tick - Jitter Buffer - (Client's Packet Latency / Ms Per Tick)</h4>
+		<h4 class="equation">Rewind Tick = Current Tick - Jitter Buffer - (Client's Packet Latency / Ms Per Tick)</h4>
 		<p>
 			If the rewound tick is not too far in the past, it is found in the snapshot buffer and passed to the physics manager along with the shooter's current transform. Using
 			PhysX's geometry query system, I loop over every other entity in the scene and test against a capsule geometry at the entity's current position. The function returns 
@@ -338,6 +346,7 @@ private:
 			<li><a href="https://developer.valvesoftware.com/wiki/Source_Multiplayer_Networking">Source Multiplayer Networking</a></li>
 			<li><a href="https://gafferongames.com/post/fix_your_timestep/">Fix Your Timestep!</a></li>
 			<li><a href="https://www.gabrielgambetta.com/client-server-game-architecture.html">Fast-Paced Multiplayer Architecture</a></li>
+			<li><a href="https://www.youtube.com/watch?v=8QHHVpBiG-I">Overwatch Gameplay Architecture and Netcode - GDC 2017</a></li>
 		</ul>
     </div>
 </body>

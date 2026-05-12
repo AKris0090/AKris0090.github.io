@@ -323,6 +323,12 @@ p {
     margin-top: 2rem;
 }
 
+.equation {
+    text-decoration: none !important; 
+    padding-left: 3rem !important;
+    font-size: 1.5rem !important;
+}
+
 .blog-post-content h3 {
     display: flex;
     flex-direction: row;
@@ -346,6 +352,8 @@ p {
 }
 
 .subheadertext {
+    margin-top: 0;
+    margin-bottom: 0;
     padding-top: 0 !important;
     padding-left: 5rem !important;
 }
