@@ -197,28 +197,6 @@ nav li:hover .cross {
         font-size: 2.5rem;
 
     }
-    .projects_grid {
-        margin-top: 2rem;
-    }
-    .projects_card h2 {
-        margin-left: auto !important;
-        margin-right: auto !important;
-    }
-    .projects_card p {
-        text-align: center;
-        margin-left: auto !important;
-        margin-right: auto !important;
-    }
-    .info_button {
-        font-size: 1rem !important;
-    }
-    .view_button {
-        font-size: 1rem !important;
-    }
-    .project_video {
-        width: 38px !important;
-        height: 38px !important;
-    }
     .split_container {
         margin-top: 3rem !important;
         flex-direction: column;
@@ -230,6 +208,38 @@ nav li:hover .cross {
         margin-right: auto !important;
         align-items: center !important;
         justify-content: center !important;
+    }
+    .blog-post-content {
+        width: 95%;
+        max-width: 95%;
+    }
+    .blog-post-content p{
+        width: 100%;
+        text-align: center !important;
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+    }
+    .blog-post-content h3 {
+        text-align: center !important;
+    }
+    .subheader {
+        justify-self: center !important;
+        padding-left: 0 !important;
+    }
+    pre {
+        margin: 0 auto !important;
+    }
+    .double_container {
+        flex-direction: column !important;
+    }
+    .video_sub_fullcontainer {
+        width: 100% !important;
+    }
+    .video_sub_halfcontainer {
+        width: 100% !important;
+    }
+    .blog-post-content .cross{
+        display: none !important;
     }
 }
 
@@ -330,8 +340,6 @@ p {
 }
 
 .blog-post-content h3 {
-    display: flex;
-    flex-direction: row;
     font-family: 'MTYPE', sans-serif;
     font-size: 2rem;
     color: #F6F4D1;
@@ -434,6 +442,10 @@ p {
 
 .video_sub_halfcontainer p {
     margin: 0 auto;
+}
+
+img {
+    width: 100%;
 }
 
 video {
