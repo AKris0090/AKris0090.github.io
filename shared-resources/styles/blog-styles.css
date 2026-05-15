@@ -222,6 +222,11 @@ nav li:hover .cross {
     .blog-post-content h3 {
         text-align: center !important;
     }
+    .blog-post-content h4 {
+        text-align: center !important;
+        font-size: 1.25rem !important;
+        padding-left: 0 !important;
+    }
     .subheader {
         justify-self: center !important;
         padding-left: 0 !important;
@@ -302,6 +307,7 @@ nav li:hover .cross {
 }
 
 .social_media_links a {
+    width: 100%;
     font-family: 'MTYPE';
     color: #F6F4D1;
     margin-left: 0;
@@ -336,7 +342,6 @@ p {
 .equation {
     text-decoration: none !important; 
     padding-left: 3rem !important;
-    font-size: 1.5rem !important;
 }
 
 .blog-post-content h3 {
