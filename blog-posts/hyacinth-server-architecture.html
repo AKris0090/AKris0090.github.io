@@ -39,7 +39,7 @@
 		</ul>
 	</nav>
     <div class="header">
-		<h2><span>Hyacinth Server Architecture</span></h2>
+		<h2><span>Hyacinth's Multithreaded Server Architecture</span></h2>
 		<div class="cross"></div>
 	</div>
     <div class ="blog-post-content">
@@ -49,7 +49,7 @@
 			networked systems, I was still curious as to how they applied to multiplayer online games. This project was the result of diving headfirst into this rabbithole
 			and immersing myself in creating a netcode system, from scratch, capable of supporting a first person shooter game. <br><br>
 			One of my all-time favorite game genre is first-person shooters. Their highly skilled and competitive nature is what initially drew me in, and this project 
-			helped me learn about the different ways that online games support this. A majority of the network architecture decisions I made were based on resources from existing
+			helped me learn about the different ways that online games support competitive integrity. A majority of the network architecture decisions I made were based on resources from existing
 			multiplayer games such as Valve's CS2, Riot's Valorant, and Blizzard's Overwatch.<br><br>
             This article assumes a basic understanding of networking principles in C/C++, including creating/binding sockets and sending/receiving packets.<br><br>
 			You can view the source code for both client and server at: <a href="https://github.com/AKris0090/Hyacinth">https://github.com/AKris0090/Hyacinth</a>
@@ -68,7 +68,7 @@
         </P>
 		<h3 id="breakdown">Architecture Breakdown</h3>
 		<p>
-			All of Hyacinth's core server functions occur at the same time, thanks to its multithreaded nature. You can see the breakdown of each thread and its responsibilities: <br>
+			All of Hyacinth's core server functions occur in parallel thanks to its multithreaded nature. You can see the breakdown of each thread and its assigned task: <br>
 		</p>
 		<center><img src="/blog-posts/hyacinth-net/architecture.jpg"></center>
 		<div class="subheader">
@@ -76,8 +76,8 @@
 			<h4>UDP Receiver Thread</h4>
 		</div>
 		<p class="subheadertext">
-			This thread handles the simple task of listening for UDP packets, then deserializing, timestamping, and placing them in the queue to be processed. <br><br>
-			When a client initially attempts to connect to the server, I have it shoot the server a "tryping" message every one second. When the server receives this packet, this
+			This thread handles the task of listening for UDP packets, deserializing, timestamping, and placing them in the queue to be processed. <br><br>
+			When a client initially attempts to connect to the server, I have it shoot the server a "tryping" message every one second. When the server receives this ping, the receiver
 			thread records the internet address of the sending client, creates a CLIENT_JOIN event, and pushes it to the server event queue. This address will later be used for sending snapshots to. <br><br>
 			<span class="redtext">CHALLENGE:</span>
 			 Originally, I used a naive implementation for the client handshake over TCP for its reliability. The client would connect to a TCP socket, which required yet another thread to maintain. The issue with this is that if two clients attempted to connect at the same time, only one would be allowed to connect with the TCP socket, and 
@@ -103,16 +103,16 @@
 			the UDP receiver thread, where it hands out packets to their respective clients (almost like a mail delivery service). It also updates the client heartbeat. <br><br>
 			Next, it loops over each client and loads the packet it intends to use for the current tick into its bufferedPacket member. If the client does not have a packet for
 			this tick, it uses the previously applied packet (extrapolation). Using these buffered packets, it calls for a physics simulation update. <br><br>
-			It then loops over each client, checking if the client is A) attempting to shoot and B) allowed to shoot by game logic. If both are allowed, it calculates the 
-			rewinded tick of the client, determined by its ping, retrieves the snapshot if the rewinded tick is not too far in the past, and passes the client's entity and 
+			It then loops over each client, checking if the client is A) attempting to shoot and B) allowed to shoot by game logic. If the client passes, it calculates the 
+			rewinded tick of the client, determined by its ping, retrieves the snapshot (if the rewinded tick is not too far in the past), and passes the client's entity and 
 			the server snapshot to the physics manager to perform raycasts.<br><br>
 			Finally, it sends out a personalized server snapshot to each client. It timestamps the exact moment when the message was sent out to be used for future ping calculations.
 		</p>
 
 		<h3 id="synchronization">Synchronization + Physics</h3>
 		<p>
-			Modern video games use fixed timesteps for physics due to a concept known as simulation divergence. A physics simulation running at a rate of 30hz will eventually
-			diverge from one running at 128hz. This can be solved by decoupling the physics from the render update in the engine and running it at a fixed frequency. This means 
+			Modern video games use fixed timesteps for physics due to "simulation divergence"; a physics simulation running at a rate of 30hz will eventually
+			diverge from one running at 128hz. This can be solved by decoupling the physics from the render update in the engine and running it at a stable frequency. This means 
 			that a client rendering at a frame rate lower than 128hz might see more than one physics step between frames. On the other hand, a client rendering at a frame rate 
 			higher than 128hz would have to linearly interpolate between two physics states to display smoothly and correctly. See <a href="#interpolation">the section on 
 			interpolation</a> for more info. This consistently timestepped physics simulation allows us to achieve the same results between the client and the server simulations. 
@@ -139,8 +139,8 @@
         <h3 id="interpolation">Entity Interpolation</h3>
         <p>
             When the client receives information from the server about the position of other entities, it must update its locally stored positions to match. 
-            However, if the client were to immediately set the entity transforms to those received, that would result in "snappy" movement, as usually the client updates
-            at a frequency higher than the rate at which it receives updates. To mitigate this effect, the client stores the last two updates it received from the server 
+            However, if the client were to immediately set the entity transforms to those received, that would result in "snappy" movement, as usually the client framerate 
+			is higher than the rate at which it receives network updates. To mitigate this effect, the client stores the last two updates it received from the server 
 			and linearly interpolates between them to provide smooth motion for all networked entities. <br><br> 
 			You can see it clearly in this example, where the server timestep is exaggerated to 100ms for demonstrative purposes:
 
@@ -203,10 +203,10 @@ public:
 		<p>
 			Under an authoritative game server, each client sends its inputs to the server, and the server responds with each clients' final state. If you factor in packet latency
 			into this scenario, it might be tens or even hundreds of milliseconds of delay between when you press an input and see a result on the screen. For this reason, we run
-			a local physics simulation on the client ahead of the server. The client runs ahead of the server by half of the packet round trip time. This concept is known as client 
+			a local physics simulation on the client ahead of the server by half of the packet round trip time (RTT / 2). This concept is known as client 
 			prediction, and makes it so that user inputs have an immediate visual result. <br><br>
 			However, the server is the authority in this situation. When the server simulates the same inputs as the client, there is a chance that they don't match, and the client must 
-			correct itself. This can happen for a variety of reasons, such as a status effect applied or when the client takes fatal damage. 
+			correct itself. This can happen for a variety of reasons, such as if a status effect was applied or if the client took fatal damage. 
 			This is known as "server reconciliation". <br><br>
 			In order to achieve this, on the client side, we keep track of the pitch, yaw, and movement inputs for each tick that has not yet seen a corresponding confirmation from
 			the server: <br>
@@ -302,7 +302,7 @@ private:
 			Note: the rewind function returns a pair of transforms. This is due to <a href="#interpolation"> entity interpolation</a>, where the 
 			client's transform at any moment is an interpolation of the two most recent past states. <br><br>
 			But why? Why do we need to reapply and re-simulate the inputs?<br><br>
-			One side effect of client-side prediction is that the client will always be simulating ahead of the server. When a client's input packet arrives at the server, 
+			Remember from earlier, the client is always RTT/2 ahead of the server. When a client's input packet arrives at the server, 
 			there are an X number of input packets "in flight", where they have been sent by the client, but not yet received by the server. When the client receives a 
 			correction from the server and sets the reported transform, it is now in the past. Those "in-flight" inputs were effectively discarded by the client's local simulation, 
 			and as they arrive at the server to get simulated, it forms a cascade of continuous rewinds, keeping the client in the past. In order to mitigate this effect, the 
@@ -321,7 +321,7 @@ private:
 		<h4 class="equation">Rewind Tick = Current Tick - Jitter Buffer - (Client's Packet Latency / Ms Per Tick)</h4>
 		<p>
 			While there are many different ways to determine client packet latency, I implemented a system where snapshots get timestamped as soon as they leave the server. I also added
-			a field to the client input packet called "ack", which contains the server tick of the most recently received snapshot. When the server gets the client's next packet, it immediately 
+			a field to the client input packet called "ack", which contains the server tick of the most recently received snapshot. When the server gets a client's packet, it immediately 
 			records the current timestamp, then uses the ack field to index into the snapshot/send timestamp queue. By subtracting the send timestamp from the received timestamp and dividing
 			by 2, the server calculates the client's ping for that packet in particular. <br><br>
 			If the rewound tick is not too far in the past, it is found in the snapshot buffer and passed to the physics manager along with the shooter's current transform. Using
@@ -357,8 +357,15 @@ private:
 }</code></pre>
 		<p>
 			This system makes shooting feel rewarding and accurate, regardless of network latency.<br><br>
+
+			<span class="redtext">CHALLENGE:</span> One small PhysX quirk that tripped me up is that physX's scene queries use cached representations of
+			the scene to test against. This means that even if you move an actor, you would have to call "flushQueryUpdates()" before running a scene query.
+			On top of this, a character controller has another layer of deferred synchronization to its cached state. Instead of dealing with a parallel physx scene,
+			I simply store the geometry shape for the character hitbox and run a geometry query instead, which allows you to pass in a world transform to position the 
+			collider with before it is tested against.<br><br>
+
 			In the example below, the shooter has an exaggerated latency of 700ms to the server. The blue hitbox represents the position of the other player as 
-			the client sees it, and the red hitbox represents the server acknowledging a positive hit. You can see that when the shooter's input arrives at the 
+			the client sees it, and the red hitbox represents the position of a server-acknowledged hit. You can see that when the shooter's input arrives at the 
 			server nearly a full second later, it is still able to find the other player's past position and reward an accurate shot regardless of latency.<br><br>
 			<div class="video_sub_fullcontainer">
 				<video controls src="/blog-posts/hyacinth-net/lag_comp.webm" type="video/webm"></video>
