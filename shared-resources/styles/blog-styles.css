@@ -464,3 +464,46 @@ video {
     text-decoration: underline;
     text-decoration-color: #F6F4D1;
 }
+
+.blog_container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.year_section h2 {
+    font-family: 'MTYPE';
+    font-size: 2rem;
+    color: #FF0000;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+}
+
+.year_bar {
+    background-color: #F6F4D1;
+    height: 0.25rem;
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: 2rem;
+}
+
+.year_section a {
+    color: #FF0000;
+}
+
+.year_section h3 {
+    font-family: 'MTYPE';
+    font-size: 2.5rem;
+    color: #F6F4D1;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.year_section p {
+    text-align: left !important;
+    margin-left: 2.5rem;
+    margin-top: 1rem;
+}
+
+.post_card {
+    margin-left: 2rem;
+}

@@ -12,7 +12,7 @@ const software_dev_projects = [
   },
   { 
     title: "Duel on the Heights",
-    desc: "AI agent fighting ground",
+    desc: "ML agent fighting ground",
     image: "faceaway.png",
     link: "https://violets321.itch.io/duel-on-the-heights",
     notes: [

@@ -96,7 +96,7 @@ software_dev_projects.forEach(project => {
     <img src="/shared-resources/${project.image}" alt="${project.title} image">
     <div class="button_container">
       <button class="info_button" onclick="openInfo('${project.title}')">
-        MORE INFO
+        READ MORE
         <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="none">
           <circle cx="12" cy="12" r="10" stroke="#F6F4D1" stroke-width="1.5"/>
           <path d="M8 10.5L12 14.5L16 10.5" stroke="#F6F4D1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
