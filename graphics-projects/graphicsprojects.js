@@ -1,5 +1,18 @@
 const software_dev_projects = [
   { 
+    title: "Hyacinth FPS Engine", 
+    desc: "Deferred-rendered multiplayer FPS game engine", 
+    image: "main.png",
+    link: "https://github.com/AKris0090/Hyacinth",
+    notes: [
+      "Written in C++ using Vulkan and Nvidia PhysX APIs",
+      "Multiplayer features include client-side prediction and server reconciliation, interpolation, and lag compensation. Check out: <a href='https://ajnkrishnan.me/blog-posts/hyacinth-server-architecture.html'>this blog post</a>",
+      "Game features third person locmotion, procedural animations, and a custom UI system",
+      "Implemented volume-based baked DDGI, using a grid of irradiance probes to ray trace indirect illumination",
+    ],
+    video: "https://www.youtube.com/watch?v=YgR1PEGyKbY"
+  },
+  { 
     title: "Orchid Game Engine", 
     desc: "Non-photorealistic forward rendered game engine", 
     image: "card.jpg",
@@ -7,7 +20,6 @@ const software_dev_projects = [
     notes: [
       "Written in C++ using Vulkan and Nvidia PhysX APIs",
       "Features PBR textures, cascaded shadow mapping, bloom, compute skinning, and custom shaders including outlines and toon shading",
-      "Implemented baked DDGI, using a grid of irradiance probes to ray trace indirect illumination",
       "Optimized using frustum culling and a depth pre-pass",
     ],
     video: "https://www.youtube.com/watch?v=NG24VTHqjNk"
@@ -116,6 +128,7 @@ software_dev_projects.forEach(project => {
 
   project.notes.forEach(note => {
     const li = document.createElement("li");
+    li.className = "card_info_note";
     li.innerHTML = note;
     ul.appendChild(li);
   });

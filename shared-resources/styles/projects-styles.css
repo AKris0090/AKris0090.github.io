@@ -374,6 +374,10 @@ nav li:hover .cross {
     transition: max-height 0.4s ease;
 }
 
+.card_info li a {
+    text-decoration-color: #ff0000 !important;
+}
+
 .card_info.open {
     max-height: 250px;
 }
