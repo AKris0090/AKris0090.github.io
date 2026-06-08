@@ -3,7 +3,7 @@ const blogList = [
         "2026": [
             {
                 title: "Hyacinth's Multithreaded Server Architecture",
-                desc: "Read about the design and implementation of netcode in Hyacinth, my multiplayer game engine.",
+                desc: "Read about the design and implementation of netcode in Hyacinth, my multiplayer FPS game engine.",
                 link: "/blog-posts/hyacinth-server-architecture.html"
             }
         ]
