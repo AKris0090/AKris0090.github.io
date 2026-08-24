@@ -2,6 +2,11 @@ const blogList = [
     {
         "2026": [
             {
+                title: "Graphics Features in Hyacinth",
+                desc: "Read about the global illumination and more features I wrote for Hyacinth.",
+                link: "/blog-posts/hyacinth-graphics.html"
+            },
+            {
                 title: "Hyacinth's Multithreaded Server Architecture",
                 desc: "Read about the design and implementation of netcode in Hyacinth, my multiplayer FPS game engine.",
                 link: "/blog-posts/hyacinth-server-architecture.html"
