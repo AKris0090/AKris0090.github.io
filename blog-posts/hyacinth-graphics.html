@@ -59,33 +59,81 @@
 			The intensive lighting calculations for the world are performed ahead of time, stored in maps, and shipped out with the game. This saves a ton of 
 			computing resources on the client's side, and you get beautifully lit worlds with a simple texture lookup. 
 			Dynamic objects used a volume of prebaked lighting probes <span class="redtext" style="text-decoration: none;">(foreshadowing)</span>.<br><br>
-			<div class="subheader">
-				<div class="cross"></div>
-				<h4>Miniboss: Early Lightmapping</h4>
+		</p>
+		<div class="subheader">
+			<div class="cross"></div>
+			<h4>Miniboss: Early Lightmapping</h4>
+		</div>
+		<p class="subheadertext">
+			One of my earlier experiments in shadow mapping involved baking lightmaps for the world. Lightmapping involves using secondary texture coordinate for 
+			each world object, and assigning it a space in a texture. I used a library called <a href="http://github.com/jpcy/xatlas">xatlas</a> to generate these UVs.
+			I would then write the mesh information to a text file in an OBJ-adjacent file format. To bake lighting information, I would load the object from this custom file,
+			generate acceleration structures on the device, and raytrace from each texel on the lightmap image into the world. <br><br>
+			And while I was able to get lightmaps integrated into the renderer, the results left something to be desired. Handling the balance of light seams, texture
+			resolution, filtering, and texel density proved to be a little bit above my grade at the time. I was able to achieve far more visually appealing results 
+			with run-time cascaded shadow mapping. <br><br>
+		</p>
+		<div class="double_container">
+			<div class="subtitled_image" style="width: 50%;">
+				<center><img src="/blog-posts/hyacinth-graphics/lightmaps/lightmap.png" style="width: 100%;"></center>
+				<p>
+					Baked UVs and shadows in lightmaps (4096x4096).
+				</p>
 			</div>
-			<p class="subheadertext">
-				One of my earlier experiments in shadow mapping involved baking lightmaps for the world. Lightmapping involves using secondary texture coordinate for 
-				each world object, and assigning it a space in a texture. I used a library called <a href="http://github.com/jpcy/xatlas">xatlas</a> to generate these UVs.
-				I would then write the mesh information to a text file in an OBJ-adjacent file format. To bake lighting information, I would load the object from this custom file,
-				generate acceleration structures on the device, and raytrace from each texel on the lightmap image into the world. <br><br>
-				And while I was able to get lightmaps integrated into the renderer, the results left something to be desired. Handling the balance of light seams, texture
-				resolution, filtering, and texel density proved to be a little bit above my grade at the time. I was able to achieve far more visually appealing results 
-				with run-time cascaded shadow mapping. <br><br>
-			</p>
-			<div class="double_container">
-				<div class="subtitled_image" style="width: 50%;">
-					<center><img src="/blog-posts/hyacinth-graphics/lightmaps/lightmap.png" style="width: 100%;"></center>
-					<p>
-						Baked UVs and shadows in lightmaps (4096x4096).
-					</p>
-				</div>
-				<div class="subtitled_image">
-					<center><img src="/blog-posts/hyacinth-graphics/lightmaps/lightmap_final.png"></center>
-					<p>
-						Lightmap results. Kinda gross.
-					</p>
-				</div>
+			<div class="subtitled_image">
+				<center><img src="/blog-posts/hyacinth-graphics/lightmaps/lightmap_final.png"></center>
+				<p>
+					Lightmap results. All the seams look gross.
+				</p>
 			</div>
 		</div>
+		<p>
+			During a youtube scroll session, I came across a presentation by Will Pearce on the Overwatch team detailing the new baked DDGI system implemented for
+			stadium maps. You can view the presentation <a href="https://www.youtube.com/watch?v=0PlxPCq-DbQ">here</a>. The core of this presentation focused around how 
+			they worked around the various memory and computational restrictions that exist to keep Overwatch running smoothly regardless of the platform. <br><br>
+
+			The other part of this presentation covered the technical approach they used to give artists the freedom to place global illumination volumes around the scene,
+			and control the amount of detail per volume. After doing some research into the <a href="https://github.com/NVIDIAGameWorks/RTXGI-DDGI">RTXGI Github Repo</a> 
+			and reading Chapter 14 of <i>Mastering Graphics Programming in Vulkan</i>, I dove headfirst into implementation.
+		</p>
+		<div class="subheader">
+			<div class="cross"></div>
+			<h4>Implementing DDGI</h4>
+		</div>
+		<p class="subheadertext">
+			My implementation regards DDGI volumes as a portion of 3D space that consists of evenly distributed probes, represented as 3-dimensional points. Each volume applies 
+			global illumination to the objects contained within them, which is determined by two textures that get baked before runtime. The irradiance texture stores 
+			the incoming diffuse lighting at each probe, and the visibility texture stores two moments of the hit distance from the probe to the closest geometry surface. <br><br>
+
+			// discuss each pass. Picture of a volume and how it looks with the probes in it. <br><br>
+
+			// first pass - raytracing pass. Spherical Fibonnacci to determine ray direction <br><br>
+
+			// second pass - compositing pass. Compile the ray information into octahedral maps per probe, and average values per pixel. Compute the edges of the maps for proper bilinear filtering <br><br>
+
+			// application pass - sample from both maps using the 8 nearest points. <br><br>
+
+			// extra information <br><br>
+		</p>
+		<div class="subheader">
+			<div class="cross"></div>
+			<h4>What Would I Do After This?</h4>
+		</div>
+		<p class="subheadertext">
+			// Probe offsets. Moving the probes off of the wall to reduce the artifacting <br><br>
+
+			// Volume blending. Volume edges create harsh boundaries where the lighting does not match up. Blending will resolve some of this.<br><br>
+		</p>
+
+		<h3 id="outlines">Stencil Mapping for Outlines</h3>
+		<p>
+			After I got my hands dirty with stencil bufferring in the DDGI implementation, I looked towards applying my newfound knowledge towards outlining enemy characters. <br><br>
+
+			// Stencil out the characters using a dedicated stencil bit and write the pixel depth to a separate depth texture
+			
+			// In compute shader, expand only the values with the stencil bit set, and use the depth sample from the previously rendered depth texture to compare with the full depth texture
+
+			// After expanding the stencil, overlay the expanded texture onto the swapchain image by flipping the stencil mask, and rejecting pixels where the stencil bit is set.
+		</p>
     </div>
 </body>
