@@ -73,7 +73,7 @@
 			resolution, filtering, and texel density proved to be a little bit above my grade at the time. I was able to achieve far more visually appealing results 
 			with run-time cascaded shadow mapping. <br><br>
 		</p>
-		<div class="double_container">
+		<div class="double_container" style="width: 90%">
 			<div class="subtitled_image" style="width: 50%;">
 				<center><img src="/blog-posts/hyacinth-graphics/lightmaps/lightmap.png" style="width: 100%;"></center>
 				<p>
@@ -101,21 +101,59 @@
 			<h4>Implementing DDGI</h4>
 		</div>
 		<p class="subheadertext">
-			My implementation regards DDGI volumes as a portion of 3D space that consists of evenly distributed probes, represented as 3-dimensional points. Each volume applies 
-			global illumination to the objects contained within them, which is determined by two textures that get baked before runtime. The <span class="redtext" style="text-decoration: none;">irradiance texture</span> stores 
-			the incoming diffuse lighting at each probe, and the <span class="redtext" style="text-decoration: none;">visibility texture</span> stores two moments of the hit distance from the probe to the closest geometry surface. <br><br>
-
-			// TODO: Picture of a volume and how it looks with the probes in it. <br><br>
-
+			My implementation regards DDGI volumes as a portion of 3D space that consists of evenly distributed probes, represented as 3-dimensional points. <br><br>
+		</p>
+		<div class="double_container" style="width: 90%">
+			<div class="subtitled_image">
+				<center><img src="/blog-posts/hyacinth-graphics/probes.jpg"></center>
+				<p>
+					Irradiance probes.
+				</p>
+			</div>
+			<div class="subtitled_image">
+				<center><img src="/blog-posts/hyacinth-graphics/volumes.jpg"></center>
+				<p>
+					Two volumes in this scene.
+				</p>
+			</div>
+		</div>
+		<p class="subheadertext">	
+			Each volume applies global illumination to the objects contained within them, which is determined by two textures that get baked before runtime. The 
+			<span class="redtext" style="text-decoration: none;">irradiance texture</span> stores the incoming diffuse lighting at each probe, and the <span class="redtext" style="text-decoration: none;">visibility texture</span> stores two moments of the hit distance from the probe to the closest geometry surface. <br><br> 
+		</p>
+		<div class="double_container" style="width: 76%">
+			<div class="subtitled_image">
+				<center><img src="/blog-posts/hyacinth-graphics/irradiancemap.jpg" style="width: 100%;"></center>
+				<p>
+					Irradiance Texture. RGB represents incoming diffuse light.
+				</p>
+			</div>
+			<div class="subtitled_image">
+				<center><img src="/blog-posts/hyacinth-graphics/visibilitymap.jpg"></center>
+				<p>
+					Visibility Texture. R and G represent mean distance and distance^2.
+				</p>
+			</div>
+		</div>
+		<p class="subheadertext">
 			Each DDGI volume goes through a set of passes for the baking process. The first step in this process is raytracing from the probes in all directions to determine the incoming irradiance from all 
-			directions. For each probe, we trace a high number of rays in an even distribution around the unit sphere, described by a spherical fibonacci pattern. In shader, I calculate the diffuse lighting 
+			directions. For each probe, we trace a high number of rays in an even distribution around the unit sphere, described by a 
+			<a href="https://observablehq.com/@mbostock/spherical-fibonacci-lattice"><span class="redtext">spherical fibonacci</span></a> pattern. In shader, I calculate the diffuse lighting 
 			at each ray bounce and write the accumulated result to a giant arrayed image (width = # of rays, height = # of probes in plane, layers = # of planes in volume). For each pixel, the diffuse is 
 			stored in the r, g, and b, channels, while the alpha channel stores the hit distance from the probe to the nearest surface in that direction. <br><br>
+		</p>
 
-			// TODO: stacked ray data image <br><br>
+		<div class="subtitled_image">
+			<center><img src="/blog-posts/hyacinth-graphics/stack.jpg"></center>
+			<p>
+				Multi-layered ray data image. Cropped version.
+			</p>
+		</div>
 
+		<p class="subheadertext">
 			The second pass of this process runs a compositing process on the ray data image, and generates the irradiance and visiblity atlas using a compute shader. Within each atlas, an island 
-			represents a single probe's octahedreal map of diffuse/visibility data averaged over the direction each pixel represents. The last thing we need to do is fill in borders for the atlas to 
+			represents a single probe's 
+			<a href="https://knarkowicz.wordpress.com/2014/04/16/octahedron-normal-vector-encoding/"><span class="redtext">octahedral map</span></a> of diffuse/visibility data averaged over the direction each pixel represents. The last thing we need to do is fill in borders for the atlas to 
 			allow for proper bilinear filtering. You can find more information about the border pattern 
 			<a href="https://handmade.network/p/75/monter/blog/p/7288-engine_work__global_illumination_with_irradiance_probes#:~:text=Storage%20of%20spherical%20depth"> at this blog.</a> <br><br>
 
