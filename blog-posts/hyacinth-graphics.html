@@ -151,13 +151,17 @@
 		</div>
 
 		<p class="subheadertext">
-			The second pass of this process runs a compositing process on the ray data image, and generates the irradiance and visiblity atlas using a compute shader. Within each atlas, an island 
+			The second pass of this process runs a compositing process on the ray data image, and generates the irradiance and visiblity atlas (shown above) using a compute shader. Within each atlas, an island 
 			represents a single probe's 
 			<a href="https://knarkowicz.wordpress.com/2014/04/16/octahedron-normal-vector-encoding/"><span class="redtext">octahedral map</span></a> of diffuse/visibility data averaged over the direction each pixel represents. The last thing we need to do is fill in borders for the atlas to 
 			allow for proper bilinear filtering. You can find more information about the border pattern 
 			<a href="https://handmade.network/p/75/monter/blog/p/7288-engine_work__global_illumination_with_irradiance_probes#:~:text=Storage%20of%20spherical%20depth"> at this blog.</a> <br><br>
 
-			// TODO: application pass - sample from both maps using the 8 nearest points. <br><br>
+			Finally, the evaluation pass samples from the 8 probes surrounding the world space position of the pixel in the image. For each of the 8 nearest probes, the distance and 
+			direction to the world space point are calculated and used to determine a trilinear weight. The two depth moments stored in the visibility texture are used to 
+			firstly determine if the distance to the point is greater than the average distance (there is likely an occluder), and if so, calculate the probability that the 
+			distance exists through <span class="redtext" style="text-decoration: none">Chebyshev's Inequality</span>. The irradiance atlas gets sampled and added up. The final 
+			irradiance value is determined by averaging the total irradiance over the accumulated weights from the 8 probes. <br><br> 
 
 			One helpful aspect of this solution is that, unlike baked lightmaps, dynamic objects can receive global illumination by sampling from the volumes directly.
 		</p>
@@ -196,9 +200,36 @@ m_ddgiPipelineUtil.m_depthStencil.front.failOp = VK_STENCIL_OP_ZERO;</code></pre
 
 		<p class="subheadertext">
 			In this image sequence, there are two volumes in the scene. A low-density volume that encapsulates the entire world, and a smaller (high-density) volume for the corridor on the right. <br><br>
-
-			// TODO add the images that demonstrate this above
 		</p>
+		<div class="vertical_container">
+			<div class="double_container" style="width: 80%">
+			<div class="subtitled_image">
+				<center><img src="/blog-posts/hyacinth-graphics/volume1stencil.jpg" style="width: 100%;"></center>
+				<p>
+					Volume 1 stencil test.
+				</p>
+			</div>
+			<div class="subtitled_image">
+				<center><img src="/blog-posts/hyacinth-graphics/volume1eval.jpg"></center>
+				<p>
+					Volume 1 eval pass.
+				</p>
+			</div>
+		</div><div class="double_container" style="width: 80%">
+			<div class="subtitled_image">
+				<center><img src="/blog-posts/hyacinth-graphics/volume2stencil.jpg" style="width: 100%;"></center>
+				<p>
+					Volume 2 stencil test.
+				</p>
+			</div>
+			<div class="subtitled_image">
+				<center><img src="/blog-posts/hyacinth-graphics/volume2eval.jpg"></center>
+				<p>
+					Volume 2 eval pass.
+				</p>
+			</div>
+		</div>
+		</div>
 		<div class="subheader">
 			<div class="cross"></div>
 			<h4>What Would I Do After This?</h4>

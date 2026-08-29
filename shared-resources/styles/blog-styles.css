@@ -431,6 +431,11 @@ p {
     flex-direction: row;
 }
 
+.vertical_container {
+    display: flex;
+    flex-direction: column;
+}
+
 .double_container {
     margin-left: auto;
     margin-right: auto;
