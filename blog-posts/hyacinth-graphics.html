@@ -235,17 +235,37 @@ m_ddgiPipelineUtil.m_depthStencil.front.failOp = VK_STENCIL_OP_ZERO;</code></pre
 			<h4>What Would I Do After This?</h4>
 		</div>
 		<p class="subheadertext">
-			// Probe offsets. Moving the probes off of the wall to reduce the artifacting <br><br>
+			The most glaring issue with my current DDGI implementation are the seams that appear at volume boundaries. It is especially apparent in the image above if you 
+			look at where the edges of the stencil test appear. This was briefly mentioned in the QNA portion of the Overwatch presentation, but even they acknowledge that 
+			such boundaries are unavoidable. They were able to ease the effect by blending the irraiance of smaller volumes outwards to the parent volumes, but they work closely 
+			with the art team to hide seams in shrubbery or at boundaries of rooms. <br><br>
 
-			// Volume blending. Volume edges create harsh boundaries where the lighting does not match up. Blending will resolve some of this.<br><br>
+			Another smaller way I can reduce artifacting is with probe offsets. Probes that are just barely behind geometry provide no useful data to the DDGI evaluation, and 
+			can sometimes lead to incorrect sampling, so by pushing the probe's position in front of the geometry, they are able to contribute and make the result more accurate. 
+			This would be done through a compute shader, where the probe distances are used to incrementally push the probe towards and past the closest surface.
 		</p>
 
-		<h3 id="outlines">BONUS: Stencil Mapping for Outlines</h3>
+		<h3 id="outlines">BONUS CHALLENGE: Stencil Mapping for Outlines</h3>
 		<p>
 			After I got my hands dirty with stencil bufferring in the DDGI implementation, I looked towards applying my newfound knowledge towards outlining enemy 
 			characters. This application was a bit more advanced, as I wanted it to be a screen space effect AND I wanted to make sure I don't see outlines 
 			behind other objects.<br><br>
-
+		</p>
+		<div class="double_container" style="width: 90%">
+			<div id="image-container" class="subtitled_image" style="width: 40%">
+				<center><img id="image-cycler" src="/blog-posts/hyacinth-graphics/outline_final.jpg" alt=""></center>
+				<p>
+					Click through me!
+				</p>
+			</div>
+			<div class="subtitled_image">
+				<center><img src="/blog-posts/hyacinth-graphics/stencil_final.jpg" style="width: 100%;"></center>
+				<p>
+					Final image with stenciled outlines.
+				</p>
+			</div>
+		</div>
+		<p>
 			// Stencil out the characters using a dedicated stencil bit and write the pixel depth to a separate depth texture
 			
 			// In compute shader, expand only the values with the stencil bit set, and use the depth sample from the previously rendered depth texture to compare with the full depth texture
@@ -264,3 +284,6 @@ m_ddgiPipelineUtil.m_depthStencil.front.failOp = VK_STENCIL_OP_ZERO;</code></pre
 		</ul>
     </div>
 </body>
+<script src="/blog-posts/src/imageclicker.js">
+
+</script>
