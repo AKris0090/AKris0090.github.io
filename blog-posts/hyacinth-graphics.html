@@ -47,7 +47,7 @@
         <P>
 			This article will go over a few of the graphics features I implemented for Hyacinth's PBR renderer. Hyacinth takes a lot of influence from bits and pieces of 
 			Overwatch's rendering backend, all deciphered from publicly available articles and videos, which will be linked throughout the article (and below). <br><br>
-			<span class="redtext" style="text-decoration: none;">Notice: Many parts of this article will be speculation. I don't work on Overwatch (yet 🙏🙏🙏).</span> <br><br>
+			<span class="redtext" style="text-decoration: none;">Notice: Many parts of this article will be speculation. I don't work on Overwatch (one day 	🙏).</span> <br><br>
 
 			You can view the source code for my engine at: <a href="https://github.com/AKris0090/Hyacinth">https://github.com/AKris0090/Hyacinth</a>
         </P>
@@ -55,7 +55,7 @@
 		<p style="margin-bottom: 0;">
 			One of the more recent features that the Overwatch team has been public about in regards to their graphics is their shift to a baked DDGI system for global 
 			illumination. Previously, the game would rely on baked lightmaps to illuminate static world geometry, as described by Bruce Wilkie, 
-			<a href = "https://news.blizzard.com/en-gb/article/23674944/environment-states-in-overwatch-2-behind-the-scenes-with-the-engineering-team">in this article</a>.
+			<a href="https://news.blizzard.com/en-gb/article/23674944/environment-states-in-overwatch-2-behind-the-scenes-with-the-engineering-team">in this article</a>.
 			The intensive lighting calculations for the world are performed ahead of time, stored in maps, and shipped out with the game. This saves a ton of 
 			computing resources on the client's side, and you get beautifully lit worlds with a simple texture lookup. 
 			Dynamic objects used a volume of prebaked lighting probes <span class="redtext" style="text-decoration: none;">(foreshadowing)</span>.<br><br>
@@ -252,5 +252,15 @@ m_ddgiPipelineUtil.m_depthStencil.front.failOp = VK_STENCIL_OP_ZERO;</code></pre
 
 			// After expanding the stencil, overlay the expanded texture onto the swapchain image by flipping the stencil mask, and rejecting pixels where the stencil bit is set.
 		</p>
+		<h3>Resources Used</h3>
+		<ul>
+			<li><a>Mastering Graphics Programming with Vulkan</a></li>
+			<li><a href="https://www.youtube.com/watch?v=KufJBCTdn_o">Ray-Traced Irradiance Fields (Presented by NVIDIA)</a></li>
+			<li><a href="https://www.youtube.com/watch?v=wvILHa_o4u8">Overwatch Rendering Analysis</a></li>
+			<li><a href="https://www.youtube.com/watch?v=0PlxPCq-DbQ">REAC 2025 Evolving Global Illumination in Overwatch 2</a></li>
+			<li><a href="https://news.blizzard.com/en-gb/article/23674944/environment-states-in-overwatch-2-behind-the-scenes-with-the-engineering-team">Environment States in Overwatch 2</a></li>
+			<li><a href="https://github.com/NVIDIAGameWorks/RTXGI-DDGI">RTX Global Illumination GitHub Repo</a></li>
+			<li><a href="https://handmade.network/p/75/monter/blog/p/7288-engine_work__global_illumination_with_irradiance_probes#:~:text=Storage%20of%20spherical%20depth">Global Illumination with Irradiance Probes - Handmade</a></li>
+		</ul>
     </div>
 </body>
