@@ -38,6 +38,17 @@
 			<li><a href="/contact-me/contact.html">Contact Me</a></li>
 		</ul>
 	</nav>
+	<script>
+		function showSidebar() {
+			var sidebar = document.querySelector(".sidebar");
+			sidebar.style.top = "0";
+		}
+
+		function hideSidebar() {
+			var sidebar = document.querySelector(".sidebar");
+			sidebar.style.top = "-100vh"
+		}
+	</script>
     <div class="header">
 		<h2><span>Hyacinth's Graphics Features (In Prog.)</span></h2>
 		<div class="cross"></div>
@@ -47,8 +58,11 @@
         <P>
 			This article will go over a key graphics feature I implemented for Hyacinth's renderer. Hyacinth is heavily influenced by bits and pieces of 
 			Overwatch's rendering backend, all deciphered from publicly available articles and videos, which will be linked throughout the article (and below). <br><br>
+		</p>
+		<p>
 			<span class="redtext" style="text-decoration: none;">Notice: Many parts of this article will be speculation. I don't work on Overwatch (one day 🙏).</span> <br><br>
-
+		</p>
+		<p>
 			You can view the source code for my engine at: <a href="https://github.com/AKris0090/Hyacinth">https://github.com/AKris0090/Hyacinth</a>.
         </P>
 		<h3 id="DDGI">Questing for Global Illumination</h3>
@@ -69,6 +83,8 @@
 			each world object, and assigning it a space in a texture. I used a library called <a href="http://github.com/jpcy/xatlas">xatlas</a> to generate these UVs.
 			I would then write the mesh information to a text file in an OBJ-adjacent file format. To bake lighting information, I would load the object from this custom file,
 			generate acceleration structures on the device, and raytrace from each texel on the lightmap image into the world. <br><br>
+			</p>
+		<p>
 			And while I was able to get lightmaps integrated into the renderer, the results left something to be desired. Handling the balance of light seams, texture
 			resolution, filtering, and texel density proved difficult at my skill level at the time. I was able to achieve far more visually appealing results 
 			with run-time cascaded shadow mapping. <br><br>
@@ -77,7 +93,7 @@
 			<div class="subtitled_image" style="width: 50%;">
 				<center><img src="/blog-posts/hyacinth-graphics/lightmaps/lightmap.png" style="width: 100%;"></center>
 				<p>
-					Baked UVs and shadows in lightmaps (4096x4096).
+					Baked UVs and shadows in lightmaps (4096x4096)
 				</p>
 			</div>
 			<div class="subtitled_image">
@@ -91,7 +107,8 @@
 			During a YouTube scroll session, I came across <a href="https://www.youtube.com/watch?v=0PlxPCq-DbQ">this presentation</a> by Will Pearce on the Overwatch team detailing the new baked DDGI system implemented for
 			stadium maps. The core of this presentation focused around how 
 			they worked around the various memory and computational restrictions that exist to keep Overwatch running smoothly regardless of the platform. <br><br>
-
+		</p>
+		<p>
 			The other part of this presentation covers the technical approach they use to enable artists to place global illumination volumes around the scene and control the detail per volume. 
 			After doing some research into the <a href="https://github.com/NVIDIAGameWorks/RTXGI-DDGI">RTXGI Github Repo</a> 
 			and reading Chapter 14 of <i>Mastering Graphics Programming with Vulkan</i>, I dove headfirst into implementation.
@@ -107,13 +124,13 @@
 			<div class="subtitled_image">
 				<center><img src="/blog-posts/hyacinth-graphics/probes.jpg"></center>
 				<p>
-					Irradiance probes.
+					Irradiance probes
 				</p>
 			</div>
 			<div class="subtitled_image">
 				<center><img src="/blog-posts/hyacinth-graphics/volumes.jpg"></center>
 				<p>
-					Two volumes in this scene.
+					Two volumes in this scene
 				</p>
 			</div>
 		</div>
@@ -125,13 +142,13 @@
 			<div class="subtitled_image">
 				<center><img src="/blog-posts/hyacinth-graphics/irradiancemap.jpg" style="width: 100%;"></center>
 				<p>
-					Irradiance Texture. RGB represents incoming diffuse light.
+					Irradiance Texture. RGB represents incoming diffuse light
 				</p>
 			</div>
 			<div class="subtitled_image">
 				<center><img src="/blog-posts/hyacinth-graphics/visibilitymap.jpg"></center>
 				<p>
-					Visibility Texture. R and G represent mean distance and distance^2.
+					Visibility Texture. R and G represent mean distance and distance^2
 				</p>
 			</div>
 		</div>
@@ -146,7 +163,7 @@
 		<div class="subtitled_image">
 			<center><img src="/blog-posts/hyacinth-graphics/stack.jpg"></center>
 			<p>
-				Multi-layered ray data image. Cropped version.
+				Multi-layered ray data image. Cropped version
 			</p>
 		</div>
 
@@ -156,13 +173,15 @@
 			<a href="https://knarkowicz.wordpress.com/2014/04/16/octahedron-normal-vector-encoding/"><span class="redtext">octahedral map</span></a> of diffuse/visibility data averaged over the direction each pixel represents. The last thing we need to do is fill in borders for the atlas to 
 			allow for proper bilinear filtering. You can find more information about the border pattern 
 			<a href="https://handmade.network/p/75/monter/blog/p/7288-engine_work__global_illumination_with_irradiance_probes#:~:text=Storage%20of%20spherical%20depth"> at this blog.</a> <br><br>
-
+		</p>
+		<p>
 			Finally, the evaluation pass samples from the 8 probes surrounding the world space position of the pixel in the image. For each of the 8 nearest probes, the distance and 
 			direction to the world space point are calculated and used to determine a trilinear weight. The two depth moments stored in the visibility texture are used to 
 			determine if the distance to the point is greater than the average distance (there is likely an occluder), and if so, calculate the probability that the 
 			point is occluded through <span class="redtext" style="text-decoration: none">Chebyshev's Inequality</span>. The irradiance atlas gets sampled and added up. The final 
 			irradiance value is determined by averaging the total irradiance over the accumulated weights from the 8 probes. <br><br> 
-
+		</p>
+		<p>
 			One helpful aspect of this solution is that, unlike baked lightmaps, dynamic objects can receive global illumination by sampling from the volumes directly.
 		</p>
 		<div class="subheader">
@@ -172,7 +191,8 @@
 		<p class="subheadertext">
 			How does this relate to Overwatch? In the presentation, Mr. Pearce goes over how they made use of stencil buffers to evaluate DDGI for the scene starting with the smallest volume up to the largest, 
 			as compared to drawing the largest volume first and overlaying the smaller ones. This reduces overdraw by ensuring that the expensive DDGI evaluation gets performed only once per pixel. <br><br>
-
+		</p>
+		<p>
 			This stenciling is made possible with two bits: a "current" bit and an "any" bit, describing the pixels the current volume is writing to, and pixels where any volume has written to previously. 
 			The first pass draws a volume to the stencil buffer, and tests against the "any" bit. For each pixel, the world position is multiplied by the inverse transform of the volume, making it possible 
 			to determine if the point is contained within the bounds of the volume. If not, that pixel gets discarded in the fragment shader. All pixels that pass this depth discard test get the "current" 
@@ -206,26 +226,26 @@ m_ddgiPipelineUtil.m_depthStencil.front.failOp = VK_STENCIL_OP_ZERO;</code></pre
 			<div class="subtitled_image">
 				<center><img src="/blog-posts/hyacinth-graphics/volume1stencil.jpg" style="width: 100%;"></center>
 				<p>
-					Volume 1 stencil test.
+					Volume 1 stencil test
 				</p>
 			</div>
 			<div class="subtitled_image">
 				<center><img src="/blog-posts/hyacinth-graphics/volume1eval.jpg"></center>
 				<p>
-					Volume 1 eval pass.
+					Volume 1 eval pass
 				</p>
 			</div>
 		</div><div class="double_container" style="width: 80%">
 			<div class="subtitled_image">
 				<center><img src="/blog-posts/hyacinth-graphics/volume2stencil.jpg" style="width: 100%;"></center>
 				<p>
-					Volume 2 stencil test.
+					Volume 2 stencil test
 				</p>
 			</div>
 			<div class="subtitled_image">
 				<center><img src="/blog-posts/hyacinth-graphics/volume2eval.jpg"></center>
 				<p>
-					Volume 2 eval pass.
+					Volume 2 eval pass
 				</p>
 			</div>
 		</div>
@@ -239,7 +259,8 @@ m_ddgiPipelineUtil.m_depthStencil.front.failOp = VK_STENCIL_OP_ZERO;</code></pre
 			look at where the edges of the stencil test appear. This was briefly mentioned in the Q&A portion of the Overwatch presentation, where they acknowledge that 
 			such boundaries are unavoidable. They were able to ease the effect by blending the irradiance of smaller volumes outwards to the parent volumes, but they work closely 
 			with the art team to hide seams in shrubbery or at boundaries of rooms. <br><br>
-
+		</p>
+		<p>
 			Another smaller way I can reduce artifacting is with probe offsets. Probes that are just barely behind geometry provide no useful data to the DDGI evaluation, and 
 			can sometimes lead to incorrect sampling, so by pushing the probe's position in front of the geometry, they are able to contribute and make the result more accurate. 
 			This would be done through a compute shader, where the probe distances are used to incrementally push the probe towards and past the closest surface.
@@ -296,7 +317,7 @@ m_ddgiPipelineUtil.m_depthStencil.front.failOp = VK_STENCIL_OP_ZERO;</code></pre
 			<div class="subtitled_image">
 				<center><img src="/blog-posts/hyacinth-graphics/stencil_final.jpg" style="width: 100%;"></center>
 				<p>
-					Final image with stenciled outlines.
+					Final image with stenciled outlines
 				</p>
 			</div>
 		</div>
