@@ -250,6 +250,42 @@ m_ddgiPipelineUtil.m_depthStencil.front.failOp = VK_STENCIL_OP_ZERO;</code></pre
 			After I got my hands dirty with stencil bufferring in the DDGI implementation, I looked towards applying my newfound knowledge towards outlining enemy 
 			characters. This application was a bit more advanced, as I wanted it to be a screen space effect AND I wanted to make sure I don't see outlines 
 			behind other objects.<br><br>
+
+			3 Main Passes:
+			<ul>
+				<li>
+					The first pass draws all networked entities and writes to 3 targets. One of these targets is a re-used R8G8B8A8 texture from the G-Buffer, and stores a flat 
+					red color where the character is. It also writes the fragment's depth to a separate R32 texture, and draws the character to the stencil buffer. This pass gives 
+					us what we need to grow the outlines: a depth value to read from, a depth value to compare to, and a texture to grow.
+				</li>
+				<li>
+					The next pass grows the color image in a compute shader. For each pixel, we check if the pixel has the stencil bit set, and if so, we expand in a box around it. 
+					We ensure that the outline does not appear behind other objects by using the base pixel's depth value to compare with the depth value of the pixel we want to expand to.
+
+					Pseudocode:
+				</li>
+			</ul>
+<pre><code>for (i from -OUTLINE_SIZE to OUTLINE_SIZE) {
+	for (j from -OUTLINE_SIZE to OUTLINE_SIZE) {
+		expansionPixelCoord = basePixelCoord + [i, j]
+		expansionPixelCoord = clamp(expansionPixelCoord, ivec2(0), ivec2(pc.currentScreenResolution) - 1); // clamp pixel to bounds of image
+
+		// check base pixel depth against expanded pixel from scene depth image
+		baseDepthSample = texelFetch(characterDepthImage, basePixelCoord).r;
+		expansionDepthSample = texelFetch(sceneDepthImage, expansionPixelCoord).r;
+		
+		// expansion is the search factor, so it should be further from the screen than the other
+		if (expansionDepthSample > baseDepthSample) {
+			imageStore(outlineImage, expansionPixelCoord, red);
+		}
+	}
+}</code></pre>
+			<ul>
+				<li>
+					Finally, we apply the grown outline image on top of the swapchain image by testing against the INVERSE of the stencil buffer that we wrote to. This discards 
+					all of the pixels that make up the base character, leaving only the expanded pixels, forming the clean, pixel-perfect outline.
+				</li>
+			</ul>
 		</p>
 		<div class="double_container" style="width: 90%">
 			<div id="image-container" class="subtitled_image" style="width: 40%">
@@ -265,13 +301,6 @@ m_ddgiPipelineUtil.m_depthStencil.front.failOp = VK_STENCIL_OP_ZERO;</code></pre
 				</p>
 			</div>
 		</div>
-		<p>
-			// Stencil out the characters using a dedicated stencil bit and write the pixel depth to a separate depth texture
-			
-			// In compute shader, expand only the values with the stencil bit set, and use the depth sample from the previously rendered depth texture to compare with the full depth texture
-
-			// After expanding the stencil, overlay the expanded texture onto the swapchain image by flipping the stencil mask, and rejecting pixels where the stencil bit is set.
-		</p>
 		<h3>Resources Used</h3>
 		<ul>
 			<li><a>Mastering Graphics Programming with Vulkan</a></li>
