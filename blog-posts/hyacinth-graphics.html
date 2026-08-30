@@ -45,11 +45,11 @@
     <div class ="blog-post-content">
         <h3>Overview</h3>
         <P>
-			This article will go over a few of the graphics features I implemented for Hyacinth's PBR renderer. Hyacinth takes a lot of influence from bits and pieces of 
+			This article will go over a key graphics feature I implemented for Hyacinth's renderer. Hyacinth is heavily influenced by bits and pieces of 
 			Overwatch's rendering backend, all deciphered from publicly available articles and videos, which will be linked throughout the article (and below). <br><br>
 			<span class="redtext" style="text-decoration: none;">Notice: Many parts of this article will be speculation. I don't work on Overwatch (one day 🙏).</span> <br><br>
 
-			You can view the source code for my engine at: <a href="https://github.com/AKris0090/Hyacinth">https://github.com/AKris0090/Hyacinth</a>
+			You can view the source code for my engine at: <a href="https://github.com/AKris0090/Hyacinth">https://github.com/AKris0090/Hyacinth</a>.
         </P>
 		<h3 id="DDGI">Questing for Global Illumination</h3>
 		<p style="margin-bottom: 0;">
@@ -58,7 +58,7 @@
 			<a href="https://news.blizzard.com/en-gb/article/23674944/environment-states-in-overwatch-2-behind-the-scenes-with-the-engineering-team">in this article</a>.
 			The intensive lighting calculations for the world are performed ahead of time, stored in maps, and shipped out with the game. This saves a ton of 
 			computing resources on the client's side, and you get beautifully lit worlds with a simple texture lookup. 
-			Dynamic objects used a volume of prebaked lighting probes. <span class="redtext" style="text-decoration: none;">**foreshadowing**</span><br><br>
+			Dynamic objects would use a volume of prebaked lighting probes. <span class="redtext" style="text-decoration: none;">**foreshadowing**</span><br><br>
 		</p>
 		<div class="subheader">
 			<div class="cross"></div>
@@ -92,8 +92,8 @@
 			stadium maps. The core of this presentation focused around how 
 			they worked around the various memory and computational restrictions that exist to keep Overwatch running smoothly regardless of the platform. <br><br>
 
-			The other part of this presentation covered the technical approach they used to give artists the freedom to place global illumination volumes around the scene,
-			and control the amount of detail per volume. After doing some research into the <a href="https://github.com/NVIDIAGameWorks/RTXGI-DDGI">RTXGI Github Repo</a> 
+			The other part of this presentation covers the technical approach they use to enable artists to place global illumination volumes around the scene and control the detail per volume. 
+			After doing some research into the <a href="https://github.com/NVIDIAGameWorks/RTXGI-DDGI">RTXGI Github Repo</a> 
 			and reading Chapter 14 of <i>Mastering Graphics Programming with Vulkan</i>, I dove headfirst into implementation.
 		</p>
 		<div class="subheader">
@@ -188,7 +188,7 @@ m_volumeStencilPipeline.m_depthStencil.front.failOp = VK_STENCIL_OP_KEEP;</code>
 			
 		<p class="subheadertext">
 			At the time of GI evaluation, each pixel gets tested against this "current" bit. If the "current" bit is set, then it is known that the "any" bit is not set, so we invert both during the stencil 
-			test, ensuring that the "any" bit is set for the next stencil volume pass. <br><br>
+			test, ensuring that the "any" bit is set for the next volume's stencil pass. <br><br>
 		</p>
 
 <pre><code>m_ddgiPipelineUtil.m_depthStencil.front.compareMask = CURRENT_BIT;
@@ -236,7 +236,7 @@ m_ddgiPipelineUtil.m_depthStencil.front.failOp = VK_STENCIL_OP_ZERO;</code></pre
 		</div>
 		<p class="subheadertext">
 			The most glaring issue with my current DDGI implementation is the seams that appear at volume boundaries. It is especially apparent in the image above if you 
-			look at where the edges of the stencil test appear. This was briefly mentioned in the Q&A portion of the Overwatch presentation, but even they acknowledge that 
+			look at where the edges of the stencil test appear. This was briefly mentioned in the Q&A portion of the Overwatch presentation, where they acknowledge that 
 			such boundaries are unavoidable. They were able to ease the effect by blending the irradiance of smaller volumes outwards to the parent volumes, but they work closely 
 			with the art team to hide seams in shrubbery or at boundaries of rooms. <br><br>
 
@@ -248,7 +248,7 @@ m_ddgiPipelineUtil.m_depthStencil.front.failOp = VK_STENCIL_OP_ZERO;</code></pre
 		<h3 id="outlines">BONUS CHALLENGE: Stencil Mapping for Outlines</h3>
 		<p>
 			After I got my hands dirty with stencil buffering in the DDGI implementation, I looked towards applying my newfound knowledge towards outlining enemy 
-			characters. This application was a bit more advanced, as I wanted it to be a screen space effect AND I wanted to make sure I didn't see outlines 
+			characters. This application was a bit more advanced, as I wanted it to be a screen space effect AND I outlines dont appear behind other objects. 
 			behind other objects.<br><br>
 
 			3 Main Passes:
