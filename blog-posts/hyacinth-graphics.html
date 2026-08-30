@@ -53,7 +53,7 @@
         </P>
 		<h3 id="DDGI">Questing for Global Illumination</h3>
 		<p style="margin-bottom: 0;">
-			One of the more recent features that the Overwatch team has been public about in regards to their graphics is their shift to a baked DDGI system for global 
+			One of the more recent features that the Overwatch team has been public about, in regard to graphics, is their shift to a baked DDGI system for global 
 			illumination. Previously, the game would rely on baked lightmaps to illuminate static world geometry, as described by Bruce Wilkie, 
 			<a href="https://news.blizzard.com/en-gb/article/23674944/environment-states-in-overwatch-2-behind-the-scenes-with-the-engineering-team">in this article</a>.
 			The intensive lighting calculations for the world are performed ahead of time, stored in maps, and shipped out with the game. This saves a ton of 
@@ -65,12 +65,12 @@
 			<h4>Miniboss: Early Lightmapping</h4>
 		</div>
 		<p class="subheadertext">
-			One of my earlier experiments in shadow mapping involved baking lightmaps for the world. Lightmapping involves using secondary texture coordinate for 
+			One of my earlier experiments in shadow mapping involved baking lightmaps for the world. Lightmapping involves using a secondary texture coordinate for 
 			each world object, and assigning it a space in a texture. I used a library called <a href="http://github.com/jpcy/xatlas">xatlas</a> to generate these UVs.
 			I would then write the mesh information to a text file in an OBJ-adjacent file format. To bake lighting information, I would load the object from this custom file,
 			generate acceleration structures on the device, and raytrace from each texel on the lightmap image into the world. <br><br>
 			And while I was able to get lightmaps integrated into the renderer, the results left something to be desired. Handling the balance of light seams, texture
-			resolution, filtering, and texel density proved to be a little bit above my grade at the time. I was able to achieve far more visually appealing results 
+			resolution, filtering, and texel density proved difficult at my skill level at the time. I was able to achieve far more visually appealing results 
 			with run-time cascaded shadow mapping. <br><br>
 		</p>
 		<div class="double_container" style="width: 90%">
@@ -88,13 +88,13 @@
 			</div>
 		</div>
 		<p>
-			During a youtube scroll session, I came across <a href="https://www.youtube.com/watch?v=0PlxPCq-DbQ">this presentation</a> by Will Pearce on the Overwatch team detailing the new baked DDGI system implemented for
+			During a YouTube scroll session, I came across <a href="https://www.youtube.com/watch?v=0PlxPCq-DbQ">this presentation</a> by Will Pearce on the Overwatch team detailing the new baked DDGI system implemented for
 			stadium maps. The core of this presentation focused around how 
 			they worked around the various memory and computational restrictions that exist to keep Overwatch running smoothly regardless of the platform. <br><br>
 
 			The other part of this presentation covered the technical approach they used to give artists the freedom to place global illumination volumes around the scene,
 			and control the amount of detail per volume. After doing some research into the <a href="https://github.com/NVIDIAGameWorks/RTXGI-DDGI">RTXGI Github Repo</a> 
-			and reading Chapter 14 of <i>Mastering Graphics Programming in Vulkan</i>, I dove headfirst into implementation.
+			and reading Chapter 14 of <i>Mastering Graphics Programming with Vulkan</i>, I dove headfirst into implementation.
 		</p>
 		<div class="subheader">
 			<div class="cross"></div>
@@ -118,7 +118,7 @@
 			</div>
 		</div>
 		<p class="subheadertext">	
-			Each volume applies global illumination to the objects contained within them, which is determined by two textures that get baked before runtime. The 
+			Each volume applies global illumination to the objects contained within it, which is determined by two textures that get baked before runtime. The 
 			<span class="redtext" style="text-decoration: none;">irradiance texture</span> stores the incoming diffuse lighting at each probe, and the <span class="redtext" style="text-decoration: none;">visibility texture</span> stores two moments of the hit distance from the probe to the closest geometry surface. <br><br> 
 		</p>
 		<div class="double_container" style="width: 76%">
@@ -136,11 +136,11 @@
 			</div>
 		</div>
 		<p class="subheadertext">
-			Each DDGI volume goes through a set of passes for the baking process. The first step in this process is raytracing from the probes in all directions to determine the incoming irradiance from all 
-			directions. For each probe, we trace a high number of rays in an even distribution around the unit sphere, described by a 
-			<a href="https://observablehq.com/@mbostock/spherical-fibonacci-lattice"><span class="redtext">spherical fibonacci</span></a> pattern. In shader, I calculate the diffuse lighting 
+			Each DDGI volume goes through a set of passes for the baking process. The first step in this process is raytracing from the probes in all directions to determine the incoming 
+			irradiance. For each probe, we trace a high number of rays in an even distribution around the unit sphere, described by a 
+			<a href="https://observablehq.com/@mbostock/spherical-fibonacci-lattice"><span class="redtext">Spherical Fibonacci</span></a> pattern. In shader, I calculate the diffuse lighting 
 			at each ray bounce and write the accumulated result to a giant arrayed image (width = # of rays, height = # of probes in plane, layers = # of planes in volume). For each pixel, the diffuse is 
-			stored in the r, g, and b, channels, while the alpha channel stores the hit distance from the probe to the nearest surface in that direction. <br><br>
+			stored in the r, g, and b channels, while the alpha channel stores the hit distance from the probe to the nearest surface in that direction. <br><br>
 		</p>
 
 		<div class="subtitled_image">
@@ -151,7 +151,7 @@
 		</div>
 
 		<p class="subheadertext">
-			The second pass of this process runs a compositing process on the ray data image, and generates the irradiance and visiblity atlas (shown above) using a compute shader. Within each atlas, an island 
+			The second pass of this process runs a compositing process on the ray data image, and generates the irradiance and visibility atlas (shown above) using a compute shader. Within each atlas, an island 
 			represents a single probe's 
 			<a href="https://knarkowicz.wordpress.com/2014/04/16/octahedron-normal-vector-encoding/"><span class="redtext">octahedral map</span></a> of diffuse/visibility data averaged over the direction each pixel represents. The last thing we need to do is fill in borders for the atlas to 
 			allow for proper bilinear filtering. You can find more information about the border pattern 
@@ -159,8 +159,8 @@
 
 			Finally, the evaluation pass samples from the 8 probes surrounding the world space position of the pixel in the image. For each of the 8 nearest probes, the distance and 
 			direction to the world space point are calculated and used to determine a trilinear weight. The two depth moments stored in the visibility texture are used to 
-			firstly determine if the distance to the point is greater than the average distance (there is likely an occluder), and if so, calculate the probability that the 
-			distance exists through <span class="redtext" style="text-decoration: none">Chebyshev's Inequality</span>. The irradiance atlas gets sampled and added up. The final 
+			determine if the distance to the point is greater than the average distance (there is likely an occluder), and if so, calculate the probability that the 
+			point is occluded through <span class="redtext" style="text-decoration: none">Chebyshev's Inequality</span>. The irradiance atlas gets sampled and added up. The final 
 			irradiance value is determined by averaging the total irradiance over the accumulated weights from the 8 probes. <br><br> 
 
 			One helpful aspect of this solution is that, unlike baked lightmaps, dynamic objects can receive global illumination by sampling from the volumes directly.
@@ -170,11 +170,11 @@
 			<h4>Stencil Optimization</h4>
 		</div>
 		<p class="subheadertext">
-			How does this relate to Overwatch? In the presentation, Mr. Pearce goes over how they made use of stencil buffers to evalute DDGI for the scene starting with the smallest volume up to the largest, 
-			as compared to drawing the largest volume first and overlaying the smaller ones. This reduces overdraw by ensuring that the expensive DDGI evaluation gets perfomred only once per pixel. <br><br>
+			How does this relate to Overwatch? In the presentation, Mr. Pearce goes over how they made use of stencil buffers to evaluate DDGI for the scene starting with the smallest volume up to the largest, 
+			as compared to drawing the largest volume first and overlaying the smaller ones. This reduces overdraw by ensuring that the expensive DDGI evaluation gets performed only once per pixel. <br><br>
 
 			This stenciling is made possible with two bits: a "current" bit and an "any" bit, describing the pixels the current volume is writing to, and pixels where any volume has written to previously. 
-			The first pass draws a volume to the stencil buffer, and tests againt the "any" bit. For each pixel, the world position is multiplied by the inverse transform of the volume, making it possible 
+			The first pass draws a volume to the stencil buffer, and tests against the "any" bit. For each pixel, the world position is multiplied by the inverse transform of the volume, making it possible 
 			to determine if the point is contained within the bounds of the volume. If not, that pixel gets discarded in the fragment shader. All pixels that pass this depth discard test get the "current" 
 			bit set. <br><br>
 		</p>
@@ -235,9 +235,9 @@ m_ddgiPipelineUtil.m_depthStencil.front.failOp = VK_STENCIL_OP_ZERO;</code></pre
 			<h4>What Would I Do After This?</h4>
 		</div>
 		<p class="subheadertext">
-			The most glaring issue with my current DDGI implementation are the seams that appear at volume boundaries. It is especially apparent in the image above if you 
-			look at where the edges of the stencil test appear. This was briefly mentioned in the QNA portion of the Overwatch presentation, but even they acknowledge that 
-			such boundaries are unavoidable. They were able to ease the effect by blending the irraiance of smaller volumes outwards to the parent volumes, but they work closely 
+			The most glaring issue with my current DDGI implementation is the seams that appear at volume boundaries. It is especially apparent in the image above if you 
+			look at where the edges of the stencil test appear. This was briefly mentioned in the Q&A portion of the Overwatch presentation, but even they acknowledge that 
+			such boundaries are unavoidable. They were able to ease the effect by blending the irradiance of smaller volumes outwards to the parent volumes, but they work closely 
 			with the art team to hide seams in shrubbery or at boundaries of rooms. <br><br>
 
 			Another smaller way I can reduce artifacting is with probe offsets. Probes that are just barely behind geometry provide no useful data to the DDGI evaluation, and 
@@ -247,8 +247,8 @@ m_ddgiPipelineUtil.m_depthStencil.front.failOp = VK_STENCIL_OP_ZERO;</code></pre
 
 		<h3 id="outlines">BONUS CHALLENGE: Stencil Mapping for Outlines</h3>
 		<p>
-			After I got my hands dirty with stencil bufferring in the DDGI implementation, I looked towards applying my newfound knowledge towards outlining enemy 
-			characters. This application was a bit more advanced, as I wanted it to be a screen space effect AND I wanted to make sure I don't see outlines 
+			After I got my hands dirty with stencil buffering in the DDGI implementation, I looked towards applying my newfound knowledge towards outlining enemy 
+			characters. This application was a bit more advanced, as I wanted it to be a screen space effect AND I wanted to make sure I didn't see outlines 
 			behind other objects.<br><br>
 
 			3 Main Passes:
