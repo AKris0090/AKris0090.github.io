@@ -38,6 +38,17 @@
 			<li><a href="/contact-me/contact.html">Contact Me</a></li>
 		</ul>
 	</nav>
+	<script>
+		function showSidebar() {
+			var sidebar = document.querySelector(".sidebar");
+			sidebar.style.top = "0";
+		}
+
+		function hideSidebar() {
+			var sidebar = document.querySelector(".sidebar");
+			sidebar.style.top = "-100vh"
+		}
+	</script>
     <div class="header">
 		<h1><span>BLOG POSTS</span></h1>
 		<div class="cross"></div>
