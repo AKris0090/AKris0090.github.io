@@ -5,10 +5,10 @@ const software_dev_projects = [
     image: "main.png",
     link: "https://github.com/AKris0090/Hyacinth",
     notes: [
-      "Written in C++ using Vulkan and Nvidia PhysX APIs",
-      "Multiplayer features include client-side prediction and server reconciliation, interpolation, and lag compensation. Check out: <a href='https://ajnkrishnan.me/blog-posts/hyacinth-server-architecture.html'>this blog post</a>",
-      "Game features third person locmotion, procedural animations, and a custom UI system",
-      "Implemented volume-based baked DDGI, using a grid of irradiance probes to ray trace indirect illumination",
+      "Written in C++ using Vulkan, GLSL, and Nvidia PhysX API",
+      "Engineered a multithreaded authoritative game server, featuring client-side prediction and server reconciliation, interpolation, and lag compensation. To learn more, check out <a href='https://ajnkrishnan.me/blog-posts/hyacinth-server-architecture.html'>this blog post</a>",
+      "Programmed hardware-traced reflections, stencil-buffer outlines, FXAA, third-person locomotion, and a custom UI system",
+      "Implemented volume-based baked DDGI, using a grid of irradiance probes to ray trace indirect illumination. Modeled after Overwatch’s DDGI system; optimized with a stencil buffer",
     ],
     video: "https://www.youtube.com/watch?v=YgR1PEGyKbY"
   },
@@ -18,9 +18,9 @@ const software_dev_projects = [
     image: "card.jpg",
     link: "https://github.com/AKris0090/Orchid",
     notes: [
-      "Written in C++ using Vulkan and Nvidia PhysX APIs",
+      "Written in C++ using Vulkan, GLSL, and Nvidia PhysX API",
       "Features PBR textures, cascaded shadow mapping, bloom, compute skinning, and custom shaders including outlines and toon shading",
-      "Optimized using frustum culling and a depth pre-pass",
+      "Optimized using frustum culling and a depth pre-pass, reducing frame time from 8.1 ms/frame to 6.15 ms/frame (32%)",
     ],
     video: "https://www.youtube.com/watch?v=NG24VTHqjNk"
   },
@@ -32,7 +32,7 @@ const software_dev_projects = [
     notes: [
       "Written in C++, parallelized on the GPU using CUDA",
       "Features physically-based materials and soft shadowing",
-      "Optimized to run in real-time using bounding volume heriarchies and iterative anti-aliasing"
+      "Optimized to trace over 850,000 primitives in real-time using bounding volume heriarchies"
     ]
   },
   {
@@ -73,12 +73,6 @@ const software_dev_projects = [
 
 const software_grid = document.getElementsByClassName("projects_grid")[0];
 
-function openInfo(buttonId) {
-  const escapedTitle = buttonId.replace(/'/g, "\\'");
-  const infoDiv = document.getElementById(escapedTitle);
-  infoDiv.classList.toggle("open");
-}
-
 software_dev_projects.forEach(project => {
   const cardContainer = document.createElement("div");
   cardContainer.className = "card_container";
@@ -103,38 +97,33 @@ software_dev_projects.forEach(project => {
   }
 
   card.innerHTML += `
-    <h2>${project.title}</h2>
+    <a href=${project.link} target="_blank"><h2>${project.title}</h2></a>
     <p>${project.desc}</p>
     <img src="/shared-resources/${project.image}" alt="${project.title} image">
-    <div class="button_container">
-      <button class="info_button" onclick="openInfo('${project.title}')">
-        READ MORE
-        <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="none">
-          <circle cx="12" cy="12" r="10" stroke="#F6F4D1" stroke-width="1.5"/>
-          <path d="M8 10.5L12 14.5L16 10.5" stroke="#F6F4D1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-      <button class="view_button" onclick="window.open('${project.link}', '_blank')">VIEW PROJECT -></button>
-    </div>
   `;
 
-  cardContainer.appendChild(card);
-
-  const cardInfo = document.createElement("div");
-  cardInfo.className = "card_info";
-  cardInfo.id = `${project.title}`;
-  
   const ul = document.createElement("ul");
+  ul.className = "project_notes";
 
   project.notes.forEach(note => {
     const li = document.createElement("li");
-    li.className = "card_info_note";
+    li.className = "project_note";
     li.innerHTML = note;
     ul.appendChild(li);
   });
-  cardInfo.appendChild(ul);
+  card.querySelector("img").after(ul);
 
-  cardContainer.appendChild(cardInfo);
+  const cardViewButton = document.createElement("div");
+  cardViewButton.className = "button_container";
 
-  software_grid.appendChild(cardContainer);
+  const viewButton = document.createElement("button");
+  viewButton.className = "view_button";
+  viewButton.innerHTML = "VIEW PROJECT ->";
+  viewButton.onclick = () => {
+    window.open(project.link, "_blank");
+  }
+  cardViewButton.appendChild(viewButton);
+
+  card.appendChild(cardViewButton);
+  cardContainer.appendChild(card);
 });

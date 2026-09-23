@@ -1,5 +1,28 @@
 const software_dev_projects = [
   { 
+    title: "Extrusion", 
+    desc: "Escape from the laboratory",
+    image: "UhrCTb.png",
+    link: "https://violets321.itch.io/extrusion",
+    notes: [
+      "Made in Unreal Engine 5, for GMTK Game Jam 2024",
+      "Designed the main level, placing lights and interactables to build the atmosphere of each room",
+      "Implemented functionality of interactable objects, including the system to pick up and move boxes",
+      "Developed visual effects, including the colored vignette and pixelation shaders"
+    ],
+  },
+  { 
+    title: "Dillo's Bounce", 
+    desc: "Survive as an armadillo in the desert",
+    image: "DB_banner.png",
+    link: "https://violets321.itch.io/dillos-bounce",
+    notes: [
+      "Made in Unreal Engine 5, for Major Jam 6",
+      "Implemented the primary physics-based rolling ball mechanic",
+      "Designed 2 of the 3 levels in the game, as well as the animated main menu"
+    ]
+  },
+  {
     title: "Bow Simulator", 
     desc: "Physically-based bow and arrow game",
     image: "BS_Banner.png",
@@ -33,29 +56,6 @@ const software_dev_projects = [
       "Implemented character movement, health bars, scene transitions, and a parallaxing background"
     ],
     video: "https://www.youtube.com/watch?v=jnBy11kBOgo"
-  },
-  { 
-    title: "Extrusion", 
-    desc: "Escape from the laboratory",
-    image: "UhrCTb.png",
-    link: "https://violets321.itch.io/extrusion",
-    notes: [
-      "Made in Unreal Engine 5, for GMTK Game Jam 2024",
-      "Designed the main level, placing lights and interactables to build the atmosphere of each room",
-      "Implemented functionality of interactable objects, including the system to pick up and move boxes",
-      "Developed visual effects, including the colored vignette and pixelation shaders"
-    ]
-  },
-  { 
-    title: "Dillo's Bounce", 
-    desc: "Survive as an armadillo in the desert",
-    image: "DB_banner.png",
-    link: "https://violets321.itch.io/dillos-bounce",
-    notes: [
-      "Made in Unreal Engine 5, for Major Jam 6",
-      "Implemented the primary physics-based rolling ball mechanic",
-      "Designed 2 of the 3 levels in the game, as well as the animated main menu"
-    ]
   },
   { 
     title: "Lines of Sleight", 
@@ -113,40 +113,34 @@ software_dev_projects.forEach(project => {
     card.appendChild(videoLink);
   }
 
-  const escapedTitle = project.title.replace(/'/g, "\\'");
-
   card.innerHTML += `
-    <h2>${project.title}</h2>
+    <a href=${project.link} target="_blank"><h2>${project.title}</h2></a>
     <p>${project.desc}</p>
     <img src="/shared-resources/${project.image}" alt="${project.title} image">
-    <div class="button_container">
-      <button class="info_button" onclick="openInfo('${escapedTitle}')">
-        MORE INFO
-        <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 24 24" width="32px" fill="none">
-          <circle cx="12" cy="12" r="10" stroke="#F6F4D1" stroke-width="1.5"/>
-          <path d="M8 10.5L12 14.5L16 10.5" stroke="#F6F4D1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-      <button class="view_button" onclick="window.open('${project.link}', '_blank')">VIEW PROJECT -></button>
-    </div>
   `;
 
-  cardContainer.appendChild(card);
-
-  const cardInfo = document.createElement("div");
-  cardInfo.className = "card_info"; 
-  cardInfo.id = `${escapedTitle}`;
-  
   const ul = document.createElement("ul");
+  ul.className = "project_notes";
 
   project.notes.forEach(note => {
     const li = document.createElement("li");
+    li.className = "project_note";
     li.innerHTML = note;
     ul.appendChild(li);
   });
-  cardInfo.appendChild(ul);
+  card.querySelector("img").after(ul);
 
-  cardContainer.appendChild(cardInfo);
+  const cardViewButton = document.createElement("div");
+  cardViewButton.className = "button_container";
 
-  software_grid.appendChild(cardContainer);
+  const viewButton = document.createElement("button");
+  viewButton.className = "view_button";
+  viewButton.innerHTML = "VIEW PROJECT ->";
+  viewButton.onclick = () => {
+    window.open(project.link, "_blank");
+  }
+  cardViewButton.appendChild(viewButton);
+
+  card.appendChild(cardViewButton);
+  cardContainer.appendChild(card);
 });

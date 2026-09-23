@@ -17,6 +17,11 @@ body {
     font-style: normal;
 }
 
+@font-face {
+    font-family: LIBS;
+    src: url(/shared-resources/fonts/Roboto-Regular.ttf) format("truetype");
+}
+
 nav {
     position: fixed;
     width: 100%;
@@ -203,8 +208,10 @@ nav li:hover .cross {
         margin-top: 2rem;
     }
     .projects_card h2 {
+        margin-top: 13% !important;
         margin-left: auto !important;
         margin-right: auto !important;
+        text-align: center !important;
     }
     .projects_card p {
         text-align: center;
@@ -267,24 +274,24 @@ nav li:hover .cross {
     box-sizing: border-box;
     flex-direction: column;
     min-width: 350px;
-    min-height: 400px;
-    height: 54vh;
     z-index: 2;
     background-color: #000000;
 }
 
-.projects_card h2 {
+.projects_card h2{
     text-align: left;
     font-family: 'MTYPE';
     margin: 8% auto 4% 5%;
     font-size: 1.75rem;
+    text-decoration: underline;
+    text-decoration-color: #ff0000;
     color: #e2dbbd;
     z-index: 3;
 }
 
 .projects_card p {
     margin: 0 auto 5% 5%;
-    font-family: 'MTYPE', sans-serif;
+    font-family: 'LIBS', sans-serif;
     font-weight: bolder;
     font-size: 1.1rem;
     color: #e2dbbd;
@@ -297,13 +304,14 @@ nav li:hover .cross {
     align-self: center;
     object-fit: cover;
     object-position: center;
+    padding-bottom: 0.75rem;
 }
 
 .button_container {
     display: flex;
-    margin-top: auto;
+    margin-top: 0;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     width: 100%;
     align-self: center;
 }
@@ -329,7 +337,7 @@ nav li:hover .cross {
 
 .view_button {
     height: 4rem;
-    font-family: 'MTYPE';
+    font-family: 'LIBS';
     font-size: 1.25rem;
     color: #000000;
     background-color: #ff0000;
@@ -360,46 +368,32 @@ nav li:hover .cross {
 .projects_card button:hover {
     color: #ff0000;
     background-color: #e2dbbd;
+    min-height: 0;
 }
 
-.card_info {
-    max-height: 0;
-    overflow: hidden;
-    padding: 0;
-    margin-top: 0;
-    background-color: #000000;
-    border-style: solid none none none;
-    border-color: #ff0000;
+.project_notes {
+    padding: 0.75rem 0;
+    margin: 0;
     text-align: center;
-    transition: max-height 0.4s ease;
 }
 
-.card_info li a {
+.project_notes li a {
     text-decoration-color: #ff0000 !important;
 }
 
-.card_info.open {
-    max-height: 250px;
-}
-
-.card_info ul {
-    padding: 0.75rem 0;
-    align-items: center;
-}
-
-.card_info li {
+.project_note {
     color: #F6F4D1;
-    font-family: 'MTYPE';
+    font-family: 'LIBS';
     width: 80%;
     margin-left: auto;
     margin-right: auto;
     text-align: left;
 }
 
-.card_info a{
+.project_notes a{
     color: #F6F4D1;
 }
 
-.card_info li:not(:last-child) {
+.project_note:not(:last-child) {
     margin-bottom: 0.5rem;
 }

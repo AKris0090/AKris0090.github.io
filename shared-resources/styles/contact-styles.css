@@ -231,6 +231,20 @@ nav li:hover .cross {
         align-items: center !important;
         justify-content: center !important;
     }
+    .about_me {
+        margin-top: 2rem;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        flex-direction: column !important;
+        align-items: center;
+    }
+    .about_me p {
+        text-align: center !important;
+        max-width: 90vw;
+    }
+    .about_me img {
+        width: 50vw !important;
+    }
 }
 
 .header {
@@ -288,8 +302,21 @@ nav li:hover .cross {
     flex-shrink: 0;
 }
 
+.about_me {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    margin-left: 3vw;
+    text-align: left;
+    align-items: center;
+}
+
+.social_media_link_container {
+    margin-left: 3vw;
+}
+
 p {
     color: #F6F4D1;
     font-family: 'MTYPE';
-    text-align: center;
+    max-width: 30vw;
 }
