@@ -32,7 +32,7 @@ const software_dev_projects = [
     notes: [
       "Written in C++, parallelized on the GPU using CUDA",
       "Features physically-based materials and soft shadowing",
-      "Optimized to trace over 850,000 primitives in real-time using bounding volume heriarchies"
+      "Optimized to trace over 850,000 primitives in real-time using bounding volume hierarchies"
     ]
   },
   {
